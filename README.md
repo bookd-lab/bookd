@@ -1,12 +1,33 @@
 # Codepath 2016 Fall Cohort - *Bookd*
 
-**Bookd** is an android app that makes planning events easier.  
+**Bookd** is an Android app that makes planning events easier.  
+
+Backstory: When recently planning a wedding without the services of a wedding planner, I saw how daunting the process could be. 
+
+For example, to find a photographer that can shoot the event: Go through a web search to find photographers. Go through their website to see examples of their work. Call them to see their availability and pricing. Repeat for a handful of photographers and hope that you can decide on one after all of your research.
+
+Now imagine doing the exact same process to find videographers, decorators, cake makers, makeup artists, hairstylers, performers, etc. - all through web searches, Craigslist, and Kijiji. This becomes a daunting task that can be made a lot simpler. 
+
+In comes *Bookd*, matching those in the one time gig industry looking to get hired for their work with event planners looking to find the right person to get the job done.
+
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-* [X] Insert Story
+*Search*
+* [X] Search bar to look up specific gigs/businesses
+ * [X] Filter searches by category, rating, price range, event-day availability, response time, sort options
+* [X] Card views of search results showing an image, business/gig name, star rating, and price range
+
+*Business Profile*
+* [X] View business profile
+ * [X] User can view business name, photo, rating, price range, links to social media webpages/website for examples of work`
+ * [X] User can view a date dialog to see event date availability 
+
+*Book for event*
+* [X] Users can confirm a booking with a business (finalize price, destination, # of hrs, etc.)
+ * [X] Uses a payment API (Stripe, Square, etc) to process payments between event planner and business
 
 The following **optional** features are implemented:
 
