@@ -16,36 +16,36 @@ In comes *Bookd*, matching those in the one time gig industry looking to get hir
 The following **required** functionality is completed:
 
 *Mobile-oriented features*
-* [] Location is used to find gig providers that are in drivable distance
-* [] Push notifications provide notice of confirmed gigs
+* [ ] Location is used to find gig providers that are in drivable distance
+* [ ] Push notifications provide notice of confirmed gigs
 
 *Search*
-* [] Search bar to look up specific gigs/businesses
- * [] Filter searches by category, rating, price range, event-day availability, response time, sort options
-* [] Card views of search results showing an image, business/gig name, star rating, and price range
+* [ ] Search bar to look up specific gigs/businesses
+ * [ ] Filter searches by category, rating, price range, event-day availability, response time, sort options
+* [ ] Card views of search results showing an image, business/gig name, star rating, and price range
 
 *Business Profile*
-* [] View business profile
- * [] User can view business name, photo, rating, price range, links to social media webpages/website for examples of work
- * [] User can view a date dialog to see event date availability 
+* [ ] View business profile
+ * [ ] User can view business name, photo, rating, price range, links to social media webpages/website for examples of work
+ * [ ] User can view a date dialog to see event date availability 
 
 *Book for event*
-* [] Users can confirm a booking with a business (finalize price, destination, # of hrs, etc.)
- * [] Uses a payment API (Stripe, Square, etc) to process payments between event planner and business
+* [ ] Users can confirm a booking with a business (finalize price, destination, # of hrs, etc.)
+ * [ ] Uses a payment API (Stripe, Square, etc) to process payments between event planner and business
  
 The following **optional** features are implemented:
 
 *View Bookings*
-* [] User can view upcoming planned events: 
-	* [] Show finalized and pending bookings for those days
-	* [] Provide user with notifications to complete bookings 	
+* [ ] User can view upcoming planned events: 
+	* [ ] Show finalized and pending bookings for those days
+	* [ ] Provide user with notifications to complete bookings 	
 
 *Gig-provider side for the app (Business usage)*
-* [] Gig provider can update their profile information through the app
-	* [] Availability
-	* [] Accept and decline work
-	* [] Provide quotes to event planners
-	* [] Pay to be the sponsored gig-provider of the day
+* [ ] Gig provider can update their profile information through the app
+	* [ ] Availability
+	* [ ] Accept and decline work
+	* [ ] Provide quotes to event planners
+	* [ ] Pay to be the sponsored gig-provider of the day
 
 
 ## Video Walkthrough
