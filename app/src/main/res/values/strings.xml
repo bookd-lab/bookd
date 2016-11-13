@@ -13,4 +13,11 @@
     <string name="my_wedding">My wedding</string>
     <string name="from_nov_5_to_nov_15_2016">From Nov 5 To Nov 15, 2016</string>
     <string name="add_event">Add Event</string>
+
+
+    <string name="lorem">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus. Pellentesque ut dolor a dui porttitor porta lacinia non libero. Nunc volutpat arcu quis quam convallis molestie. Etiam ac tristique sem, id commodo justo. Phasellus congue tincidunt lectus, at dignissim ligula maximus eu.</string>
+    <string name="bookd_name">BB Cafe &amp; Cake Gallery</string>
+    <string name="bookd_tagline">Custom cakes and pastries</string>
+
 </resources>
