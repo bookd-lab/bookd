@@ -12,6 +12,7 @@ import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
+import bookdlab.bookd.fragments.EventCreateWizardDateFragment;
 import bookdlab.bookd.fragments.EventCreateWizardFragment;
 
 
@@ -51,7 +52,7 @@ public class EventCreateActivity extends AppCompatActivity {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return EventCreateWizardFragment.newInstance(0, res.getString(R.string.create_event_step_1), res.getString(R.string.create_event_step_1_hint));
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return EventCreateWizardFragment.newInstance(1, res.getString(R.string.create_event_step_2), res.getString(R.string.create_event_step_2_hint));
+                    return EventCreateWizardDateFragment.newInstance(1, res.getString(R.string.create_event_step_2), res.getString(R.string.create_event_step_2_hint));
                 case 2: // Fragment # 1 - This will show SecondFragment
                     return EventCreateWizardFragment.newInstance(2, res.getString(R.string.create_event_step_3), res.getString(R.string.create_event_step_3_hint));
                 case 3: // Fragment # 1 - This will show SecondFragment

@@ -34,11 +34,13 @@
     <string name="name_your_event">Name your event</string>
     <string name="swipe_instruction">SWIPE LEFT</string>
     <string name="create_event_step_1">What\'s your event?</string>
-    <string name="create_event_step_1_hint">birthday jam, wedding reception, etc.</string>
+    <string name="create_event_step_1_hint">birthday jam, anniversary, etc.</string>
     <string name="create_event_step_2">When is it?</string>
     <string name="create_event_step_2_hint">Set a date and time</string>
-    <string name="create_event_step_3">Who do you need to hire for the event?</string>
-    <string name="create_event_step_3_hint">DJs? photographers? caterers?</string>
-    <string name="create_event_step_4">Bookd event created!</string>
+    <string name="create_event_step_3">Who do you need to book?</string>
+    <string name="create_event_step_3_hint">DJs? Photographers? Caterers?</string>
+    <string name="create_event_step_4">Sounds fun! Let\'s get booking!</string>
+
+    <string name="event_date">Set date</string>
 
 </resources>
