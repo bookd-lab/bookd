@@ -12,7 +12,7 @@
     <string name="search">Search</string>
     <string name="my_wedding">Wedding Reception</string>
     <string name="from_nov_5_to_nov_15_2016">Nov 5th to Nov 15th, 2016</string>
-    <string name="add_event">Add Event</string>
+    <string name="add_event_title">Give it some details</string>
 
 
     <string name="lorem">
@@ -21,6 +21,12 @@
     <string name="bookd_tagline">Custom cakes and pastries</string>
     <string name="favorite">Favorite</string>
     <string name="settings">Settings</string>
-    <string name="name_your_event">Name your event</string>
+    <string name="name_event">What is the party coming up?</string>
+    <string name="save">Save</string>
+    <string name="create_your_party">Create your party</string>
+    <string name="comments">Comments…</string>
+    <string name="event_starts">When it starts</string>
+    <string name="pick_date">Pick date</string>
+    <string name="event_ends">When it ends?</string>
 
 </resources>

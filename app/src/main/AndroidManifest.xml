@@ -24,7 +24,7 @@
 
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.BusinessActivity" />
-        <activity android:name=".activities.EventCreateActivity" />
+        <activity android:name=".activities.EventCreateActivity" android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
