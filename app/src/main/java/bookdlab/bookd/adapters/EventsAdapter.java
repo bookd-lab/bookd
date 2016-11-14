@@ -1,6 +1,7 @@
 package bookdlab.bookd.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.activities.EventCreateActivity;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Event;
 import bookdlab.bookd.views.BusinessItemViewHolder;
@@ -64,6 +66,12 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Event event = eventList.get(position - 1);
             h.eventTitle.setText(event.getName());
             h.datesInfo.setText(event.getDates());
+        } else {
+            DefaultViewHolder holder = (DefaultViewHolder) rh;
+            holder.rootView.setOnClickListener((v) -> {
+                Intent intent = new Intent(activity, EventCreateActivity.class);
+                activity.startActivity(intent);
+            });
         }
     }
 
