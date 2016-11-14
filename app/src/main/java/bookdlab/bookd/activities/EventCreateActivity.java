@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.fragments.EventCreateWizardFragment;
@@ -21,10 +23,10 @@ public class EventCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_create);
-        setContentView(R.layout.activity_event_create);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
+        viewPager.setPageTransformer(true, new CubeOutTransformer());
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
