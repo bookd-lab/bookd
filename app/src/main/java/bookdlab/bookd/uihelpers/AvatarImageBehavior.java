@@ -1,4 +1,4 @@
-package bookdlab.bookd.animations;
+package bookdlab.bookd.uihelpers;
 
 import android.content.Context;
 import android.content.res.TypedArray;
