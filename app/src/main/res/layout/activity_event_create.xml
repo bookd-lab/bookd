@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:title="@string/add_event_title"
-        app:titleTextColor="@color/white" />
-
+        android:layout_height="match_parent" />
+<!--
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -34,7 +32,7 @@
         android:paddingTop="7dp"
         android:textSize="18sp" />
 
-    <!-- Start date -->
+
     <TextView
         android:id="@+id/eventStartsLabel"
         android:layout_width="wrap_content"
@@ -69,7 +67,7 @@
         android:layout_toStartOf="@id/pickStartDateButton"
         tools:text="09/09/2016" />
 
-    <!-- Start date -->
+
     <TextView
         android:id="@+id/eventEndDateLabel"
         android:layout_width="wrap_content"
@@ -132,6 +130,6 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_below="@id/toolbar"
-        android:background="@drawable/shade_bg" />
+        android:background="@drawable/shade_bg" />!-->
 
 </RelativeLayout>

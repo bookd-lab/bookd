@@ -9,5 +9,8 @@
 
     <dimen name="item_event_height">150dp</dimen>
 
+    <dimen name="question_font">40sp</dimen>
+    <dimen name="answer_font">32sp</dimen>
+
 
 </resources>
