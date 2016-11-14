@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_event_height"
-    android:background="@drawable/shadow_bg"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_event_height"
+        android:background="@drawable/shadow_bg"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:id="@+id/backgroundOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="@string/my_wedding"
+            android:textColor="@color/transparent_white_80"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/datesInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eventTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/from_nov_5_to_nov_15_2016"
+            android:textColor="@color/transparent_white_80"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/backgroundOverlay"
+        android:id="@+id/bottomDivider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey"
-        android:orientation="horizontal" />
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/eventTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textSize="15sp"
-        android:textColor="@color/transparent_white_80"
-        android:text="@string/my_wedding" />
-
-    <TextView
-        android:id="@+id/datesInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/eventTitle"
-        android:textColor="@color/transparent_white_80"
-        android:layout_centerHorizontal="true"
-        android:textSize="12sp"
-        android:text="@string/from_nov_5_to_nov_15_2016" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -9,6 +9,7 @@ public class Event {
 
     private String name;
     private String dates;
+    private String color;
 
     public Event() {
     }
@@ -27,5 +28,13 @@ public class Event {
 
     public void setDates(String dates) {
         this.dates = dates;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

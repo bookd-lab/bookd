@@ -19,6 +19,12 @@ public class EventItemViewHolder extends RecyclerView.ViewHolder {
     public TextView eventTitle;
     @BindView(R.id.datesInfo)
     public TextView datesInfo;
+    @BindView(R.id.backgroundOverlay)
+    public View backgroundOverlay;
+    @BindView(R.id.rootView)
+    public View rootView;
+    @BindView(R.id.bottomDivider)
+    public View bottomDivider;
 
     public EventItemViewHolder(View itemView) {
         super(itemView);

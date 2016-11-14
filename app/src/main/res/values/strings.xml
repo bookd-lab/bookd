@@ -28,5 +28,6 @@
     <string name="event_starts">When it starts</string>
     <string name="pick_date">Pick date</string>
     <string name="event_ends">When it ends?</string>
+    <string name="search_hint">What up for party?</string>
 
 </resources>

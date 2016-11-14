@@ -17,17 +17,24 @@ public class EventsClient {
 
         List<Event> eventsList = new ArrayList<>();
 
+        eventsList.add(genEvent("#4286f4"));
+        eventsList.add(genEvent("#9842f4"));
+        eventsList.add(genEvent("#206b21"));
+        eventsList.add(genEvent("#9aa09a"));
+        eventsList.add(genEvent("#4286f4"));
+        eventsList.add(genEvent("#9842f4"));
+        eventsList.add(genEvent("#206b21"));
+        eventsList.add(genEvent("#9aa09a"));
+
+        return eventsList;
+    }
+
+    private Event genEvent(String color) {
         Event event = new Event();
         event.setName("My marriage");
         event.setDates("From Nov 5 To Nov 15, 2016");
-
-        eventsList.add(event);
-        eventsList.add(event);
-        eventsList.add(event);
-        eventsList.add(event);
-        eventsList.add(event);
-
-        return eventsList;
+        event.setColor(color);
+        return event;
     }
 
 }
