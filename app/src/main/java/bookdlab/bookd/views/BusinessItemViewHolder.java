@@ -2,6 +2,7 @@ package bookdlab.bookd.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import bookdlab.bookd.R;
@@ -15,6 +16,8 @@ import butterknife.ButterKnife;
 
 public class BusinessItemViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.rootView)
+    public ViewGroup rootView;
     @BindView(R.id.businessImage)
     public ImageView businessImage;
 

@@ -1,16 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".BookdProfileActivity">
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="Settings" />
+        android:title="@string/settings"
+        app:showAsAction="never" />
 
-    <item android:id="@+id/menu_watch"
+    <item
+        android:id="@+id/menu_watch"
         android:icon="@drawable/button_add_watch"
-        app:showAsAction="always"
-        android:title="Favorite" />
+        android:title="@string/favorite"
+        app:showAsAction="ifRoom" />
+
 </menu>

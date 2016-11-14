@@ -1,10 +1,13 @@
 package bookdlab.bookd.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by akhmedovi on 11/12/16.
  * Copyright - 2016
  */
 
+@Parcel
 public class Business {
 
     private String name;

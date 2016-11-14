@@ -1,6 +1,7 @@
 package bookdlab.bookd.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.activities.BusinessActivity;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.views.BusinessItemViewHolder;
 
@@ -42,6 +44,8 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         Glide.with(activity)
                 .load(businessList.get(position).getImageUrl())
                 .into(h.businessImage);
+
+        h.rootView.setOnClickListener((v -> activity.startActivity(new Intent(activity, BusinessActivity.class))));
     }
 
     @Override

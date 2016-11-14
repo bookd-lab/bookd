@@ -19,5 +19,7 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus. Pellentesque ut dolor a dui porttitor porta lacinia non libero. Nunc volutpat arcu quis quam convallis molestie. Etiam ac tristique sem, id commodo justo. Phasellus congue tincidunt lectus, at dignissim ligula maximus eu.</string>
     <string name="bookd_name">BB Cafe &amp; Cake Gallery</string>
     <string name="bookd_tagline">Custom cakes and pastries</string>
+    <string name="favorite">Favorite</string>
+    <string name="settings">Settings</string>
 
 </resources>

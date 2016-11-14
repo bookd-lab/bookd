@@ -11,7 +11,10 @@ import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import bookdlab.bookd.R;
+import bookdlab.bookd.models.Business;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -19,63 +22,81 @@ import butterknife.ButterKnife;
  * Created by rubab.uddin on 11/12/2016.
  */
 
-public class ProfileActivity extends AppCompatActivity
-        implements AppBarLayout.OnOffsetChangedListener{
+public class BusinessActivity extends AppCompatActivity
+        implements AppBarLayout.OnOffsetChangedListener {
 
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS     = 0.3f;
-    private static final int ALPHA_ANIMATIONS_DURATION              = 200;
+    private static final String EXTRA_BUSINESS = "EXTRA_BUSINESS";
 
-    private boolean mIsTheTitleVisible          = false;
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+
+    private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
 
-    @BindView(R.id.profile_toolbar) Toolbar mToolbar;
-    @BindView(R.id.profile_textview_title) TextView mTitle;
-    @BindView(R.id.profile_linearlayout_title) LinearLayout mTitleContainer;
-    @BindView(R.id.profile_appbar) AppBarLayout mAppBarLayout;
+    @BindView(R.id.profile_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.profile_textview_title)
+    TextView titleTV;
+    @BindView(R.id.profile_linearlayout_title)
+    LinearLayout titleContainer;
+    @BindView(R.id.profile_appbar)
+    AppBarLayout appBarLayout;
+
+    private Business business;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_business);
 
         ButterKnife.bind(this);
 
-        mAppBarLayout.addOnOffsetChangedListener(this);
+        setSupportActionBar(toolbar);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        mToolbar.inflateMenu(R.menu.menu_profile);
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+        business = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_BUSINESS));
+
+        appBarLayout.addOnOffsetChangedListener(this);
+        startAlphaAnimation(titleTV, 0, View.INVISIBLE);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
-
-
-        return true;
+        getMenuInflater().inflate(R.menu.menu_business, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_watch:
-                if(item.getItemId() == R.drawable.button_add_watch) {
+            case android.R.id.home: {
+                onBackPressed();
+                break;
+            }
+            case R.id.menu_watch: {
+                if (item.getItemId() == R.drawable.button_add_watch) {
                     item.setIcon(R.drawable.button_remove_watch);
                     addToEventWatchList();
                     return true;
-                } else if (item.getItemId() == R.drawable.button_remove_watch){
+                } else if (item.getItemId() == R.drawable.button_remove_watch) {
                     item.setIcon(R.drawable.button_add_watch);
                     removeFromEventWatchList();
                     return true;
                 }
-
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
+            }
         }
+
+        return super.onOptionsItemSelected(item);
     }
-    public static void addToEventWatchList(){
+
+    public static void addToEventWatchList() {
     }
-    public static void removeFromEventWatchList(){
+
+    public static void removeFromEventWatchList() {
     }
 
     @Override
@@ -90,15 +111,15 @@ public class ProfileActivity extends AppCompatActivity
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
-            if(!mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+            if (!mIsTheTitleVisible) {
+                startAlphaAnimation(titleTV, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleVisible = true;
             }
 
         } else {
 
             if (mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                startAlphaAnimation(titleTV, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleVisible = false;
             }
         }
@@ -106,21 +127,21 @@ public class ProfileActivity extends AppCompatActivity
 
     private void handleAlphaOnTitle(float percentage) {
         if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if(mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+            if (mIsTheTitleContainerVisible) {
+                startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleContainerVisible = false;
             }
 
         } else {
 
             if (!mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleContainerVisible = true;
             }
         }
     }
 
-    public static void startAlphaAnimation (View v, long duration, int visibility) {
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
                 ? new AlphaAnimation(0f, 1f)
                 : new AlphaAnimation(1f, 0f);
