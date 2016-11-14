@@ -8,8 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.parceler.Parcels;
 
@@ -25,7 +28,7 @@ import butterknife.ButterKnife;
 public class BusinessActivity extends AppCompatActivity
         implements AppBarLayout.OnOffsetChangedListener {
 
-    private static final String EXTRA_BUSINESS = "EXTRA_BUSINESS";
+    public static final String EXTRA_BUSINESS = "EXTRA_BUSINESS";
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -34,16 +37,23 @@ public class BusinessActivity extends AppCompatActivity
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
 
-    @BindView(R.id.profile_toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.profile_textview_title)
-    TextView titleTV;
-    @BindView(R.id.profile_linearlayout_title)
-    LinearLayout titleContainer;
-    @BindView(R.id.profile_appbar)
-    AppBarLayout appBarLayout;
+    @BindView(R.id.toolbarTitle)
+    TextView toolbarTitle;
 
-    private Business business;
+    @BindView(R.id.businessNameTV)
+    TextView businessNameTV;
+    @BindView(R.id.businessTitleContainer)
+    LinearLayout titleContainer;
+    @BindView(R.id.profileAppBar)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.headerBackgroundImage)
+    ImageView headerImageView;
+    @BindView(R.id.businessCircleIV)
+    ImageView businessCircleIV;
+
+    Business businessData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,22 @@ public class BusinessActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         if (null != getSupportActionBar()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
         }
 
-        business = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_BUSINESS));
-
         appBarLayout.addOnOffsetChangedListener(this);
-        startAlphaAnimation(titleTV, 0, View.INVISIBLE);
+        startAlphaAnimation(toolbarTitle, 0, View.INVISIBLE);
+
+        businessData = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_BUSINESS));
+        setData();
+    }
+
+    private void setData() {
+        Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
+        Glide.with(this).load(businessData.getLogoURL()).into(businessCircleIV);
+
+        toolbarTitle.setText(businessData.getName());
+        businessNameTV.setText(businessData.getName());
     }
 
     @Override
@@ -112,14 +132,14 @@ public class BusinessActivity extends AppCompatActivity
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
             if (!mIsTheTitleVisible) {
-                startAlphaAnimation(titleTV, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                startAlphaAnimation(toolbarTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleVisible = true;
             }
 
         } else {
 
             if (mIsTheTitleVisible) {
-                startAlphaAnimation(titleTV, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                startAlphaAnimation(toolbarTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleVisible = false;
             }
         }
@@ -131,9 +151,7 @@ public class BusinessActivity extends AppCompatActivity
                 startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleContainerVisible = false;
             }
-
         } else {
-
             if (!mIsTheTitleContainerVisible) {
                 startAlphaAnimation(titleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleContainerVisible = true;

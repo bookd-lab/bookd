@@ -21,7 +21,8 @@ public class BusinessesClient {
         business.setAddress("Downtown 185 Park Ave San Jose, CA 95113");
         business.setPhone("Phone number (408) 372-4135");
         business.setDistance("5 miles");
-        business.setImageUrl("https://static1.squarespace.com/static/51ab58f4e4b0361e5f3ed294/51ab58f4e4b0361e5f3ed29a/51ab80bee4b0058e26cfcb1f/1370194240299/Benchmark_Restaurant_Dining_Room_Photographed_by_Evan_Sung.jpg");
+        business.setImageURL("https://static1.squarespace.com/static/51ab58f4e4b0361e5f3ed294/51ab58f4e4b0361e5f3ed29a/51ab80bee4b0058e26cfcb1f/1370194240299/Benchmark_Restaurant_Dining_Room_Photographed_by_Evan_Sung.jpg");
+        business.setLogoURL("https://static01.nyt.com/images/2013/03/11/business/smallbusiness/11valentine2/11valentine2-blog480.jpg");
         business.setPrice(2);
         business.setRating(2.6);
 

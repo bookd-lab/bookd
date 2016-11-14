@@ -10,13 +10,14 @@ import org.parceler.Parcel;
 @Parcel
 public class Business {
 
-    private String name;
-    private String address;
-    private String imageUrl;
-    private Double rating;
-    private int price;
-    private String phone;
-    private String distance;
+    String name;
+    String address;
+    String imageURL;
+    Double rating;
+    int price;
+    String phone;
+    String distance;
+    String logoURL;
 
     public Business() {
     }
@@ -37,12 +38,12 @@ public class Business {
         this.address = address;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public Double getRating() {
@@ -75,5 +76,13 @@ public class Business {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public String getLogoURL() {
+        return logoURL;
+    }
+
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
     }
 }

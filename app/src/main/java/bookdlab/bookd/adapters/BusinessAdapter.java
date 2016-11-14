@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import bookdlab.bookd.R;
@@ -42,10 +44,16 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
     @Override
     public void onBindViewHolder(BusinessItemViewHolder h, int position) {
         Glide.with(activity)
-                .load(businessList.get(position).getImageUrl())
+                .load(businessList.get(position).getImageURL())
                 .into(h.businessImage);
 
-        h.rootView.setOnClickListener((v -> activity.startActivity(new Intent(activity, BusinessActivity.class))));
+        h.rootView.setOnClickListener((v -> {
+
+            Intent intent = new Intent(activity, BusinessActivity.class);
+            intent.putExtra(BusinessActivity.EXTRA_BUSINESS, Parcels.wrap(businessList.get(position)));
+            activity.startActivity(intent);
+
+        }));
     }
 
     @Override
