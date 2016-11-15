@@ -6,15 +6,18 @@ package bookdlab.bookd.models;
 
 public class Review {
 
-    private String reviewTitle;
+    private String reviewerName;
     private String reviewerImgUrl; //change later to User.imageUrl?
+    private String reviewBody;
+    private String reviewDate;
+    private int starRating;
 
-    public String getReviewTitle() {
-        return reviewTitle;
+    public String getReviewerName() {
+        return reviewerName;
     }
 
-    public void setReviewTitle(String reviewTitle) {
-        this.reviewTitle = reviewTitle;
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
     }
 
     public String getReviewerImgUrl() {
@@ -41,7 +44,13 @@ public class Review {
         this.starRating = starRating;
     }
 
-    private String reviewBody;
-    private int starRating;
+    public String getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(String reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
 
 }

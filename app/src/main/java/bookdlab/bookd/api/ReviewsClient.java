@@ -12,16 +12,26 @@ import bookdlab.bookd.models.Review;
 public class ReviewsClient {
 
     //TODO: Mock data
-    public List<Review> getMyReviews() {
+    public List<Review> getReviews() {
 
         List<Review> reviewsList = new ArrayList<>();
 
-        reviewsList.add(genReview("#4286f4"));
+        reviewsList.add(genReview());
+        reviewsList.add(genReview());
+        reviewsList.add(genReview());
+        reviewsList.add(genReview());
+        reviewsList.add(genReview());
+
         return reviewsList;
     }
 
-    private Review genReview(String color) {
+    private Review genReview() {
         Review review = new Review();
+        review.setReviewBody("These guys are the best DJs. I would hire them again in a heartbeat!");
+        review.setReviewDate("July 2016");
+        review.setReviewerImgUrl("http://a1.files.biography.com/image/upload/c_fit,cs_srgb,dpr_1.0,h_1200,q_80,w_1200/MTE4MDAzNDEwNzQzMTY2NDc4.jpg");
+        review.setReviewerName("Will Smith");
+        review.setStarRating(4);
         return review;
     }
 }

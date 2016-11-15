@@ -53,7 +53,6 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
                         android:gravity="bottom|center"
-                        android:text="@string/bookd_name"
                         android:textColor="@android:color/white"
                         android:textSize="30sp"
                         tools:text="@string/bookd_name" />
@@ -64,9 +63,8 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="4dp"
-                        android:text="@string/bookd_tagline"
                         android:textColor="@android:color/white"
-                        tools:text="@string/bookd_tagline" />
+                        android:text="@string/bookd_tagline" />
 
                 </LinearLayout>
 
@@ -94,10 +92,9 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="@string/bookd_name"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                tools:text="@string/lorem" />
+                android:text="" />
 
         </LinearLayout>
 
@@ -141,9 +138,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="8dp"
-                    android:text="@string/lorem"
                     android:textSize="18sp"
-                    tools:text="@string/lorem" />
+                    android:text="@string/lorem" />
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -165,17 +161,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:cardElevation="8dp"
-                app:contentPadding="16dp">
+                app:cardElevation="0dp"
+                app:contentPadding="0dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="8dp"
-                    android:text="@string/lorem"
-                    android:textSize="18sp" />
-            </android.support.v7.widget.CardView>
+                    android:orientation="vertical">
 
+                <include layout="@layout/list_item_review"/>
+
+                <Button
+                    android:text="@string/show_more_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnShowReviews"
+                    android:elevation="0dp"
+                    style="style/Widget.Button.Borderless"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <FrameLayout
+                android:id="@+id/fragmentPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </FrameLayout>
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import bookdlab.bookd.R;
@@ -35,8 +37,16 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
-
+    public void onBindViewHolder(RecyclerView.ViewHolder rh, int position) {
+            ReviewItemViewHolder h = (ReviewItemViewHolder) rh;
+            Review review = reviewList.get(position);
+            h.reviewBody.setText(review.getReviewBody());
+            h.reviewDate.setText(review.getReviewDate());
+            h.reviewer.setText(review.getReviewerName());
+            h.ratingBar.setRating(review.getStarRating());
+            Glide.with(activity)
+                    .load(review.getReviewerImgUrl())
+                    .into(h.reviewerImage);
     }
 
     @Override

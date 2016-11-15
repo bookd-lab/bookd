@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Bookd</string>
-    <string name="coming_soon">be useful…</string>
+    <string name="coming_soon">Plan the perfect event</string>
     <string name="welcome">Welcome</string>
     <string name="browse">Browse</string>
     <string name="events">Events</string>
@@ -12,7 +12,7 @@
     <string name="search">Search</string>
     <string name="my_wedding">Wedding Reception</string>
     <string name="from_nov_5_to_nov_15_2016">Nov 5th to Nov 15th, 2016</string>
-    <string name="add_event_title">Give it some details</string>
+    <string name="add_event_title">Add some details</string>
 
 
     <string name="lorem">
@@ -21,15 +21,16 @@
     <string name="bookd_tagline">Custom cakes and pastries</string>
     <string name="favorite">Favorite</string>
     <string name="settings">Settings</string>
-    <string name="name_event">What is the party coming up?</string>
+    <string name="name_event">What name of the event?</string>
     <string name="save">Save</string>
-    <string name="create_your_party">Create your party</string>
+    <string name="create_your_party">Create Your Event</string>
     <string name="comments">Comments…</string>
-    <string name="event_starts">When it starts</string>
-    <string name="pick_date">Pick date</string>
-    <string name="event_ends">When it ends?</string>
-    <string name="search_hint">What up for party?</string>
+    <string name="event_starts">When does it start?</string>
+    <string name="pick_date">Pick a date</string>
+    <string name="event_ends">When does it end?</string>
+    <string name="search_hint">What do you need to book?</string>
 
+    <string name="show_more_reviews">Show More Reviews</string>
 
     <string name="name_your_event">Name your event</string>
     <string name="swipe_instruction">SWIPE LEFT</string>
@@ -41,6 +42,6 @@
     <string name="create_event_step_3_hint">DJs? Photographers? Caterers?</string>
     <string name="create_event_step_4">Sounds fun! Let\'s get booking!</string>
 
-    <string name="event_date">Set date</string>
+    <string name="event_date">Set Date</string>
 
 </resources>

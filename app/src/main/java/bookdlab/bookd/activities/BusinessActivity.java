@@ -3,12 +3,14 @@ package bookdlab.bookd.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,9 +21,11 @@ import org.parceler.Parcels;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
+import bookdlab.bookd.fragments.ReviewsFragment;
 import bookdlab.bookd.models.Business;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -56,6 +60,8 @@ public class BusinessActivity extends AppCompatActivity
     @BindView(R.id.businessCircleIV)
     ImageView businessCircleIV;
     @BindView(R.id.ivMapView) ImageView ivMapView;
+    @BindView(R.id.btnShowReviews)
+    Button showReviewsButton;
 
     Business businessData;
 
@@ -182,5 +188,16 @@ public class BusinessActivity extends AppCompatActivity
         alphaAnimation.setDuration(duration);
         alphaAnimation.setFillAfter(true);
         v.startAnimation(alphaAnimation);
+    }
+
+    @OnClick(R.id.btnShowReviews)
+    public void showMoreReviews(){
+        // Begin the transaction
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+// Replace the contents of the container with the new fragment
+        ft.replace(R.id.fragmentPlaceholder, new ReviewsFragment());
+// or ft.add(R.id.your_placeholder, new FooFragment());
+// Complete the changes added above
+        ft.commit();
     }
 }
