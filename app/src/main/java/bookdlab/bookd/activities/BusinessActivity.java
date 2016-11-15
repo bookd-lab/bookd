@@ -88,7 +88,7 @@ public class BusinessActivity extends AppCompatActivity
 
         //String address = businessData.getAddress();
         String address = "185 Park Avenue, San Jose, CA";
-        String mapUrl = "http://maps.google.com/maps/api/staticmap?center=\""+ address + "\"&zoom=15&size=600x300&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
+        String mapUrl = "https://maps.google.com/maps/api/staticmap?center=\""+ address + "\"&zoom=15&size=600x300&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
 
         Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
         Glide.with(this).load(businessData.getLogoURL()).into(businessCircleIV);
