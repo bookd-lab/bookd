@@ -4,6 +4,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+    </style>
+
+    <style name="AppTheme.Widget.TextView" parent="AppTheme.Widget.TextView">
+        <item name="fontPath">fonts/lineto-circular-pro-medium.ttf</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">

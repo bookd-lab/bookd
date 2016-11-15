@@ -1,5 +1,6 @@
 package bookdlab.bookd.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,12 @@ import com.bumptech.glide.Glide;
 
 import org.parceler.Parcels;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.models.Business;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by rubab.uddin on 11/12/2016.
@@ -52,6 +55,7 @@ public class BusinessActivity extends AppCompatActivity
     ImageView headerImageView;
     @BindView(R.id.businessCircleIV)
     ImageView businessCircleIV;
+    @BindView(R.id.ivMapView) ImageView ivMapView;
 
     Business businessData;
 
@@ -75,9 +79,20 @@ public class BusinessActivity extends AppCompatActivity
         setData();
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     private void setData() {
+
+        //String address = businessData.getAddress();
+        String address = "185 Park Avenue, San Jose, CA";
+        String mapUrl = "http://maps.google.com/maps/api/staticmap?center=\""+ address + "\"&zoom=15&size=600x300&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
+
         Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
         Glide.with(this).load(businessData.getLogoURL()).into(businessCircleIV);
+        Glide.with(this).load(mapUrl).into(ivMapView);
 
         toolbarTitle.setText(businessData.getName());
         businessNameTV.setText(businessData.getName());

@@ -3,6 +3,8 @@ package bookdlab.bookd;
 import android.app.Application;
 import android.content.Context;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 /**
  * Created by akhmedovi on 11/10/16.
  * Copyright - 2016
@@ -10,15 +12,17 @@ import android.content.Context;
 public class BookdApplication extends Application {
 
     private static Context mContext;
+    public final static String MAP_API_KEY = "AIzaSyCpTH0d_h-57BuI2f6UWaFe0aOsD1WDIq0";
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        //FontsOverride.setDefaultFont(this, "DEFAULT", "MyFontAsset.ttf");
-        //FontsOverride.setDefaultFont(this, "MONOSPACE", "lineto-circular-pro-medium.ttf");
-        //FontsOverride.setDefaultFont(this, "SERIF", "MyFontAsset3.ttf");
-        //FontsOverride.setDefaultFont(this, "SANS_SERIF", "MyFontAsset4.ttf");
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/lineto-circular-pro-medium.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     public static Context getContext() {
