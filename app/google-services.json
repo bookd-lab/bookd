@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "933703777705",
+    "firebase_url": "https://bookd-1b87f.firebaseio.com",
+    "project_id": "bookd-1b87f",
+    "storage_bucket": "bookd-1b87f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933703777705:android:5de3d347d9aa4ffe",
+        "android_client_info": {
+          "package_name": "bookdlab.bookd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "933703777705-rungfatgpqv0qr5b71npo42f3dftg4la.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bookdlab.bookd",
+            "certificate_hash": "FBCC281D645C4798A8A99A9307B1C9F98009106E"
+          }
+        },
+        {
+          "client_id": "933703777705-b955rnid2lkv3s17j62j4371o74qu2e3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqpPhogNuVczsAO3_kDKIwUpcpKOTeCD0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933703777705-b955rnid2lkv3s17j62j4371o74qu2e3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
