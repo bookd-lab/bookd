@@ -2,6 +2,8 @@ package bookdlab.bookd.models;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 /**
  * Created by akhmedovi on 11/12/16.
  * Copyright - 2016
@@ -10,16 +12,44 @@ import org.parceler.Parcel;
 @Parcel
 public class Business {
 
-    String name;
-    String address;
-    String imageURL;
-    Double rating;
+    String id;                  // Unique for business
+    String owner;               // Only the business owner can edit a business
+    String name;                // Visible name of the business
+    String about;               // Description of business
+    String address;             // Full address of business
+    String city;                // Internal only; Useful for querying
+    Double latitude;            // Internal only; Useful for querying
+    Double longitude;           // Internal only; Useful for querying
+    Double servingRadius;       // How long the performers are willing to travel
+    String imageURL;            // Backdrop URL
+    String businessURL;         // Any public business URL
+    Double rating;              // Rating. Needs to be updated upon review
+    Long reviewCount;           // Number of reviews
+    boolean instantBook;        // Optional: Instant book -> AirBnb style
+    ArrayList<String> tags;     // Tags for this business -> Food, Music etc.,
     int price;
-    String phone;
-    String distance;
-    String logoURL;
+    String phone;               // Contact info
+    String distance;            // ? This should be calculated per user upon their location
+    String logoURL;             // Logo for the business
+    //TODO: Add Social
 
     public Business() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getName() {
@@ -30,12 +60,52 @@ public class Business {
         this.name = name;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getServingRadius() {
+        return servingRadius;
+    }
+
+    public void setServingRadius(Double servingRadius) {
+        this.servingRadius = servingRadius;
     }
 
     public String getImageURL() {
@@ -46,12 +116,44 @@ public class Business {
         this.imageURL = imageURL;
     }
 
+    public String getBusinessURL() {
+        return businessURL;
+    }
+
+    public void setBusinessURL(String businessURL) {
+        this.businessURL = businessURL;
+    }
+
     public Double getRating() {
         return rating;
     }
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public Long getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Long reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public boolean isInstantBook() {
+        return instantBook;
+    }
+
+    public void setInstantBook(boolean instantBook) {
+        this.instantBook = instantBook;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public int getPrice() {

@@ -42,8 +42,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Review review = reviewList.get(position);
             h.reviewBody.setText(review.getReviewBody());
             h.reviewDate.setText(review.getReviewDate());
-            h.reviewer.setText(review.getReviewerName());
-            h.ratingBar.setRating(review.getStarRating());
+            h.reviewer.setText(review.getReviewerId());
+            h.ratingBar.setRating(review.getStarRating().floatValue());
             Glide.with(activity)
                     .load(review.getReviewerImgUrl())
                     .into(h.reviewerImage);

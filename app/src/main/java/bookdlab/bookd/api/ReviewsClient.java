@@ -30,8 +30,8 @@ public class ReviewsClient {
         review.setReviewBody("These guys are the best DJs. I would hire them again in a heartbeat!");
         review.setReviewDate("July 2016");
         review.setReviewerImgUrl("http://a1.files.biography.com/image/upload/c_fit,cs_srgb,dpr_1.0,h_1200,q_80,w_1200/MTE4MDAzNDEwNzQzMTY2NDc4.jpg");
-        review.setReviewerName("Will Smith");
-        review.setStarRating(4);
+        review.setReviewerId("Will Smith");
+        review.setStarRating(4.0);
         return review;
     }
 }

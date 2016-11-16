@@ -1,23 +1,47 @@
 package bookdlab.bookd.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by rubab.uddin on 11/14/2016.
  */
 
+@Parcel
 public class Review {
 
-    private String reviewerName;
-    private String reviewerImgUrl; //change later to User.imageUrl?
-    private String reviewBody;
-    private String reviewDate;
-    private int starRating;
+    String id;                      // Unique ID
+    String businessId;              // Which business is this created for
+    String reviewerId;              // User ID who created this. We can fetch user using this
+    String reviewerImgUrl;          // change later to User.imageUrl?
+    String reviewBody;              // Review itself
+    String reviewDate;              // When the review was created
+    Double starRating;              // Rating for the review
 
-    public String getReviewerName() {
-        return reviewerName;
+    public Review() {
     }
 
-    public void setReviewerName(String reviewerName) {
-        this.reviewerName = reviewerName;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getReviewerId() {
+        return reviewerId;
+    }
+
+    public void setReviewerId(String reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public String getReviewerImgUrl() {
@@ -36,14 +60,6 @@ public class Review {
         this.reviewBody = reviewBody;
     }
 
-    public int getStarRating() {
-        return starRating;
-    }
-
-    public void setStarRating(int starRating) {
-        this.starRating = starRating;
-    }
-
     public String getReviewDate() {
         return reviewDate;
     }
@@ -52,5 +68,11 @@ public class Review {
         this.reviewDate = reviewDate;
     }
 
+    public Double getStarRating() {
+        return starRating;
+    }
 
+    public void setStarRating(Double starRating) {
+        this.starRating = starRating;
+    }
 }
