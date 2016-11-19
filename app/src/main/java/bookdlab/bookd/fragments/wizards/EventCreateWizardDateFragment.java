@@ -1,7 +1,7 @@
-package bookdlab.bookd.fragments;
+package bookdlab.bookd.fragments.wizards;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +10,14 @@ import android.widget.TextView;
 import java.util.Date;
 
 import bookdlab.bookd.R;
+import butterknife.ButterKnife;
 
 /**
  * Created by rubab.uddin on 11/14/2016.
  */
 
-public class EventCreateWizardDateFragment extends Fragment{
+public class EventCreateWizardDateFragment extends AbstractEventWizardChild {
+
     // Store instance variables
     private String instruction;
     private String hint;
@@ -51,5 +53,11 @@ public class EventCreateWizardDateFragment extends Fragment{
         tvInstruction.setText(instruction);
         //handle answers here
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ButterKnife.bind(this, view);
+        super.onViewCreated(view, savedInstanceState);
     }
 }

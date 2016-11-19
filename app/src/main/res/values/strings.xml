@@ -43,5 +43,6 @@
     <string name="create_event_step_4">Sounds fun! Let\'s get booking!</string>
 
     <string name="event_date">Set Date</string>
+    <string name="back">Back</string>
 
 </resources>

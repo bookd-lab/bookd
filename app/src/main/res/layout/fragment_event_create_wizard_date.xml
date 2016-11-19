@@ -1,62 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:padding="16dp"
-                android:layout_alignParentTop="true"
-                android:lineSpacingMultiplier="1.2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvInstruction"
-                android:text="@string/create_event_step_1"
-                tools:text="@string/create_event_step_1"
-                android:textSize="@dimen/question_font"
-                />
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:lineSpacingMultiplier="1.2"
+        android:padding="16dp"
+        android:text="@string/create_event_step_1"
+        android:textSize="@dimen/question_font"
+        tools:text="@string/create_event_step_1" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvInstruction"
-                android:id="@+id/dateContainer">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_date"
-                    android:id="@+id/btnSetEventDate"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:gravity="center|center_vertical|start"
-                    android:paddingLeft="16sp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+    <RelativeLayout
+        android:id="@+id/dateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvInstruction">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="2016-01-01"
-                    android:id="@+id/tvStartDate"
-                    android:gravity="center|center_vertical"
-                    android:layout_alignBaseline="@+id/btnSetEventDate"
-                    android:layout_alignBottom="@+id/btnSetEventDate"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
+        <Button
+            android:id="@+id/btnSetEventDate"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center|center_vertical|start"
+            android:paddingLeft="16sp"
+            android:text="@string/event_date" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/tvSwipeNext"
-                android:text="@string/swipe_instruction"
-                tools:text="@string/swipe_instruction"
-                android:textSize="24sp"
-                android:layout_below="@id/dateContainer"
-                android:gravity="center_horizontal"/>
-        </RelativeLayout>
-</ScrollView>
+        <TextView
+            android:id="@+id/tvStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btnSetEventDate"
+            android:layout_alignBottom="@+id/btnSetEventDate"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center|center_vertical"
+            tools:text="2016-01-01" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/wizard_navigation" />
+
+</RelativeLayout>

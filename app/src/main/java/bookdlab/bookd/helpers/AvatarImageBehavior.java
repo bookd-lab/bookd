@@ -1,4 +1,4 @@
-package bookdlab.bookd.uihelpers;
+package bookdlab.bookd.helpers;
 
 import android.content.Context;
 import android.content.res.TypedArray;

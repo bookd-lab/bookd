@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/backButton"
+        style="@style/WizardButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableLeft="@drawable/left"
+        android:drawableStart="@drawable/left"
+        android:gravity="start|center_vertical"
+        android:text="@string/back" />
+
+    <Button
+        android:id="@+id/nextButton"
+        style="@style/WizardButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawableEnd="@drawable/right"
+        android:drawableRight="@drawable/right"
+        android:gravity="end|center_vertical"
+        android:text="@string/next" />
+
+</LinearLayout>
