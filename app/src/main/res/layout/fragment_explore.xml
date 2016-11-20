@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/searchEdt"
         android:layout_margin="5dp"
+        android:clickable="true"
         android:visibility="gone">
 
         <include layout="@layout/advanced_search" />
