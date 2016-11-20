@@ -16,8 +16,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.Constants;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.HomeTabsAdapter;
@@ -102,9 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "setupAuthStateListener: "+mUsersDatabaseReference.child(user.getUid()).getKey());
                 QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
                     @Override
-                    public void userIsPresent() {
+                    public void userIsPresent(User signedInUser) {
                         Log.d(TAG, "userIsPresent: User is present on database. Saving locally");
                         storeUserInfoLocally(user);
+                        BookdApplication.setCurrentUser(signedInUser);
                     }
 
                     @Override
@@ -113,12 +119,19 @@ public class MainActivity extends AppCompatActivity {
                         User signedInUser = new User();
                         signedInUser.setId(user.getUid());
                         signedInUser.setEmail(user.getDisplayName());
+
+                        DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
+                        String date = df.format(Calendar.getInstance().getTime());
+                        signedInUser.setMemberSince(date);
+
                         if(user.getPhotoUrl() != null){
                             signedInUser.setProfileImageURL(user.getPhotoUrl().toString());
                         }
 
                         mUsersDatabaseReference.push().setValue(signedInUser);
                         storeUserInfoLocally(user);
+
+                        BookdApplication.setCurrentUser(signedInUser);
                     }
                 });
                 Log.d(TAG, "setupAuthStateListener: showing splash screen");

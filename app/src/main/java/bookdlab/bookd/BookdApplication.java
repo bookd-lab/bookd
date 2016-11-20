@@ -3,6 +3,7 @@ package bookdlab.bookd;
 import android.app.Application;
 import android.content.Context;
 
+import bookdlab.bookd.models.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -13,6 +14,7 @@ public class BookdApplication extends Application {
 
     private static Context mContext;
     public final static String MAP_API_KEY = "AIzaSyCpTH0d_h-57BuI2f6UWaFe0aOsD1WDIq0";
+    private static User currentUser;
 
     @Override
     public void onCreate() {
@@ -27,5 +29,13 @@ public class BookdApplication extends Application {
 
     public static Context getContext() {
         return mContext;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        BookdApplication.currentUser = currentUser;
     }
 }
