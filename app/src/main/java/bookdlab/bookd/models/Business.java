@@ -23,7 +23,7 @@ public class Business {
     Double servingRadius;       // How long the performers are willing to travel
     String imageURL;            // Backdrop URL
     String businessURL;         // Any public business URL
-    Double rating;              // Rating. Needs to be updated upon review
+    double rating;              // Rating. Needs to be updated upon review
     Long reviewCount;           // Number of reviews
     boolean instantBook;        // Optional: Instant book -> AirBnb style
     ArrayList<String> tags;     // Tags for this business -> Food, Music etc.,
@@ -124,7 +124,7 @@ public class Business {
         this.businessURL = businessURL;
     }
 
-    public Double getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -186,6 +186,14 @@ public class Business {
 
     public void setLogoURL(String logoURL) {
         this.logoURL = logoURL;
+    }
+
+    public String formPriceLabel() {
+        String priceLabel = "";
+        for (int i = 0; i < getPrice(); i++) {
+            priceLabel += "$";
+        }
+        return priceLabel;
     }
 
     @Override

@@ -26,7 +26,7 @@
     </style>
 
     <style name="WizardButton" parent="Base.TextAppearance.AppCompat.Button">
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@drawable/wizard_button_bg</item>
     </style>
 
 </resources>

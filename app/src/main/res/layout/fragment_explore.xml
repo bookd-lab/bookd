@@ -1,68 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimaryDark">
 
     <bookdlab.bookd.ui.SearchEditText
         android:id="@+id/searchEdt"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:paddingStart="5dp"
-        android:paddingRight="5dp"
-        android:paddingEnd="5dp"
+        android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:background="@drawable/search_view_background"/>
+        android:background="@drawable/search_view_background"
+        android:paddingEnd="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingStart="5dp" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:indicatorName="BallScaleRippleMultipleIndicator" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/businessRV"
-        android:layout_below="@id/searchEdt"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <RelativeLayout
-        android:id="@+id/advancedSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/searchEdt"
-        android:alpha="0.5"
-        android:background="@color/white"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:scrollbars="vertical"
+        android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/filter1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/advanced_search" />
+    <ScrollView
+        android:id="@+id/advancedSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchEdt"
+        android:layout_margin="5dp"
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/filter2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/filter1"
-            android:layout_margin="10dp"
-            android:text="@string/advanced_search" />
-
-        <TextView
-            android:id="@+id/filter3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/filter2"
-            android:layout_margin="10dp"
-            android:text="@string/advanced_search" />
-
-        <Button
-            style="@style/WizardButton"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:text="@string/search" />
-
-    </RelativeLayout>
+        <include layout="@layout/advanced_search" />
+    </ScrollView>
 
 </RelativeLayout>

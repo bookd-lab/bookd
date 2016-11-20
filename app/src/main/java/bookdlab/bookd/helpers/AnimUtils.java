@@ -13,27 +13,25 @@ public class AnimUtils {
     static final int DEFAULT_ANIM_DURATION = 500;
 
     public static void fadeIn(View view) {
+        view.setAlpha(0);
+        view.setVisibility(View.VISIBLE);
+
         view.animate().alpha(1).setDuration(DEFAULT_ANIM_DURATION)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        view.setAlpha(0);
-                        view.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-
                     }
 
                     @Override
                     public void onAnimationRepeat(Animator animation) {
-
                     }
                 })
                 .start();

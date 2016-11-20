@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/advanced_search_bg"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/priceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/priceLabel" />
+
+    <SeekBar
+        android:id="@+id/priceSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/priceLabel" />
+
+    <TextView
+        android:id="@+id/ratingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/priceSeekBar"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/ratingLabel" />
+
+    <SeekBar
+        android:id="@+id/ratingSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/ratingLabel" />
+
+    <TextView
+        android:id="@+id/sortLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ratingSeekBar"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/sort" />
+
+    <RadioGroup
+        android:id="@+id/sortBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sortLabel">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/ratingLabel" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priceLabel" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/distance" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/searchButton"
+        style="@style/WizardButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_below="@id/sortBy"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/search" />
+
+</RelativeLayout>

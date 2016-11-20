@@ -1,16 +1,12 @@
 package bookdlab.bookd.ui;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,14 +40,15 @@ public class SearchEditText extends RelativeLayout {
     }
 
     private void init(Context context) {
-        LayoutParams searchEdtParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        LayoutParams searchEdtParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         searchEdtParams.addRule(CENTER_VERTICAL);
 
         searchEdt = new EditText(context);
         searchEdt.setLayoutParams(searchEdtParams);
-        searchEdt.setHint(getQueryHint(context));
+        searchEdt.setHint(UIUtils.embedImage(context, getResources().getString(R.string.query_hint), R.drawable.search, 0.9));
         searchEdt.setGravity(CENTER_VERTICAL);
-        searchEdt.setPadding(0, 10, 0, 0);
+        searchEdt.setSingleLine();
+        searchEdt.setPadding(0, 0, 0, 0);
         searchEdt.setBackgroundResource(R.color.transparent);
 
         LayoutParams buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -91,12 +88,8 @@ public class SearchEditText extends RelativeLayout {
         cancelButton.setOnClickListener((v -> searchEdt.setText("")));
     }
 
-    private CharSequence getQueryHint(Context context) {
-        Drawable image = ContextCompat.getDrawable(context, R.drawable.search);
-        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-        SpannableString sb = new SpannableString(" " + getResources().getString(R.string.query_hint));
-        ImageSpan imageSpan = new ImageSpan(image, ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return sb;
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        searchEdt.setOnClickListener(l);
     }
 }
