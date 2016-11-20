@@ -36,6 +36,28 @@ public class Business {
     public Business() {
     }
 
+    public Business(String id, String owner, String name, String about, String address, String city, Double latitude, Double longitude, Double servingRadius, String imageURL, String businessURL, double rating, Long reviewCount, boolean instantBook, ArrayList<String> tags, int price, String phone, String distance, String logoURL) {
+        this.id = id;
+        this.owner = owner;
+        this.name = name;
+        this.about = about;
+        this.address = address;
+        this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.servingRadius = servingRadius;
+        this.imageURL = imageURL;
+        this.businessURL = businessURL;
+        this.rating = rating;
+        this.reviewCount = reviewCount;
+        this.instantBook = instantBook;
+        this.tags = tags;
+        this.price = price;
+        this.phone = phone;
+        this.distance = distance;
+        this.logoURL = logoURL;
+    }
+
     public String getId() {
         return id;
     }
