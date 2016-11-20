@@ -5,16 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:titleTextColor="@color/white" />
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -32,6 +24,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@drawable/shade_up_bg"
-        android:layout_above="@id/tabLayout"/>
+        android:layout_above="@id/tabLayout"
+        android:background="@drawable/shade_up_bg" />
+
 </RelativeLayout>

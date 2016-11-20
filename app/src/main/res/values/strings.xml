@@ -44,5 +44,6 @@
 
     <string name="event_date">Set Date</string>
     <string name="back">Back</string>
+    <string name="advanced_search">Advanced Search</string>
 
 </resources>

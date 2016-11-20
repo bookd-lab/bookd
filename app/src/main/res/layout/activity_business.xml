@@ -109,7 +109,7 @@
         app:border_width="2dp"
         app:finalHeight="36dp"
         app:finalYPosition="2dp"
-        app:layout_behavior="bookdlab.bookd.uihelpers.AvatarImageBehavior"
+        app:layout_behavior="bookdlab.bookd.helpers.AvatarImageBehavior"
         app:startHeight="2dp"
         app:startToolbarPosition="2dp"
         app:startXPosition="2dp"

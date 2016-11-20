@@ -1,13 +1,21 @@
 package bookdlab.bookd.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +23,9 @@ import java.util.List;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.api.BusinessesClient;
+import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.models.Business;
+import bookdlab.bookd.ui.SearchEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,6 +40,10 @@ public class ExploreFragment extends Fragment {
 
     @BindView(R.id.businessRV)
     RecyclerView recyclerView;
+    @BindView(R.id.searchEdt)
+    SearchEditText searchEdt;
+    @BindView(R.id.advancedSearch)
+    RelativeLayout advancedSearch;
 
     //TODO: inject properly
     BusinessesClient businessesClient = new BusinessesClient();
@@ -70,4 +84,6 @@ public class ExploreFragment extends Fragment {
         businessList.addAll(res);
         businessAdapter.notifyDataSetChanged();
     }
+
+
 }

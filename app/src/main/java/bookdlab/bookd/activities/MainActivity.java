@@ -3,13 +3,9 @@ package bookdlab.bookd.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -28,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -44,28 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        // Setup Firebase
+        // Setup FireBase
         mFirebaseAuth = FirebaseAuth.getInstance();
         setupAuthStateListener();
 
-        setSupportActionBar(toolbar);
-        if(null != getSupportActionBar()) {
-            getSupportActionBar().setTitle(R.string.app_name);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-
         viewPager.setAdapter(new HomeTabsAdapter(this, getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setQueryHint(getResources().getString(R.string.search_hint));
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -77,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(mAuthStateListener != null){
+        if (mAuthStateListener != null) {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
     }
@@ -85,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult: ");
-        if(requestCode == RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             Log.d(TAG, "onActivityResult: RC_SIGN_IN");
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 Log.d(TAG, "onActivityResult: Result is okay");
                 Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
-            } else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "onActivityResult: Result is cancelled");
                 Toast.makeText(this, "Signing cancelled", Toast.LENGTH_LONG).show();
                 finish();
