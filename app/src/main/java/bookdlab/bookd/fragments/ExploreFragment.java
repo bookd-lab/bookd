@@ -45,9 +45,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @BindView(R.id.businessRV)
     RecyclerView recyclerView;
 
-    //TODO: inject properly
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
     private static final String TAG = "ExploreFragment";
 
     @Override
@@ -104,11 +102,11 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             Geocoder geo = new Geocoder(this.getActivity().getApplicationContext(), Locale.getDefault());
             try {
-                List<Address> addresses = geo.getFromLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude(), 1);
+                List<Address> addresses = geo.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1);
                 for(Address address : addresses){
                     Log.d(TAG, "onConnected: address is: "+address.getLocality());
                     queryBusinesses(address.getLocality());
