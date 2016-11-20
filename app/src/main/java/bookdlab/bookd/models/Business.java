@@ -187,4 +187,28 @@ public class Business {
     public void setLogoURL(String logoURL) {
         this.logoURL = logoURL;
     }
+
+    @Override
+    public String toString() {
+        return "Business{" +
+                "id='" + id + '\'' +
+                ", owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
+                ", about='" + about + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", servingRadius=" + servingRadius +
+                ", imageURL='" + imageURL + '\'' +
+                ", businessURL='" + businessURL + '\'' +
+                ", rating=" + rating +
+                ", reviewCount=" + reviewCount +
+                ", instantBook=" + instantBook +
+                ", price=" + price +
+                ", phone='" + phone + '\'' +
+                ", distance='" + distance + '\'' +
+                ", logoURL='" + logoURL + '\'' +
+                '}';
+    }
 }

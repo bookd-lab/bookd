@@ -1,6 +1,8 @@
 package bookdlab.bookd.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -14,11 +16,18 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
+import bookdlab.bookd.Constants;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.HomeTabsAdapter;
+import bookdlab.bookd.database.QueryHelper;
+import bookdlab.bookd.interfaces.UserCheckCallback;
+import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase mDatabase;
+
+    private DatabaseReference mUsersDatabaseReference;
+
     private static final int RC_SIGN_IN = 1001;
 
     private static final String TAG = "MainActivity";
@@ -102,8 +115,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupAuthStateListener() {
         Log.d(TAG, "setupAuthStateListener: ");
+        mDatabase = FirebaseDatabase.getInstance();
+        mUsersDatabaseReference = mDatabase.getReference().child("users");
+
         mAuthStateListener = firebaseAuth -> {
-            if (firebaseAuth.getCurrentUser() != null) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Log.d(TAG, "setupAuthStateListener: "+mUsersDatabaseReference.child(user.getUid()).getKey());
+                QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
+                    @Override
+                    public void userIsPresent() {
+                        Log.d(TAG, "userIsPresent: User is present on database. Saving locally");
+                        storeUserInfoLocally(user);
+                    }
+
+                    @Override
+                    public void userIsNotPresent() {
+                        Log.d(TAG, "userIsNotPresent: User is not present in database. Create entry");
+                        User signedInUser = new User();
+                        signedInUser.setId(user.getUid());
+                        signedInUser.setEmail(user.getDisplayName());
+                        if(user.getPhotoUrl() != null){
+                            signedInUser.setProfileImageURL(user.getPhotoUrl().toString());
+                        }
+
+                        mUsersDatabaseReference.push().setValue(signedInUser);
+                        storeUserInfoLocally(user);
+                    }
+                });
                 Log.d(TAG, "setupAuthStateListener: showing splash screen");
             } else {
                 Log.d(TAG, "setupAuthStateListener: starting firebase auth ui");
@@ -116,5 +155,12 @@ public class MainActivity extends AppCompatActivity {
                         .build(), RC_SIGN_IN);
             }
         };
+    }
+
+    private void storeUserInfoLocally(FirebaseUser user) {
+        SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.EXTRA_USER_ID, user.getUid());
+        editor.apply();
     }
 }
