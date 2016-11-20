@@ -75,4 +75,17 @@ public class Review {
     public void setStarRating(Double starRating) {
         this.starRating = starRating;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id='" + id + '\'' +
+                ", businessId='" + businessId + '\'' +
+                ", reviewerId='" + reviewerId + '\'' +
+                ", reviewerImgUrl='" + reviewerImgUrl + '\'' +
+                ", reviewBody='" + reviewBody + '\'' +
+                ", reviewDate='" + reviewDate + '\'' +
+                ", starRating=" + starRating +
+                '}';
+    }
 }

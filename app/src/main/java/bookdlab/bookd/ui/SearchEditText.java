@@ -53,7 +53,6 @@ public class SearchEditText extends RelativeLayout {
         searchEdt.setGravity(CENTER_VERTICAL);
         searchEdt.setPadding(0, 10, 0, 0);
         searchEdt.setBackgroundResource(R.color.transparent);
-        searchEdt.setText();
 
         LayoutParams buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         buttonParams.addRule(CENTER_VERTICAL, getId());

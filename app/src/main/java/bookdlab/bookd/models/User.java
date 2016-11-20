@@ -11,6 +11,7 @@ public class User {
 
     String id;                          // Unique ID
     String username;                    // Name
+    String email;
     String profileImageURL;             // Profile Image
 
     String city;                        // Internal only; Easier for DB queries
@@ -41,6 +42,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getProfileImageURL() {
