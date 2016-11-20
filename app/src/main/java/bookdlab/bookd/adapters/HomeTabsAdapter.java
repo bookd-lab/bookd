@@ -11,8 +11,9 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import bookdlab.bookd.R;
-import bookdlab.bookd.fragments.ExploreFragment;
 import bookdlab.bookd.fragments.EventsFragment;
+import bookdlab.bookd.fragments.ExploreFragment;
+import bookdlab.bookd.fragments.UserFragment;
 
 /**
  * Created by akhmedovi on 11/10/16.
@@ -21,7 +22,7 @@ import bookdlab.bookd.fragments.EventsFragment;
 
 public class HomeTabsAdapter extends FragmentPagerAdapter {
 
-    private Integer tabImages[] = new Integer[]{R.drawable.explore, R.drawable.event};
+    private Integer tabImages[] = new Integer[]{R.drawable.explore, R.drawable.event, R.drawable.account};
     private Context context;
 
     public HomeTabsAdapter(Context context, FragmentManager fragmentManager) {
@@ -37,6 +38,8 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
                 return ExploreFragment.newInstance();
             case 1:
                 return EventsFragment.newInstance();
+            case 2:
+                return UserFragment.newInstance();
         }
 
         return null;

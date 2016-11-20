@@ -56,4 +56,8 @@
         <item>Price</item>
     </string-array>
 
+    <string name="user_location">Location</string>
+    <string name="user_about">About</string>
+    <string name="user_phonenumber">Phone Number</string>
+
 </resources>

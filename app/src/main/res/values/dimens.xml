@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="image_width">120dp</dimen>
+    <dimen name="image_icon_width">80dp</dimen>
     <dimen name="image_final_width">32dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
 
@@ -11,6 +12,12 @@
 
     <dimen name="question_font">50sp</dimen>
     <dimen name="answer_font">20sp</dimen>
+
+    <dimen name="size_display">34sp</dimen>
+    <dimen name="size_headline">24sp</dimen>
+    <dimen name="size_title">20sp</dimen>
+    <dimen name="size_subheading">16sp</dimen>
+    <dimen name="size_body">14sp</dimen>
 
 
 </resources>

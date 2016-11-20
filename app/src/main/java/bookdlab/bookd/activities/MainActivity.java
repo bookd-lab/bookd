@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Signed in", Toast.LENGTH_LONG).show();
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "onActivityResult: Result is cancelled");
-                Toast.makeText(this, "Signing cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Sign in cancelled", Toast.LENGTH_LONG).show();
                 finish();
             }
         } else {
