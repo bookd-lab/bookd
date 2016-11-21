@@ -1,30 +1,35 @@
 package bookdlab.bookd.fragments;
 
+import android.app.Service;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by rubab.uddin on 11/19/2016.
  */
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment{
 
     @BindView(R.id.tvUsername) TextView tvUsername;
     @BindView(R.id.tvMemberSince) TextView tvMemberSince;
@@ -43,14 +48,15 @@ public class UserFragment extends Fragment {
     @BindView(R.id.tvPhoneNumber) TextView tvPhoneNumber;
     @BindView(R.id.etPhoneNumber) EditText etPhoneNumber;
 
-    FirebaseUser fUser;
-    User user = new User(); //get the actual logged in user
+    User user = BookdApplication.getCurrentUser(); //get the actual logged in user
+    Context mContext;
+    InputMethodManager imm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        mContext = this.getContext();
+        imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
     }
 
     public static UserFragment newInstance() {
@@ -69,7 +75,7 @@ public class UserFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         tvUsername.setText(user.getUsername());
-        tvMemberSince.setText(user.getPhoneNumber());
+        tvMemberSince.setText(user.getMemberSince());
         tvEmail.setText(user.getEmail());
         Glide.with(this).load(user.getProfileImageURL()).into(ivUserProfileImage);
         tvAbout.setText(user.getAbout());
@@ -85,42 +91,50 @@ public class UserFragment extends Fragment {
 
     }
 
-    public void AboutClicked() {
-        vsAbout.showNext();
-        etAbout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String newAbout = etAbout.getText().toString();
-                user.setAbout(newAbout);
-                tvAbout.setText(newAbout);
-                vsAbout.showPrevious();
-            }
-        });
+    @OnClick(R.id.vsAbout)
+    public void AboutClicked(View v) {
+        GenericViewSwitcher(vsAbout, etAbout, tvAbout);
     }
 
-    public void LocationClicked() {
-        vsLocation.showNext();
-        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String newLocation = etLocation.getText().toString();
-                user.setAddress(newLocation);
-                tvLocation.setText(newLocation);
-                vsLocation.showPrevious();
-            }
-        });
+    public void GenericViewSwitcher(ViewSwitcher vs, EditText et, TextView tv){
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        vs.showNext();
+        if(et.getVisibility() == View.VISIBLE){
+            et.setText(tv.getText().toString());
+            imm.showSoftInput(et, 0);
+            et.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String newField = et.getText().toString();
+
+                    if(et.getId() == R.id.etAbout)
+                        user.setAbout(newField);
+                    else if(et.getId() == R.id.etLocation)
+                        user.setAddress(newField);
+                    else if(et.getId() == R.id.etPhoneNumber)
+                        user.setPhoneNumber(newField);
+
+                    tv.setText(newField);
+                }
+            });
+        }
     }
 
-    public void PhoneNumberClicked() {
-        vsPhoneNumber.showNext();
-        etPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String newPhoneNumber = etPhoneNumber.getText().toString();
-                user.setPhoneNumber(newPhoneNumber);
-                tvPhoneNumber.setText(newPhoneNumber);
-                vsPhoneNumber.showPrevious();
-            }
-        });
+    @OnClick(R.id.tvLocation)
+    public void LocationClicked(View v) {
+        GenericViewSwitcher(vsLocation, etLocation, tvLocation);
+    }
+
+    @OnClick(R.id.tvPhoneNumber)
+    public void PhoneNumberClicked(View v) {
+        GenericViewSwitcher(vsPhoneNumber, etPhoneNumber, tvPhoneNumber);
     }
 }
