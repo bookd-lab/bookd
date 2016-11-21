@@ -1,7 +1,6 @@
 package bookdlab.bookd.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.EventsAdapter;
 import bookdlab.bookd.api.EventsClient;
+import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.models.Event;
+import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +37,7 @@ public class EventListFragment extends Fragment{
     private List<Event> eventList;
 
     private EventsClient eventsClient = new EventsClient();
+    private User mCurrentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,11 +68,31 @@ public class EventListFragment extends Fragment{
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            mCurrentUser = BookdApplication.getCurrentUser();
+            getEvents();
+        }
+    }
 
-        List<Event> myEvents = eventsClient.getMyEvents();
-        eventList.addAll(myEvents);
-        eventsAdapter.notifyDataSetChanged();
+    public void getEvents(){
+        Queries queries = new Queries();
+        queries.getEventsOfUser(mCurrentUser.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                eventList.clear();
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    Event event = child.getValue(Event.class);
+                    eventList.add(event);
+                }
+                eventsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

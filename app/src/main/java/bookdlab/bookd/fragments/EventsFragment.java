@@ -1,7 +1,6 @@
 package bookdlab.bookd.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +26,6 @@ import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 /**
  * Created by akhmedovi on 11/10/16.
  * Copyright - 2016
@@ -41,14 +38,14 @@ public class EventsFragment extends Fragment {
     private EventsAdapter eventsAdapter;
     private List<Event> eventList;
 
-    User currentUser = BookdApplication.getCurrentUser(); //get the actual logged in user
+    User currentUser;
 
+    private static final String TAG = "EventsFragment";
     //TODO: inject this properly
     private EventsClient eventsClient = new EventsClient();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -76,26 +73,35 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            Log.d(TAG, "setUserVisibleHint: "+isVisible());
+            currentUser = BookdApplication.getCurrentUser();
+            Log.d(TAG, "setUserVisibleHint: "+currentUser);
+            updateEventsOfUser();
+        } else {
+            Log.d(TAG, "setUserVisibleHint: invisible");
+        }
+    }
+
+    private void updateEventsOfUser(){
         if (currentUser != null) {
             new Queries().getEventsOfUser(currentUser.getId()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                    if(children.iterator().hasNext()){
-                        for(DataSnapshot child : children) {
+                    if (!children.iterator().hasNext()) {
+                        recyclerView.setVisibility(View.GONE);
+                    } else {
+                        eventList.clear();
+                        recyclerView.setVisibility(View.VISIBLE);
+                        for (DataSnapshot child : children) {
                             Event event = child.getValue(Event.class);
                             eventList.add(event);
                         }
                         eventsAdapter.notifyDataSetChanged();
-                        recyclerView.setVisibility(View.VISIBLE);
-                    } else {
-                        Log.d(TAG, "No more businesses found for user id " + currentUser.getId());
-                        recyclerView.setVisibility(View.GONE);
-                        //noEventsYet.setVisibility(View.VISIBLE);
                     }
-
                 }
 
                 @Override
@@ -104,14 +110,5 @@ public class EventsFragment extends Fragment {
                 }
             });
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        List<Event> myEvents = eventsClient.getMyEvents();
-        eventList.addAll(myEvents);
-        eventsAdapter.notifyDataSetChanged();
     }
 }

@@ -19,7 +19,7 @@ public class Event {
     Long endDate;           // End date for the event
     String backgroundURL;   // Optional: If we want to show a background URL
     String dates;           // ? Do we need this?
-    String color;
+    String color = "#4286f4";
 
 
 

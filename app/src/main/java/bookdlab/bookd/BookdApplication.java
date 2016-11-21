@@ -2,6 +2,7 @@ package bookdlab.bookd;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -17,6 +18,7 @@ public class BookdApplication extends Application {
     private static Context mContext;
     public final static String MAP_API_KEY = "AIzaSyCpTH0d_h-57BuI2f6UWaFe0aOsD1WDIq0";
     private static User currentUser;
+    private static final String TAG = "BookdApplication";
 
     @Override
     public void onCreate() {
@@ -39,6 +41,7 @@ public class BookdApplication extends Application {
     }
 
     public static void setCurrentUser(User currentUser) {
+        Log.d(TAG, "setCurrentUser: "+currentUser);
         BookdApplication.currentUser = currentUser;
         updateUserInfo(currentUser);
     }

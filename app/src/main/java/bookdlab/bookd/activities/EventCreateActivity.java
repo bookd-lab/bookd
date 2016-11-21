@@ -83,6 +83,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         ArrayList<BookedBusiness> bookedBusinessArrayList = new ArrayList<>();
         createEvent(event, bookedBusinessArrayList);
         updateEvent(event, bookedBusinessArrayList);
+        finish();
     }
 
     private void createEvent(Event event, ArrayList<BookedBusiness> bookedBusinesses){
