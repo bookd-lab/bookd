@@ -82,6 +82,7 @@
         android:layout_marginBottom="@dimen/spacing_normal"
         android:id="@+id/containerTags"
         android:clickable="true">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,15 +94,15 @@
             android:layout_marginLeft="@dimen/spacing_normal"
             android:text="@string/tags"/>
 
-        <TextView
-            android:layout_height="wrap_content"
+        <com.greenfrvr.hashtagview.HashtagView
             android:layout_width="wrap_content"
-            android:id="@+id/tvTags"
+            android:layout_height="wrap_content"
+            android:id="@+id/hashTVTags"
             android:textColor="@color/secondaryText"
             android:textSize="@dimen/size_subheading"
             android:paddingLeft="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
-            tools:text="DJs, Photographers, Caterers" />
+            tools:text="DJs, Photographers, Caterers"/>
 
     </LinearLayout>
 

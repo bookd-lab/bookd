@@ -8,15 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.greenfrvr.hashtagview.HashtagView;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import bookdlab.bookd.R;
@@ -37,21 +37,17 @@ public class EventActivity extends AppCompatActivity {
     TextView tvEventName;
     @BindView(R.id.tvDate)
     TextView tvDate;
-    @BindView(R.id.tvTags)
-    TextView tvTags;
+    //@BindView(R.id.tvTags) TextView tvTags;
     @BindView(R.id.bookingsRV)
     RecyclerView bookingsRV;
     @BindView(R.id.noBookingsYet)
     TextView noBookingsYet;
+    @BindView(R.id.hashTVTags)
+    HashtagView hashTVTags;
 
     Event eventData;
     private List<Business> bookingsList;
     private BusinessAdapter businessAdapter;
-
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mUsersDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +56,13 @@ public class EventActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        // Setup FireBase
-        mDatabase = FirebaseDatabase.getInstance();
+        bookingsList = new ArrayList<>();
+        businessAdapter = new BusinessAdapter(this, bookingsList);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        bookingsRV.setLayoutManager(layoutManager);
+        bookingsRV.setAdapter(businessAdapter);
+
 
         eventData = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_EVENT));
 
@@ -75,6 +76,7 @@ public class EventActivity extends AppCompatActivity {
                         bookingsList.add(business);
                     }
                     businessAdapter.notifyDataSetChanged();
+                    bookingsRV.setVisibility(View.VISIBLE);
                 } else {
                     Log.d(TAG, "No more businesses found for event id " + eventData.getId());
                     bookingsRV.setVisibility(View.GONE);
@@ -94,19 +96,22 @@ public class EventActivity extends AppCompatActivity {
     private void initData(){
         tvEventName.setText(eventData.getName());
         tvDate.setText(eventData.getDates());
-
         String [] eventTags = eventData.getTags();
-        String formattedTags = "";
+
+        //List<String> data = Arrays.asList("DJs", "Photographers", "Caterers");
+        if(eventTags != null){
+            List<String> eventTagsList = Arrays.asList(eventTags);
+            hashTVTags.setData(eventTagsList);
+        }
+        /*String formattedTags = "";
         if(eventTags != null){
             for(int i= 0; i<eventTags.length; i++){
                 formattedTags = formattedTags + eventTags[1] + ", ";
             }
         }
         tvTags.setText(formattedTags);
+        */
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        bookingsRV.setLayoutManager(layoutManager);
-        bookingsRV.setAdapter(businessAdapter);
         //loadingIndicatorView.show();
     }
 

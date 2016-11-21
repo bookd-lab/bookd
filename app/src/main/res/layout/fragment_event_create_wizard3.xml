@@ -23,12 +23,22 @@
             android:id="@+id/tagsEdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/secondaryText"
             android:layout_below="@id/tvInstruction"
             android:hint="@string/create_event_step_3_hint"
             android:lineSpacingMultiplier="1.2"
             android:padding="16dp"
             android:textSize="@dimen/answer_font"
-            tools:hint="@string/create_event_step_3_hint" />
+            tools:hint="@string/create_event_step_3_hint"
+            android:imeOptions="actionDone" />
+
+        <com.greenfrvr.hashtagview.HashtagView
+            android:id="@+id/htvTags"
+            android:padding="@dimen/spacing_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tagsEdt"/>
+
 
         <include layout="@layout/wizard_navigation" />
 
