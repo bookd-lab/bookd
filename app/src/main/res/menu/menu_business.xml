@@ -4,8 +4,8 @@
     tools:context=".BookdProfileActivity">
 
     <item
-        android:id="@+id/menu_watch"
-        android:icon="@drawable/button_add_watch"
+        android:id="@+id/menu_add"
+        android:icon="@drawable/add"
         android:title="@string/favorite"
         app:showAsAction="ifRoom" />
 

@@ -29,9 +29,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
     public static final String EVENT_EXTRA = "EVENT_EXTRA";
 
     private FragmentPagerAdapter adapterViewPager;
-
     private Event event;
-
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
@@ -64,6 +62,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
             viewPager.setCurrentItem(nextPos);
         } else {
             saveAndFinish();
+            adapterViewPager.notifyDataSetChanged();
         }
     }
 
@@ -81,27 +80,9 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
     }
 
     private void saveAndFinish() {
-        //TODO: aggregate all the data. This is sample. Replace this with correct data
-        event.setName("Test event");
-
-        // Make each business as a BookedBusiness object
         ArrayList<BookedBusiness> bookedBusinessArrayList = new ArrayList<>();
-
-        BookedBusiness bookedBusiness = new BookedBusiness();
-        bookedBusiness.setBusinessId("124");
-        bookedBusiness.setCategory("food");
-        bookedBusinessArrayList.add(bookedBusiness);
-
-        BookedBusiness business2 = new BookedBusiness();
-        business2.setBusinessId("345");
-        business2.setCategory("DJ");
-        bookedBusinessArrayList.add(business2);
-
-        // Call create event if user is creating an event for first time
         createEvent(event, bookedBusinessArrayList);
-
-        // Call update event if user is updating the event
-        // updateEvent(newEvent, bookedBusinessArrayList);
+        updateEvent(event, bookedBusinessArrayList);
     }
 
     private void createEvent(Event event, ArrayList<BookedBusiness> bookedBusinesses){
@@ -112,7 +93,6 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         event.setId(eventId);
         event.setCreator(BookdApplication.getCurrentUser().getId());
         eventReference.setValue(event);
-
         createBookedBusinesses(event, bookedBusinesses);
     }
 

@@ -30,13 +30,13 @@ import org.parceler.Parcels;
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.database.Queries;
+import bookdlab.bookd.fragments.EventListFragment;
 import bookdlab.bookd.fragments.ReviewsFragment;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Review;
 import bookdlab.bookd.views.ReviewItemViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -138,7 +138,14 @@ public class BusinessActivity extends AppCompatActivity
                 onBackPressed();
                 break;
             }
-            case R.id.menu_watch: {
+            case R.id.menu_add:{
+                //TODO: Display fragment with list of in-progress events, on selection add Business to Event
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.add(EventListFragment.newInstance(), null);
+                ft.commit();
+                return true;
+            }
+            /*case R.id.menu_watch: {
                 if (item.getItemId() == R.drawable.button_add_watch) {
                     item.setIcon(R.drawable.button_remove_watch);
                     addToEventWatchList();
@@ -149,7 +156,7 @@ public class BusinessActivity extends AppCompatActivity
                     return true;
                 }
                 break;
-            }
+            }*/
             case R.id.menu_call: {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + businessData.getPhone()));
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -162,6 +169,7 @@ public class BusinessActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public static void addToEventWatchList() {
 

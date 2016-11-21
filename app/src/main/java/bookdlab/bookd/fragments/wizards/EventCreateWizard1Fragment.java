@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import bookdlab.bookd.R;
@@ -42,6 +43,8 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
+
+        eventNameEdt.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         event = wizardNavigator.getEvent();
         eventNameEdt.setText(event.getName());
