@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,8 +29,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -39,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
@@ -78,11 +76,12 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
+    private Random rand;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        rand = new Random();
         initGoogleLocationApi();
     }
 
@@ -201,10 +200,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void queryBusinesses(String locality) {
-
-        //DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("business");
-        //reference.l.limitToFirst(100);
-
 
         Queries queries = new Queries();
         queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
