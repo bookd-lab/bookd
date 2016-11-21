@@ -3,21 +3,19 @@ package bookdlab.bookd.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
+import org.parceler.Parcels;
 
 import java.util.List;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.activities.EventActivity;
 import bookdlab.bookd.activities.EventCreateActivity;
-import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Event;
-import bookdlab.bookd.views.BusinessItemViewHolder;
 import bookdlab.bookd.views.DefaultViewHolder;
 import bookdlab.bookd.views.EventItemViewHolder;
 
@@ -31,6 +29,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int EVENT_ITEM = 0;
     private static final int EVENT_ITEM_CREATE = 1;
 
+    public static final String EXTRA_EVENT = "EXTRA_EVENT";
     private Activity activity;
     private List<Event> eventList;
 
@@ -70,6 +69,11 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             h.datesInfo.setText(event.getDates());
             h.backgroundOverlay.setBackgroundColor(Color.parseColor(event.getColor()));
 
+            h.rootView.setOnClickListener((v) -> {
+                    Intent intent = new Intent(activity, EventActivity.class);
+                    intent.putExtra(EXTRA_EVENT, Parcels.wrap(event));
+                    activity.startActivity(intent);
+            });
             if(position == eventList.size()) {
                 h.bottomDivider.setVisibility(View.VISIBLE);
             } else {

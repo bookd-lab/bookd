@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,8 +18,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +46,7 @@ import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.interfaces.NearbyBusinessCallback;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
+import bookdlab.bookd.ui.UIUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -67,15 +70,19 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     Button searchButton;
     @BindView(R.id.loadingIndicatorView)
     AVLoadingIndicatorView loadingIndicatorView;
+    @BindView(R.id.sortByRadioGroup)
+    RadioGroup sortByRadioGroup;
+    @BindView(R.id.byRating)
+    RadioButton byRating;
 
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
-    private Random rand;
+    private Address lastAddress;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rand = new Random();
         initGoogleLocationApi();
     }
 
@@ -102,19 +109,35 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         recyclerView.setVisibility(View.GONE);
         loadingIndicatorView.show();
 
-        //remove initial focus on edit text
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        byRating.setChecked(true);
 
-        searchEdt.setOnClickListener((v) -> AnimUtils.fadeIn(advancedSearch));
+        searchEdt.setListener(new SearchEditText.InteractionListener() {
+            @Override
+            public void onClose() {
+                hideSearchUI();
+            }
 
-        searchButton.setOnClickListener((v -> {
-            //remove initial focus on edit text
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            AnimUtils.fadeOut(advancedSearch);
-            //TODO: perform search
-        }));
+            @Override
+            public void onOpen() {
+                AnimUtils.fadeIn(advancedSearch);
+            }
+        });
+
+        searchButton.setOnClickListener((v -> performSearch()));
+
+        UIUtils.hideSoftInput(getActivity());
 
         return view;
+    }
+
+    private void hideSearchUI() {
+        UIUtils.hideSoftInput(getActivity());
+        AnimUtils.fadeOut(advancedSearch);
+    }
+
+    private void performSearch() {
+        hideSearchUI();
+        //TODO:
     }
 
     @Override
@@ -148,6 +171,11 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
             return;
         }
 
+        if (null != lastLocationFetched) {
+            fetchDataByLocation();
+            return;
+        }
+
         lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (lastLocationFetched != null) {
@@ -162,10 +190,12 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                 }
             });
         } else {
+            Log.i(TAG, "Requesting for location update!");
             LocationRequest locationRequest = new LocationRequest();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             locationRequest.setInterval(60 * 60 * 1000L);
             locationRequest.setFastestInterval(60 * 60 * 1000L);
+
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
         }
     }
@@ -173,11 +203,17 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private void fetchDataByLocation() {
         Geocoder geo = new Geocoder(this.getActivity().getApplicationContext(), Locale.getDefault());
         try {
-            List<Address> addresses = geo.getFromLocation(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 1);
-            for (Address address : addresses) {
-                Log.d(TAG, "onConnected: address is: " + address.getLocality());
-                queryBusinesses(address.getLocality());
+
+            if (lastAddress == null) {
+                //TODO: This is a network call, has to be taken out of here
+                List<Address> addresses = geo.getFromLocation(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 1);
+                lastAddress = addresses.get(0);
+                if (addresses.isEmpty()) {
+                    return;
+                }
             }
+
+            queryBusinesses(lastAddress.getLocality());
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred in onConnected: ", e);
             e.printStackTrace();
@@ -185,6 +221,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void queryBusinesses(String locality) {
+
         Queries queries = new Queries();
         queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
             @Override

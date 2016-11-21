@@ -1,8 +1,13 @@
 package bookdlab.bookd.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,13 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
+import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.fragments.ReviewsFragment;
 import bookdlab.bookd.models.Business;
+import bookdlab.bookd.models.Review;
+import bookdlab.bookd.views.ReviewItemViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,7 +59,6 @@ public class BusinessActivity extends AppCompatActivity
     Toolbar toolbar;
     @BindView(R.id.toolbarTitle)
     TextView toolbarTitle;
-
     @BindView(R.id.businessNameTV)
     TextView businessNameTV;
     @BindView(R.id.businessTitleContainer)
@@ -59,11 +69,19 @@ public class BusinessActivity extends AppCompatActivity
     ImageView headerImageView;
     @BindView(R.id.businessCircleIV)
     ImageView businessCircleIV;
-    @BindView(R.id.ivMapView) ImageView ivMapView;
+    @BindView(R.id.ivMapView)
+    ImageView ivMapView;
     @BindView(R.id.btnShowReviews)
     Button showReviewsButton;
+    @BindView(R.id.aboutTV)
+    TextView aboutTV;
+    @BindView(R.id.subtitle)
+    TextView subtitleTV;
+    @BindView(R.id.featuredReviewContaner)
+    View featuredReviewContaner;
 
     Business businessData;
+    private ReviewsFragment reviewsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +97,13 @@ public class BusinessActivity extends AppCompatActivity
         }
 
         appBarLayout.addOnOffsetChangedListener(this);
+        showReviewsButton.setOnClickListener((v) -> showMoreReviews());
         startAlphaAnimation(toolbarTitle, 0, View.INVISIBLE);
 
         businessData = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_BUSINESS));
-        setData();
+
+        initData();
+        loadFeaturedReview();
     }
 
     @Override
@@ -90,11 +111,9 @@ public class BusinessActivity extends AppCompatActivity
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private void setData() {
-
-        //String address = businessData.getAddress();
-        String address = "185 Park Avenue, San Jose, CA";
-        String mapUrl = "https://maps.google.com/maps/api/staticmap?center=\""+ address + "\"&zoom=16&size=600x400&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
+    private void initData() {
+        String address = businessData.getLatitude() + "," + businessData.getLongitude();
+        String mapUrl = "https://maps.google.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x400&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
 
         Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
         Glide.with(this).load(businessData.getLogoURL()).into(businessCircleIV);
@@ -102,6 +121,8 @@ public class BusinessActivity extends AppCompatActivity
 
         toolbarTitle.setText(businessData.getName());
         businessNameTV.setText(businessData.getName());
+        subtitleTV.setText(businessData.getCity());
+        aboutTV.setText(businessData.getAbout());
     }
 
     @Override
@@ -129,15 +150,25 @@ public class BusinessActivity extends AppCompatActivity
                 }
                 break;
             }
+            case R.id.menu_call: {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + businessData.getPhone()));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+                startActivity(intent);
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public static void addToEventWatchList() {
+
     }
 
     public static void removeFromEventWatchList() {
+
     }
 
     @Override
@@ -190,14 +221,41 @@ public class BusinessActivity extends AppCompatActivity
         v.startAnimation(alphaAnimation);
     }
 
-    @OnClick(R.id.btnShowReviews)
-    public void showMoreReviews(){
-        // Begin the transaction
+    public void showMoreReviews() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-// Replace the contents of the container with the new fragment
-        ft.replace(R.id.fragmentPlaceholder, new ReviewsFragment());
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
+        reviewsFragment = ReviewsFragment.newInstance(businessData);
+        ft.replace(R.id.fragmentPlaceholder, reviewsFragment);
         ft.commit();
+
+        showReviewsButton.setVisibility(View.GONE);
+    }
+
+    public void loadFeaturedReview() {
+        ReviewItemViewHolder h = new ReviewItemViewHolder(featuredReviewContaner);
+
+        new Queries().getFeaturedReviewForBusiness(businessData.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildren().iterator().hasNext()) {
+                    Review review = dataSnapshot.getChildren().iterator().next().getValue(Review.class);
+                    h.reviewBody.setText(review.getReviewBody());
+                    h.reviewDate.setText(review.getReviewDate());
+                    h.reviewer.setText(review.getReviewerId());
+                    h.ratingBar.setRating(review.getStarRating().floatValue());
+
+                    Glide.with(BusinessActivity.this)
+                            .load(review.getReviewerImgUrl())
+                            .into(h.reviewerImage);
+
+                } else {
+                    featuredReviewContaner.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

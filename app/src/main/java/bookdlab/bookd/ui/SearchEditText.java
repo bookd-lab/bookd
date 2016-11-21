@@ -6,7 +6,6 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +22,7 @@ public class SearchEditText extends RelativeLayout {
 
     EditText searchEdt;
     ImageButton cancelButton;
+    InteractionListener listener;
 
     public SearchEditText(Context context) {
         super(context);
@@ -62,13 +62,13 @@ public class SearchEditText extends RelativeLayout {
         cancelButton = new ImageButton(context);
         cancelButton.setLayoutParams(buttonParams);
         cancelButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.close, null));
-        cancelButton.setEnabled(false);
         cancelButton.setAlpha(0.5f);
         cancelButton.setBackgroundResource(R.color.transparent);
 
         addView(searchEdt);
         addView(cancelButton);
 
+        searchEdt.setOnClickListener((v) -> listener.onOpen());
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,16 +80,23 @@ public class SearchEditText extends RelativeLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                cancelButton.setEnabled(s.length() > 0);
                 cancelButton.setAlpha(s.length() > 0 ? 1f : 0.5f);
             }
         });
 
-        cancelButton.setOnClickListener((v -> searchEdt.setText("")));
+        cancelButton.setOnClickListener((v -> {
+            searchEdt.setText("");
+            listener.onClose();
+        }));
     }
 
-    @Override
-    public void setOnClickListener(OnClickListener l) {
-        searchEdt.setOnClickListener(l);
+    public void setListener(InteractionListener listener) {
+        this.listener = listener;
+    }
+
+    public interface InteractionListener {
+        public void onClose();
+
+        public void onOpen();
     }
 }

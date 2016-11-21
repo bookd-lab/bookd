@@ -42,7 +42,7 @@ public class CreateEventWizardAdapter extends FragmentPagerAdapter {
             case 2: // Fragment # 1 - This will show SecondFragment
                 return EventCreateWizardFragment.newInstance(2, res.getString(R.string.create_event_step_3), res.getString(R.string.create_event_step_3_hint));
             case 3: // Fragment # 1 - This will show SecondFragment
-                return EventCreateWizardFragment.newInstance(3, res.getString(R.string.create_event_step_4), "no hint needed here");
+                return EventCreateWizardFragment.newInstance(3, res.getString(R.string.create_event_step_4), "");
             default:
                 return null;
         }

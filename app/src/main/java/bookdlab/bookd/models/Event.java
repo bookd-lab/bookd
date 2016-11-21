@@ -19,6 +19,7 @@ public class Event {
     String dates;           // ? Do we need this?
     String color;
 
+
     public Event() {
     }
 

@@ -2,41 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/selectableItemBackground">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:ellipsize="marquee"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:text="@string/bookd_name"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                tools:text="124 Reviews" />
-
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:id="@+id/reviewsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/reviews" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/reviewsRV"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/reviewsLabel"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/noReviewsYet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reviewsLabel"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_reviews_yet"
+        android:visibility="gone" />
 
 </RelativeLayout>

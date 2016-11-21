@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/advanced_search_bg"
-    android:focusableInTouchMode="true">
+    android:background="@drawable/advanced_search_bg">
 
     <TextView
         android:id="@+id/priceLabel"
@@ -17,9 +17,23 @@
 
     <SeekBar
         android:id="@+id/priceSeekBar"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="30dp"
-        android:layout_below="@id/priceLabel" />
+        android:layout_below="@id/priceLabel"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp" />
+
+    <TextView
+        android:id="@+id/priceIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/priceSeekBar"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:text="@string/dollar_sign"
+        tools:text="$$$" />
 
     <TextView
         android:id="@+id/ratingLabel"
@@ -36,7 +50,20 @@
         android:id="@+id/ratingSeekBar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@id/ratingLabel" />
+        android:layout_below="@id/ratingLabel"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp" />
+
+    <TextView
+        android:id="@+id/ratingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/ratingSeekBar"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:text="@string/sample_rating" />
 
     <TextView
         android:id="@+id/sortLabel"
@@ -50,38 +77,44 @@
         android:text="@string/sort" />
 
     <RadioGroup
-        android:id="@+id/sortBy"
+        android:id="@+id/sortByRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sortLabel">
+        android:layout_below="@id/sortLabel"
+        android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/byRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:layout_margin="10dp"
             android:text="@string/ratingLabel" />
 
         <RadioButton
+            android:id="@+id/byPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/priceLabel" />
 
         <RadioButton
+            android:id="@+id/byDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/distance" />
 
     </RadioGroup>
 
     <Button
         android:id="@+id/searchButton"
-        style="@style/WizardButton"
+        style="@style/SearchButton"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_below="@id/sortBy"
-        android:layout_marginTop="20dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/sortByRadioGroup"
         android:layout_centerHorizontal="true"
-        android:text="@string/search" />
+        android:layout_marginBottom="20dp"
+        android:text="@string/search"
+        android:textAllCaps="false" />
 
 </RelativeLayout>

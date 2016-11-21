@@ -29,4 +29,8 @@
         <item name="android:background">@drawable/wizard_button_bg</item>
     </style>
 
+    <style name="SearchButton" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:background">@drawable/search_button_bg</item>
+    </style>
+
 </resources>

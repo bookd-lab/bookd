@@ -10,6 +10,7 @@ import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.CreateEventWizardAdapter;
 import bookdlab.bookd.interfaces.WizardNavigator;
+import bookdlab.bookd.models.Event;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -17,6 +18,8 @@ import butterknife.ButterKnife;
 public class EventCreateActivity extends AppCompatActivity implements WizardNavigator {
 
     private FragmentPagerAdapter adapterViewPager;
+
+    private Event newEvent = new Event();
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -42,6 +45,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
             viewPager.setCurrentItem(nextPos);
         } else {
             //TODO: aggregate all the data
+
         }
     }
 
@@ -52,5 +56,9 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         if (prevPos >= 0) {
             viewPager.setCurrentItem(prevPos);
         }
+    }
+
+    public Event getEvent(){
+        return newEvent;
     }
 }

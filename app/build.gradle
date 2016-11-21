@@ -111,6 +111,8 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.google.android.gms:play-services-maps:9.8.0'
 
+    // GeoFire for Firebase location based queries
+    compile 'com.firebase:geofire-android:2.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
