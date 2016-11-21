@@ -6,7 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -36,14 +35,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
-import bookdlab.bookd.interfaces.NearbyBusinessCallback;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import bookdlab.bookd.ui.UIUtils;
@@ -180,13 +177,10 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
         if (lastLocationFetched != null) {
             fetchDataByLocation();
-            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 3.0, new NearbyBusinessCallback() {
-                @Override
-                public void onNearbyBusinessesFound(ArrayList<Business> businesses) {
-                    Log.d(TAG, "onNearbyBusinessesFound: business size: "+businesses.size());
-                    for(Business business: businesses){
-                        Log.d(TAG, "onNearbyBusinessesFound: "+business);
-                    }
+            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 3.0, businesses -> {
+                Log.d(TAG, "onNearbyBusinessesFound: business size: "+businesses.size());
+                for(Business business: businesses){
+                    Log.d(TAG, "onNearbyBusinessesFound: "+business);
                 }
             });
         } else {

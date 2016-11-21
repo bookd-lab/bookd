@@ -93,6 +93,11 @@ public class QueryHelper {
                         Log.d(TAG, "onDataChange: adding business");
                         Business business = child.getValue(Business.class);
                         businesses.add(business);
+
+                        // After adding all businesses, callback
+                        if(businesses.size() == ids.size()){
+                            callback.onNearbyBusinessesFound(businesses);
+                        }
                     }
                 }
 
