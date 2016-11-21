@@ -15,4 +15,10 @@
         android:title="@string/call"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_book"
+        android:icon="@drawable/ic_payment"
+        android:title="@string/book"
+        app:showAsAction="always" />
+
 </menu>

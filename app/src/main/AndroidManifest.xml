@@ -30,6 +30,11 @@
         <activity android:name=".activities.BusinessActivity" />
         <activity android:name=".activities.EventCreateActivity" />
         <activity android:name=".activities.EventActivity"></activity>
+        <activity android:name=".activities.CheckoutActivity"/>
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 
 </manifest>

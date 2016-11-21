@@ -9,6 +9,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 24
         multiDexEnabled true
+        versionCode 2
+        versionName "1.0"
     }
 
     // Related to https://github.com/scribejava/scribejava/issues/480
@@ -114,6 +116,11 @@ dependencies {
 
     //hashtag view for tags
     compile 'com.github.greenfrvr:hashtag-view:1.2.1'
+
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
+    compile 'com.google.android.gms:play-services-wallet:9.8.0'
+
+    compile 'com.stripe:stripe-android:+'
 }
 
 apply plugin: 'com.google.gms.google-services'

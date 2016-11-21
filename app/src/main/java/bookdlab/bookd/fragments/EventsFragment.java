@@ -72,32 +72,38 @@ public class EventsFragment extends Fragment {
         recyclerView.setAdapter(eventsAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        new Queries().getEventsOfUser(currentUser.getId()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                if(children.iterator().hasNext()){
-                    for(DataSnapshot child : children) {
-                        Event event = child.getValue(Event.class);
-                        eventList.add(event);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (currentUser != null) {
+            new Queries().getEventsOfUser(currentUser.getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                    if(children.iterator().hasNext()){
+                        for(DataSnapshot child : children) {
+                            Event event = child.getValue(Event.class);
+                            eventList.add(event);
+                        }
+                        eventsAdapter.notifyDataSetChanged();
+                        recyclerView.setVisibility(View.VISIBLE);
+                    } else {
+                        Log.d(TAG, "No more businesses found for user id " + currentUser.getId());
+                        recyclerView.setVisibility(View.GONE);
+                        //noEventsYet.setVisibility(View.VISIBLE);
                     }
-                    eventsAdapter.notifyDataSetChanged();
-                    recyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    Log.d(TAG, "No more businesses found for user id " + currentUser.getId());
-                    recyclerView.setVisibility(View.GONE);
-                    //noEventsYet.setVisibility(View.VISIBLE);
+
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return view;
+                }
+            });
+        }
     }
 
     @Override

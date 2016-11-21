@@ -77,5 +77,8 @@
 
     <string name="no_bookings_yet">No Bookings Added</string>
     <string name="highest_pricing">$$$$$</string>
+    <string name="book">Book</string>
+    <string name="stripe_publishable_key">pk_live_aNtxbVn5nOGX8FAHkR9uQppV</string>
+    <string name="stripe_version">2</string>
 
 </resources>

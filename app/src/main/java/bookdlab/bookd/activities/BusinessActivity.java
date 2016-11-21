@@ -165,11 +165,19 @@ public class BusinessActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
             }
+
+            case R.id.menu_book: {
+                launchPaymentActivity();
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void launchPaymentActivity() {
+        startActivity(new Intent(this, CheckoutActivity.class));
+    }
 
     public static void addToEventWatchList() {
 
