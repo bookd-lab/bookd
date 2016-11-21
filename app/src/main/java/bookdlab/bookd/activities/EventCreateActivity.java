@@ -4,14 +4,21 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import org.parceler.Parcels;
+import java.util.ArrayList;
+import bookdlab.bookd.BookdApplication;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.CreateEventWizardAdapter;
 import bookdlab.bookd.interfaces.WizardNavigator;
+import bookdlab.bookd.models.BookedBusiness;
 import bookdlab.bookd.models.Event;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +34,8 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+
+    private static final String TAG = "EventCreateActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,70 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
     }
 
     private void saveAndFinish() {
+        //TODO: aggregate all the data. This is sample. Replace this with correct data
+        event.setName("Test event");
 
+        // Make each business as a BookedBusiness object
+        ArrayList<BookedBusiness> bookedBusinessArrayList = new ArrayList<>();
+
+        BookedBusiness bookedBusiness = new BookedBusiness();
+        bookedBusiness.setBusinessId("124");
+        bookedBusiness.setCategory("food");
+        bookedBusinessArrayList.add(bookedBusiness);
+
+        BookedBusiness business2 = new BookedBusiness();
+        business2.setBusinessId("345");
+        business2.setCategory("DJ");
+        bookedBusinessArrayList.add(business2);
+
+        // Call create event if user is creating an event for first time
+        createEvent(event, bookedBusinessArrayList);
+
+        // Call update event if user is updating the event
+        // updateEvent(newEvent, bookedBusinessArrayList);
+    }
+
+    private void createEvent(Event event, ArrayList<BookedBusiness> bookedBusinesses){
+        Log.d(TAG, "createEvent: ");
+        DatabaseReference eventsDbReference = FirebaseDatabase.getInstance().getReference().child("events");
+        DatabaseReference eventReference = eventsDbReference.push();
+        String eventId = eventReference.getKey();
+        event.setId(eventId);
+        event.setCreator(BookdApplication.getCurrentUser().getId());
+        eventReference.setValue(event);
+
+        createBookedBusinesses(event, bookedBusinesses);
+    }
+
+    private void createBookedBusinesses(Event event, ArrayList<BookedBusiness> bookedBusinesses){
+        Log.d(TAG, "createBookedBusinesses: ");
+        DatabaseReference bookedBusinessDbReference = FirebaseDatabase.getInstance().getReference().child("event_booked_business");
+        String eventId = event.getId();
+        for(BookedBusiness bookedBusiness : bookedBusinesses) {
+            DatabaseReference bookedBusinessRef = bookedBusinessDbReference.push();
+            String id = bookedBusinessRef.getKey();             // Get unique ID
+
+            bookedBusiness.setId(id);                           // Set that unique ID as bookedBusiness ID
+            bookedBusiness.setEventId(eventId);                 // Set event ID. used while querying
+
+            bookedBusinessRef.setValue(bookedBusiness);
+        }
+    }
+
+    private void updateEvent(Event event, ArrayList<BookedBusiness> bookedBusinesses){
+        Log.d(TAG, "updateEvent: ");
+        DatabaseReference eventReference = FirebaseDatabase.getInstance().getReference().child("events").child(event.getId());
+        eventReference.setValue(event);
+
+        updateBookedBusinesses(event, bookedBusinesses);
+    }
+
+    private void updateBookedBusinesses(Event event, ArrayList<BookedBusiness> bookedBusinesses){
+        Log.d(TAG, "updateBookedBusinesses: ");
+        DatabaseReference bookedBusinessDbReference = FirebaseDatabase.getInstance().getReference().child("event_booked_business");
+        for(BookedBusiness bookedBusiness : bookedBusinesses){
+            DatabaseReference child = bookedBusinessDbReference.child(bookedBusiness.getId());
+            child.setValue(bookedBusiness);
+        }
     }
 }
