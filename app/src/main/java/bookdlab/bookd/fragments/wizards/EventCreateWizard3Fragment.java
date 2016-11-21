@@ -1,7 +1,5 @@
 package bookdlab.bookd.fragments.wizards;
 
-import android.app.Service;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -9,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.greenfrvr.hashtagview.HashtagView;
@@ -36,9 +33,6 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
     private Event event;
     private List<String> tags = new ArrayList<String>();
 
-    InputMethodManager imm;
-    Context mContext;
-
     public static EventCreateWizard3Fragment newInstance() {
         return new EventCreateWizard3Fragment();
     }
@@ -46,8 +40,6 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this.getContext();
-        imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
     }
 
     @Override
@@ -64,6 +56,8 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
         tags = event.getTags();
         if(tags != null) {
             htvTags.setData(tags);
+        } else {
+            tags = new ArrayList<String>();
         }
         tagsEdt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -91,7 +85,6 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
     }
 
     public void processTag(){
-        imm.hideSoftInputFromWindow(tagsEdt.getWindowToken(), 0);
         String newTag = tagsEdt.getText().toString().replace(" ", "");
         tags.add(newTag);
         htvTags.setData(tags);

@@ -22,6 +22,7 @@ public class BookdApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        currentUser = getCurrentUser();
         /*CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/lineto-circular-pro-medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
