@@ -39,7 +39,9 @@ import java.util.Random;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.database.Queries;
+import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
+import bookdlab.bookd.interfaces.NearbyBusinessCallback;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import butterknife.BindView;
@@ -150,6 +152,15 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
         if (lastLocationFetched != null) {
             fetchDataByLocation();
+            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 3.0, new NearbyBusinessCallback() {
+                @Override
+                public void onNearbyBusinessesFound(ArrayList<Business> businesses) {
+                    Log.d(TAG, "onNearbyBusinessesFound: business size: "+businesses.size());
+                    for(Business business: businesses){
+                        Log.d(TAG, "onNearbyBusinessesFound: "+business);
+                    }
+                }
+            });
         } else {
             LocationRequest locationRequest = new LocationRequest();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

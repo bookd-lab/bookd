@@ -105,11 +105,15 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 Log.d(TAG, "setupAuthStateListener: "+mUsersDatabaseReference.child(user.getUid()).getKey());
-                QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
+                QueryHelper.isUserPresentInDatabase(user.getEmail(), new UserCheckCallback() {
                     @Override
                     public void userIsPresent(User signedInUser) {
                         Log.d(TAG, "userIsPresent: User is present on database. Saving locally");
-                        storeUserInfoLocally(user);
+                        storeUserInfoLocally(signedInUser);
+                        DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
+                        String date = df.format(Calendar.getInstance().getTime());
+                        signedInUser.setLastSeenTime(date);
+
                         BookdApplication.setCurrentUser(signedInUser);
                     }
 
@@ -117,21 +121,29 @@ public class MainActivity extends AppCompatActivity {
                     public void userIsNotPresent() {
                         Log.d(TAG, "userIsNotPresent: User is not present in database. Create entry");
                         User signedInUser = new User();
-                        signedInUser.setId(user.getUid());
-                        signedInUser.setEmail(user.getDisplayName());
+                        DatabaseReference userRef = mUsersDatabaseReference.push();
+                        signedInUser.setId(userRef.getKey());
+                        signedInUser.setUsername(user.getDisplayName());
+
+                        if(user.getProviderData().size() > 0){
+                            signedInUser.setEmail(user.getProviderData().get(0).getEmail());
+                        } else {
+                            signedInUser.setEmail(user.getEmail());
+                        }
 
                         DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
                         String date = df.format(Calendar.getInstance().getTime());
                         signedInUser.setMemberSince(date);
+                        signedInUser.setLastSeenTime(date);
 
                         if(user.getPhotoUrl() != null){
                             signedInUser.setProfileImageURL(user.getPhotoUrl().toString());
                         }
 
-                        mUsersDatabaseReference.push().setValue(signedInUser);
-                        storeUserInfoLocally(user);
-
+                        userRef.setValue(signedInUser);
                         BookdApplication.setCurrentUser(signedInUser);
+
+                        storeUserInfoLocally(signedInUser);
                     }
                 });
                 Log.d(TAG, "setupAuthStateListener: showing splash screen");
@@ -148,10 +160,10 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void storeUserInfoLocally(FirebaseUser user) {
+    private void storeUserInfoLocally(User user) {
         SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.EXTRA_USER_ID, user.getUid());
+        editor.putString(Constants.EXTRA_USER_ID, user.getId());
         editor.apply();
     }
 }

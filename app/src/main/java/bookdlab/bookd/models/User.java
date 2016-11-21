@@ -131,4 +131,23 @@ public class User {
     public void setLastSeenTime(String lastSeenTime) {
         this.lastSeenTime = lastSeenTime;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", profileImageURL='" + profileImageURL + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", about='" + about + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", memberSince='" + memberSince + '\'' +
+                ", isVerified=" + isVerified +
+                ", lastSeenTime='" + lastSeenTime + '\'' +
+                '}';
+    }
 }

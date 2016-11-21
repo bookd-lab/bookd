@@ -3,6 +3,9 @@ package bookdlab.bookd;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import bookdlab.bookd.models.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -37,5 +40,11 @@ public class BookdApplication extends Application {
 
     public static void setCurrentUser(User currentUser) {
         BookdApplication.currentUser = currentUser;
+        updateUserInfo(currentUser);
+    }
+
+    private static void updateUserInfo(User user){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getId());
+        reference.setValue(user);
     }
 }
