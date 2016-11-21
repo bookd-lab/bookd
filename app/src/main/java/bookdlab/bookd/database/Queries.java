@@ -19,37 +19,44 @@ public class Queries {
         database = FirebaseDatabase.getInstance();
     }
 
-    public Query getBusinessInArea(String area){
+    public Query getBusinessInArea(String area) {
         DatabaseReference reference = database.getReference().child("business");
         return reference.orderByChild("city").equalTo(area).limitToFirst(100);
     }
 
-    public Query getReviewsForBusiness(String businessId){
+    public Query getReviewsForBusiness(String businessId) {
         DatabaseReference reference = database.getReference().child("reviews");
-        return reference.orderByChild("businessId").equalTo(businessId).limitToFirst(100);
+        Query q = reference.orderByChild("businessId").equalTo(businessId).limitToFirst(100);
+        return q;
     }
 
-    public Query getUserFromId(String userId){
+    public Query getFeaturedReviewForBusiness(String businessId) {
+        DatabaseReference reference = database.getReference().child("reviews");
+        Query q = reference.orderByChild("businessId").equalTo(businessId).limitToFirst(1);
+        return q;
+    }
+
+    public Query getUserFromId(String userId) {
         DatabaseReference reference = database.getReference().child("users");
         return reference.orderByChild("id").equalTo(userId).limitToFirst(1);
     }
 
-    public Query getUserFromEmail(String email){
+    public Query getUserFromEmail(String email) {
         DatabaseReference reference = database.getReference().child("users");
         return reference.orderByChild("email").equalTo(email).limitToFirst(1);
     }
 
-    public Query getEventsOfUser(String userId){
+    public Query getEventsOfUser(String userId) {
         DatabaseReference reference = database.getReference().child("events");
         return reference.orderByChild("creator").equalTo(userId);
     }
 
-    public Query getBusinessById(String id){
+    public Query getBusinessById(String id) {
         DatabaseReference reference = database.getReference().child("business");
         return reference.orderByChild("id").equalTo(id).limitToFirst(1);
     }
 
-    public GeoQuery getNearbyBusiness(Double lat, Double lng, Double radius){
+    public GeoQuery getNearbyBusiness(Double lat, Double lng, Double radius) {
         DatabaseReference reference = database.getReference().child("geoFire");
         GeoFire geoFire = new GeoFire(reference);
         return geoFire.queryAtLocation(new GeoLocation(lat, lng), radius);

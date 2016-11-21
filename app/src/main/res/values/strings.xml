@@ -30,7 +30,7 @@
     <string name="event_ends">When does it end?</string>
     <string name="search_hint">What do you need to book?</string>
 
-    <string name="show_more_reviews">Show More Reviews</string>
+    <string name="show_reviews">Show Reviews</string>
 
     <string name="name_your_event">Name your event</string>
     <string name="swipe_instruction">SWIPE LEFT</string>
@@ -61,5 +61,9 @@
     <string name="user_phonenumber">Phone Number</string>
     <string name="dollar_sign">$</string>
     <string name="sample_rating">1.0</string>
+    <string name="call">Call</string>
+    <string name="featured_review">Featured Review</string>
+    <string name="reviews">Reviews</string>
+    <string name="no_reviews_yet">No reviews yet</string>
 
 </resources>
