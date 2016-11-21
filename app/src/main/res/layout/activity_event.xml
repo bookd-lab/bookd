@@ -137,6 +137,15 @@
                 android:paddingLeft="@dimen/spacing_normal"
                 android:paddingBottom="@dimen/spacing_normal"
                 android:layout_marginLeft="@dimen/spacing_normal"/>
+            <TextView
+                android:id="@+id/noBookingsYet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:text="@string/no_bookings_yet"
+                android:visibility="gone" />
         </LinearLayout>
 
     <View android:background="@color/divider"
