@@ -75,7 +75,7 @@ public class UserFragment extends Fragment{
         ButterKnife.bind(this, view);
 
         tvUsername.setText(user.getUsername());
-        tvMemberSince.setText(user.getMemberSince());
+        tvMemberSince.setText("Member since " + user.getMemberSince());
         tvEmail.setText(user.getEmail());
         Glide.with(this).load(user.getProfileImageURL()).into(ivUserProfileImage);
         tvAbout.setText(user.getAbout());
