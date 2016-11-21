@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:lineSpacingMultiplier="1.2"
+        android:padding="16dp"
+        android:text="@string/create_event_step_1"
+        android:textSize="@dimen/question_font"
+        tools:text="@string/create_event_step_2" />
+
+    <TextView
+        android:id="@+id/startDateTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvInstruction"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
+        android:textSize="20sp"
+        tools:text="2016-01-01" />
+
+
+    <Button
+        android:id="@+id/pickDateButton"
+        style="@style/SearchButton"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/startDateTV"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/choose_date" />
+
+    <include layout="@layout/wizard_navigation" />
+
+</RelativeLayout>

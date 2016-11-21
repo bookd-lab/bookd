@@ -29,8 +29,8 @@ public abstract class AbstractEventWizardChild extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        nextButton.setOnClickListener((v) -> wizardNavigator.onNext());
-        backButton.setOnClickListener((v) -> wizardNavigator.onPrev());
+        nextButton.setOnClickListener((v) -> onNext());
+        backButton.setOnClickListener((v) -> onPrev());
     }
 
     @Override
@@ -50,5 +50,13 @@ public abstract class AbstractEventWizardChild extends Fragment {
         super.onDetach();
 
         wizardNavigator = null;
+    }
+
+    public void onNext() {
+        wizardNavigator.onNext();
+    }
+
+    public void onPrev() {
+        wizardNavigator.onPrev();
     }
 }

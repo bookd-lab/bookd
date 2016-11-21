@@ -18,6 +18,7 @@ public class Event {
     String backgroundURL;   // Optional: If we want to show a background URL
     String dates;           // ? Do we need this?
     String color;
+    String[] tags;
 
 
     public Event() {
@@ -85,5 +86,13 @@ public class Event {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }

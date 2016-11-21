@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 
+import org.parceler.Parcels;
+
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.CreateEventWizardAdapter;
 import bookdlab.bookd.interfaces.WizardNavigator;
@@ -17,9 +19,11 @@ import butterknife.ButterKnife;
 
 public class EventCreateActivity extends AppCompatActivity implements WizardNavigator {
 
+    public static final String EVENT_EXTRA = "EVENT_EXTRA";
+
     private FragmentPagerAdapter adapterViewPager;
 
-    private Event newEvent = new Event();
+    private Event event;
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -35,6 +39,12 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
 
         viewPager.setAdapter(adapterViewPager);
         viewPager.setPageTransformer(true, new CubeOutTransformer());
+
+        if (null != getIntent().getParcelableExtra(EVENT_EXTRA)) {
+            event = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_EXTRA));
+        } else {
+            event = new Event();
+        }
     }
 
     @Override
@@ -44,8 +54,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         if (nextPos < adapterViewPager.getCount()) {
             viewPager.setCurrentItem(nextPos);
         } else {
-            //TODO: aggregate all the data
-
+            saveAndFinish();
         }
     }
 
@@ -58,7 +67,11 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         }
     }
 
-    public Event getEvent(){
-        return newEvent;
+    public Event getEvent() {
+        return event;
+    }
+
+    private void saveAndFinish() {
+
     }
 }

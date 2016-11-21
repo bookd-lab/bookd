@@ -20,7 +20,7 @@
             tools:text="@string/create_event_step_1" />
 
         <EditText
-            android:id="@+id/etAnswer"
+            android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvInstruction"

@@ -71,7 +71,8 @@
     <string name="date">Date</string>
     <string name="bookings">Bookings</string>
     <string name="tags">Tags</string>
-
+    <string name="reset">Reset</string>
+    <string name="choose_date">Choose date</string>
 
 
 </resources>
