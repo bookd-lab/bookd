@@ -4,15 +4,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
+import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Event;
 import butterknife.BindView;
@@ -22,6 +31,7 @@ import butterknife.ButterKnife;
 public class EventActivity extends AppCompatActivity {
 
     public static final String EXTRA_EVENT = "EXTRA_EVENT";
+    private static final String TAG = "EventActivity";
 
     @BindView(R.id.tvEventName)
     TextView tvEventName;
@@ -31,10 +41,17 @@ public class EventActivity extends AppCompatActivity {
     TextView tvTags;
     @BindView(R.id.bookingsRV)
     RecyclerView bookingsRV;
+    @BindView(R.id.noBookingsYet)
+    TextView noBookingsYet;
 
     Event eventData;
     private List<Business> bookingsList;
     private BusinessAdapter businessAdapter;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mUsersDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +60,50 @@ public class EventActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        // Setup FireBase
+        mDatabase = FirebaseDatabase.getInstance();
+
         eventData = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_EVENT));
 
-        bookingsList = new ArrayList<>();
-        businessAdapter = new BusinessAdapter(this, bookingsList);
+        new Queries().getBookedBusinessesForEvent(eventData.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                if(children.iterator().hasNext()) {
+                    for (DataSnapshot child : children) {
+                        Business business = child.getValue(Business.class);
+                        bookingsList.add(business);
+                    }
+                    businessAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "No more businesses found for event id " + eventData.getId());
+                    bookingsRV.setVisibility(View.GONE);
+                    noBookingsYet.setVisibility(View.VISIBLE);
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         initData();
-
     }
 
     private void initData(){
         tvEventName.setText(eventData.getName());
         tvDate.setText(eventData.getDates());
-        //tvTags.setText(eventData.getTags());
+
+        String [] eventTags = eventData.getTags();
+        String formattedTags = "";
+        if(eventTags != null){
+            for(int i= 0; i<eventTags.length; i++){
+                formattedTags = formattedTags + eventTags[1] + ", ";
+            }
+        }
+        tvTags.setText(formattedTags);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         bookingsRV.setLayoutManager(layoutManager);
         bookingsRV.setAdapter(businessAdapter);
