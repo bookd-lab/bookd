@@ -122,6 +122,7 @@ public class UserFragment extends Fragment{
                     user.setPhoneNumber(newField);
 
                 tv.setText(newField);
+                BookdApplication.setCurrentUser(user);
             }
         });
 

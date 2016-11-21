@@ -62,6 +62,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         }));
 
         h.title.setText(business.getName());
+        h.address.setText(business.getAddress());
         h.priceLevel.setText(business.formPriceLabel());
         h.rating.setCount((int) business.getRating());
 
