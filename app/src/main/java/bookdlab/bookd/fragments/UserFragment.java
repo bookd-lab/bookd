@@ -91,49 +91,53 @@ public class UserFragment extends Fragment{
 
     }
 
-    @OnClick(R.id.vsAbout)
-    public void AboutClicked(View v) {
-        GenericViewSwitcher(vsAbout, etAbout, tvAbout);
-    }
+
 
     public void GenericViewSwitcher(ViewSwitcher vs, EditText et, TextView tv){
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         vs.showNext();
-        if(et.getVisibility() == View.VISIBLE){
-            et.setText(tv.getText().toString());
-            imm.showSoftInput(et, 0);
-            et.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+        et.setText(tv.getText().toString());
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                imm.showSoftInput(et, 0);
+                et.setFocusable(true);
+                et.setSelection(et.getText().length());
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
+            }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String newField = et.getText().toString();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-                    if(et.getId() == R.id.etAbout)
-                        user.setAbout(newField);
-                    else if(et.getId() == R.id.etLocation)
-                        user.setAddress(newField);
-                    else if(et.getId() == R.id.etPhoneNumber)
-                        user.setPhoneNumber(newField);
+            @Override
+            public void afterTextChanged(Editable s) {
+                String newField = et.getText().toString();
 
-                    tv.setText(newField);
-                }
-            });
-        }
+                if(et.getId() == R.id.etAbout)
+                    user.setAbout(newField);
+                else if(et.getId() == R.id.etLocation)
+                    user.setAddress(newField);
+                else if(et.getId() == R.id.etPhoneNumber)
+                    user.setPhoneNumber(newField);
+
+                tv.setText(newField);
+            }
+        });
+
     }
 
-    @OnClick(R.id.tvLocation)
+    @OnClick(R.id.containerAbout)
+    public void AboutClicked(View v) {
+        GenericViewSwitcher(vsAbout, etAbout, tvAbout);
+    }
+
+    @OnClick(R.id.containerLocation)
     public void LocationClicked(View v) {
         GenericViewSwitcher(vsLocation, etLocation, tvLocation);
     }
 
-    @OnClick(R.id.tvPhoneNumber)
+    @OnClick(R.id.containerPhoneNumber)
     public void PhoneNumberClicked(View v) {
         GenericViewSwitcher(vsPhoneNumber, etPhoneNumber, tvPhoneNumber);
     }
