@@ -83,6 +83,13 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        lastLocationFetched = new Location("");
+        lastLocationFetched.setLatitude(37.4530);
+        lastLocationFetched.setLongitude(122.1817);
+        lastAddress = new Address(Locale.US);
+        lastAddress.setLocality("Menlo Park");
+
         initGoogleLocationApi();
     }
 
@@ -137,7 +144,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     private void performSearch() {
         hideSearchUI();
-        //TODO:
+
+
     }
 
     @Override
@@ -183,9 +191,9 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
             QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 3.0, new NearbyBusinessCallback() {
                 @Override
                 public void onNearbyBusinessesFound(ArrayList<Business> businesses) {
-                    Log.d(TAG, "onNearbyBusinessesFound: business size: "+businesses.size());
-                    for(Business business: businesses){
-                        Log.d(TAG, "onNearbyBusinessesFound: "+business);
+                    Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
+                    for (Business business : businesses) {
+                        Log.d(TAG, "onNearbyBusinessesFound: " + business);
                     }
                 }
             });
@@ -221,7 +229,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void queryBusinesses(String locality) {
-
         Queries queries = new Queries();
         queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
             @Override
@@ -237,6 +244,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                         Business business = child.getValue(Business.class);
                         businessList.add(business);
                     }
+
+                    
 
                     businessAdapter.notifyDataSetChanged();
 
