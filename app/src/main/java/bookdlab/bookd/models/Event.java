@@ -20,6 +20,7 @@ public class Event {
     String color;
     String[] tags;
 
+
     public Event() {
     }
 

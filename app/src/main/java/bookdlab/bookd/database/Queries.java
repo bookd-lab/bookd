@@ -62,7 +62,7 @@ public class Queries {
         return geoFire.queryAtLocation(new GeoLocation(lat, lng), radius);
     }
 
-    public Query getBookedBusinessForEvent(String eventId){
+    public Query getBookedBusinessesForEvent(String eventId){
         DatabaseReference reference = database.getReference().child("event_booked_business");
         return reference.orderByChild("eventId").equalTo(eventId);
     }
