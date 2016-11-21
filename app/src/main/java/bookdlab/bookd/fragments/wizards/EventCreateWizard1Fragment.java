@@ -2,8 +2,6 @@ package bookdlab.bookd.fragments.wizards;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +51,6 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
     @Override
     public void onNext() {
         super.onNext();
-
         event.setName(String.valueOf(eventNameEdt.getText()));
     }
 }

@@ -27,15 +27,21 @@ import butterknife.ButterKnife;
 public class EventCreateWizard2Fragment extends AbstractEventWizardChild {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-    private DatePickerDialog datePicker;
+    private DatePickerDialog startDatePicker;
+    private DatePickerDialog endDatePicker;
     private Calendar calendar;
-    private Date chosenDate = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000L); //3 days form now
+    private Date startDate = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000L); //3 days form now
+    private Date endDate = new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000L);
     private Event event;
 
-    @BindView(R.id.startDateTV)
-    TextView startDateTV;
-    @BindView(R.id.pickDateButton)
-    Button pickDateButton;
+    @BindView(R.id.tvStartDate)
+    TextView tvStartDate;
+    @BindView(R.id.btnStartDate)
+    Button btnStartDate;
+    @BindView(R.id.tvEndDate)
+    TextView tvEndDate;
+    @BindView(R.id.btnEndDate)
+    Button btnEndDate;
 
     // newInstance constructor for creating fragment with arguments
     public static EventCreateWizard2Fragment newInstance() {
@@ -63,12 +69,13 @@ public class EventCreateWizard2Fragment extends AbstractEventWizardChild {
 
         event = wizardNavigator.getEvent();
         if (null != event.getDates()) {
-            chosenDate = new Date(event.getStartDate());
+            startDate = new Date(event.getStartDate());
         }
 
         resetCalendar();
 
-        pickDateButton.setOnClickListener((v) -> showDatePicker());
+        btnStartDate.setOnClickListener((v) -> showDatePicker(0));
+        btnEndDate.setOnClickListener((v) -> showDatePicker(1));
     }
 
     private void resetCalendar() {
@@ -76,47 +83,80 @@ public class EventCreateWizard2Fragment extends AbstractEventWizardChild {
         calendar.setTime(new Date());
         calendar.add(Calendar.DAY_OF_YEAR, 1);
 
-        if (null != chosenDate) {
-            calendar.setTime(chosenDate);
+        if (null != startDate) {
+            calendar.setTime(startDate);
         }
 
-        updateChosenDate();
+        updateDate(0);
+        updateDate(1);
     }
 
-    private void updateChosenDate() {
-        startDateTV.setText(sdf.format(calendar.getTime()));
+    private void updateDate(int start_end) {
+        if(start_end == 0)
+            tvStartDate.setText(sdf.format(calendar.getTime()));
+        if(start_end == 1){
+            tvEndDate.setText(sdf.format(calendar.getTime()));
+        }
     }
 
     @Override
     public void onNext() {
         super.onNext();
 
-        event.setStartDate(chosenDate.getTime());
+        event.setStartDate(startDate.getTime());
+        event.setEndDate(endDate.getTime());
     }
 
-    void showDatePicker() {
-        if (null == datePicker) {
-            DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, month, dayOfMonth) -> {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                chosenDate = calendar.getTime();
-                updateChosenDate();
-            };
+    void showDatePicker(int start_end) {
+        if (start_end == 0) {
+            if (null == startDatePicker) {
+                DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, month, dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    startDate = calendar.getTime();
+                    updateDate(0);
+                };
 
-            datePicker = new DatePickerDialog(getContext(), onDateSetListener,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH));
+                startDatePicker = new DatePickerDialog(getContext(), onDateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
 
 
-            //reset
-            datePicker.setButton(DialogInterface.BUTTON_NEUTRAL, getContext().getString(R.string.reset), (dialog, which) -> {
-                chosenDate = null;
-                updateChosenDate();
-            });
+                //reset
+                startDatePicker.setButton(DialogInterface.BUTTON_NEUTRAL, getContext().getString(R.string.reset), (dialog, which) -> {
+                    startDate = null;
+                    updateDate(0);
+                });
+            }
+
+            startDatePicker.show();
         }
+        else if (start_end == 1) {
+            if (null == endDatePicker) {
+                DatePickerDialog.OnDateSetListener onDateSetListener = (view, year, month, dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    startDate = calendar.getTime();
+                    updateDate(1);
+                };
 
-        datePicker.show();
+                endDatePicker = new DatePickerDialog(getContext(), onDateSetListener,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+
+
+                //reset
+                endDatePicker.setButton(DialogInterface.BUTTON_NEUTRAL, getContext().getString(R.string.reset), (dialog, which) -> {
+                    endDate = null;
+                    updateDate(1);
+                });
+            }
+
+            endDatePicker.show();
+        }
     }
 }
