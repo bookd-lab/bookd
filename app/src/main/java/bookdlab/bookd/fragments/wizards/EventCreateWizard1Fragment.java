@@ -52,8 +52,8 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
 
     @Override
     public void onNext() {
-        super.onNext();
-
         event.setName(String.valueOf(eventNameEdt.getText()));
+
+        super.onNext();
     }
 }

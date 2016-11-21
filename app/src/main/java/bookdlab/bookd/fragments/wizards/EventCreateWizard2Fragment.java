@@ -89,9 +89,9 @@ public class EventCreateWizard2Fragment extends AbstractEventWizardChild {
 
     @Override
     public void onNext() {
-        super.onNext();
-
         event.setStartDate(chosenDate.getTime());
+
+        super.onNext();
     }
 
     void showDatePicker() {
