@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MainActivity" android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".activities.MainActivity" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.BusinessActivity" />
         <activity android:name=".activities.EventCreateActivity" />
     </application>

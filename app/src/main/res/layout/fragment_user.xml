@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan|adjustResize">
 
     <RelativeLayout
         android:id="@+id/userContainer"
@@ -82,8 +83,7 @@
         android:orientation="vertical"
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:focusable="true"
-        android:focusableInTouchMode ="true"
+        android:id="@+id/containerAbout"
         android:clickable="true">
         <TextView
             android:layout_width="wrap_content"
@@ -94,19 +94,20 @@
             android:paddingLeft="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
-            android:text="@string/user_about"/>
+            android:text="@string/user_about"
+            android:drawableRight="@drawable/edit"
+            android:drawableTint="@color/secondaryText"/>
         <ViewSwitcher
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/vsAbout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:clickable="true">
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/tvAbout"
-                android:clickable="true"
-                android:onClick="AboutClicked"
                 android:textColor="@color/secondaryText"
                 android:textSize="@dimen/size_subheading"
                 android:paddingLeft="@dimen/spacing_normal"
@@ -137,9 +138,9 @@
         android:orientation="vertical"
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:focusable="true"
-        android:focusableInTouchMode ="true"
-        android:clickable="true">
+        android:id="@+id/containerLocation"
+        android:clickable="true"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,19 +150,20 @@
             android:paddingLeft="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
-            android:text="@string/user_location"/>
+            android:text="@string/user_location"
+            android:drawableRight="@drawable/edit"
+            android:drawableTint="@color/secondaryText"/>
         <ViewSwitcher
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/vsLocation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:clickable="true">
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/tvLocation"
-                android:clickable="true"
-                android:onClick="LocationClicked"
                 android:textColor="@color/secondaryText"
                 android:textSize="@dimen/size_subheading"
                 android:paddingLeft="@dimen/spacing_normal"
@@ -191,8 +193,7 @@
         android:orientation="vertical"
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:focusable="true"
-        android:focusableInTouchMode ="true"
+        android:id="@+id/containerPhoneNumber"
         android:clickable="true">
         <TextView
             android:layout_width="wrap_content"
@@ -203,19 +204,20 @@
             android:paddingLeft="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
-            android:text="@string/user_phonenumber"/>
+            android:text="@string/user_phonenumber"
+            android:drawableRight="@drawable/edit"
+            android:drawableTint="@color/secondaryText"/>
         <ViewSwitcher
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/vsPhoneNumber"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:clickable="true">
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/tvPhoneNumber"
-                android:clickable="true"
-                android:onClick="PhoneNumberClicked"
                 android:textColor="@color/secondaryText"
                 android:textSize="@dimen/size_subheading"
                 android:paddingLeft="@dimen/spacing_normal"
@@ -240,5 +242,3 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
 </LinearLayout>
-
-
