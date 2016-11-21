@@ -16,7 +16,6 @@ import com.greenfrvr.hashtagview.HashtagView;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import bookdlab.bookd.R;
@@ -96,11 +95,10 @@ public class EventActivity extends AppCompatActivity {
     private void initData(){
         tvEventName.setText(eventData.getName());
         tvDate.setText(eventData.getDates());
-        String [] eventTags = eventData.getTags();
+        List<String> eventTagsList = eventData.getTags();
 
         //List<String> data = Arrays.asList("DJs", "Photographers", "Caterers");
-        if(eventTags != null){
-            List<String> eventTagsList = Arrays.asList(eventTags);
+        if(eventTagsList != null){
             hashTVTags.setData(eventTagsList);
         }
         /*String formattedTags = "";

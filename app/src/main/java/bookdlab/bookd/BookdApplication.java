@@ -7,7 +7,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import bookdlab.bookd.models.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by akhmedovi on 11/10/16.
@@ -23,11 +22,11 @@ public class BookdApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+        /*CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/lineto-circular-pro-medium.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
-        );
+        );*/
     }
 
     public static Context getContext() {

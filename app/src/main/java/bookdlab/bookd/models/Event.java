@@ -2,6 +2,8 @@ package bookdlab.bookd.models;
 
 import org.parceler.Parcel;
 
+import java.util.List;
+
 /**
  * Created by akhmedovi on 11/12/16.
  * Copyright - 2016
@@ -18,7 +20,11 @@ public class Event {
     String backgroundURL;   // Optional: If we want to show a background URL
     String dates;           // ? Do we need this?
     String color;
-    String[] tags;
+
+
+
+    //String[] tags; - removed, not Firebase friendly
+    List<String> tags;
 
 
     public Event() {
@@ -88,11 +94,12 @@ public class Event {
         this.color = color;
     }
 
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
+
 }
