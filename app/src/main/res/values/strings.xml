@@ -61,7 +61,7 @@
     <string name="user_location">Location</string>
     <string name="user_about">About</string>
     <string name="user_phonenumber">Phone Number</string>
-    <string name="dollar_sign">$</string>
+    <string name="dollar_sign">$$$$$</string>
     <string name="sample_rating">1.0</string>
     <string name="call">Call</string>
     <string name="featured_review">Featured Review</string>
@@ -76,5 +76,6 @@
     <string name="end_date">Set End Date</string>
 
     <string name="no_bookings_yet">No Bookings Added</string>
+    <string name="highest_pricing">$$$$$</string>
 
 </resources>

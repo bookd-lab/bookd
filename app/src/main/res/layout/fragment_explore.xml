@@ -51,6 +51,7 @@
         tools:visibility="visible">
 
         <bookdlab.bookd.views.AdvancedSearchView
+            android:id="@+id/advancedSearchContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

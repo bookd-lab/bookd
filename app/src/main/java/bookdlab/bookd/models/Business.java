@@ -222,6 +222,8 @@ public class Business {
     public String toString() {
         return "Business{" +
                 "id='" + id + '\'' +
+                ", rating=" + rating +
+                ", price=" + price +
                 ", owner='" + owner + '\'' +
                 ", name='" + name + '\'' +
                 ", about='" + about + '\'' +
@@ -232,10 +234,8 @@ public class Business {
                 ", servingRadius=" + servingRadius +
                 ", imageURL='" + imageURL + '\'' +
                 ", businessURL='" + businessURL + '\'' +
-                ", rating=" + rating +
                 ", reviewCount=" + reviewCount +
                 ", instantBook=" + instantBook +
-                ", price=" + price +
                 ", phone='" + phone + '\'' +
                 ", distance='" + distance + '\'' +
                 ", logoURL='" + logoURL + '\'' +

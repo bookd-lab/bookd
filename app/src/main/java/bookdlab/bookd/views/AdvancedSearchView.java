@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class AdvancedSearchView extends RelativeLayout {
 
     public enum SortByField {
-        RATING, PRICE, DISTANCE
+        RATING, PRICE
     }
 
     private static final String TAG = "AdvancedSearchView";
@@ -42,8 +42,6 @@ public class AdvancedSearchView extends RelativeLayout {
     TextView ratingIndicator;
     @BindView(R.id.byRating)
     RadioButton byRating;
-
-    SortByField sortByField = SortByField.RATING;
 
     public AdvancedSearchView(Context context) {
         super(context);
@@ -114,8 +112,6 @@ public class AdvancedSearchView extends RelativeLayout {
         searchButton.setOnClickListener((v) -> {
             if (null != listener) {
                 listener.onSearch();
-
-
             }
         });
     }
@@ -126,5 +122,21 @@ public class AdvancedSearchView extends RelativeLayout {
 
     public interface OnSearchListener {
         public void onSearch();
+    }
+
+    public double getRating() {
+        return 5 * (ratingSeekBar.getProgress() / 100.0d);
+    }
+
+    public int getPrice() {
+        return 1 + (priceSeekBar.getProgress() / 25);
+    }
+
+    public SortByField getSortByField() {
+        if (byRating.isChecked()) {
+            return SortByField.RATING;
+        }
+
+        return SortByField.PRICE;
     }
 }

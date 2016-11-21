@@ -6,7 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -34,19 +33,19 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
-import bookdlab.bookd.interfaces.NearbyBusinessCallback;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import bookdlab.bookd.ui.UIUtils;
+import bookdlab.bookd.views.AdvancedSearchView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -67,6 +66,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     SearchEditText searchEdt;
     @BindView(R.id.advancedSearch)
     View advancedSearch;
+    @BindView(R.id.advancedSearchContent)
+    AdvancedSearchView advancedSearchContent;
     @BindView(R.id.searchButton)
     Button searchButton;
     @BindView(R.id.loadingIndicatorView)
@@ -124,8 +125,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
             }
         });
 
-        searchButton.setOnClickListener((v -> performSearch()));
-
+        advancedSearchContent.setListener(() -> performSearch());
         UIUtils.hideSoftInput(getActivity());
 
         return view;
@@ -138,7 +138,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     private void performSearch() {
         hideSearchUI();
-        //TODO:
+        queryBusinesses(lastAddress.getLocality());
     }
 
     @Override
@@ -212,15 +212,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                 }
             }
 
-            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), DEFAULT_RADIUS, businesses -> {
-                Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
-                for (Business business : businesses) {
-                    Log.d(TAG, "onNearbyBusinessesFound: " + business);
-                }
-
-
-            });
-
+            queryBusinesses(lastAddress.getLocality());
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred in onConnected: ", e);
             e.printStackTrace();
@@ -228,6 +220,10 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void queryBusinesses(String locality) {
+        recyclerView.setVisibility(View.GONE);
+        loadingIndicatorView.setVisibility(View.VISIBLE);
+        loadingIndicatorView.show();
+
         Queries queries = new Queries();
         queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
             @Override
@@ -243,6 +239,25 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                         Business business = child.getValue(Business.class);
                         businessList.add(business);
                     }
+
+                    List<Business> newList = new ArrayList<>();
+                    for (Business b : businessList) {
+                        if (advancedSearchContent.getRating() <= b.getRating() && advancedSearchContent.getPrice() >= b.getPrice()) {
+                            newList.add(b);
+                        }
+                    }
+
+                    businessList.clear();
+                    businessList.addAll(newList);
+
+                    Collections.sort(businessList, (o1, o2) -> {
+                        if (advancedSearchContent.getSortByField() == AdvancedSearchView.SortByField.PRICE) {
+                            return o2.getPrice() - o1.getPrice();
+                        }
+
+                        return o2.getRating() - o1.getRating() > 0 ? 1 : -1;
+                    });
+
 
                     businessAdapter.notifyDataSetChanged();
 
