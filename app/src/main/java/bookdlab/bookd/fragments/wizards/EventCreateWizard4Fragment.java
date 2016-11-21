@@ -45,6 +45,13 @@ public class EventCreateWizard4Fragment extends AbstractEventWizardChild {
         super.onViewCreated(view, savedInstanceState);
 
         nextButton.setText(R.string.button_done);
-        nextButton.setCompoundDrawables(null, null, ResourcesCompat.getDrawable(getResources(), R.drawable.done, null), null);
+        nextButton.setCompoundDrawablesWithIntrinsicBounds(null, null, ResourcesCompat.getDrawable(getResources(), R.drawable.done, getActivity().getTheme()), null);
+    }
+
+    @Override
+    public void onNext() {
+        //any pre saving actions...
+
+        super.onNext();
     }
 }

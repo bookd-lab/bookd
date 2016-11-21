@@ -63,8 +63,8 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
 
     @Override
     public void onNext() {
-        super.onNext();
-
         event.setTags(tagsEdt.getText().toString().split(" "));
+
+        super.onNext();
     }
 }
