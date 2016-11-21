@@ -122,7 +122,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         });
 
         searchButton.setOnClickListener((v -> performSearch()));
-        new Handler().postDelayed(this::hideSearchUI, 300);
+
+        UIUtils.hideSoftInput(getActivity());
 
         return view;
     }

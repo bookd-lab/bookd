@@ -13,7 +13,7 @@ public class AnimUtils {
     private static final int DEFAULT_ANIM_DURATION = 500;
 
     public static void fadeIn(View view) {
-        if (view.getAlpha() == 1) {
+        if (view.getVisibility() == View.VISIBLE) {
             return;
         }
 
@@ -42,6 +42,10 @@ public class AnimUtils {
     }
 
     public static void fadeOut(View view) {
+        if(view.getVisibility() == View.GONE) {
+            return;
+        }
+
         view.animate().alpha(0).setDuration(DEFAULT_ANIM_DURATION)
                 .setListener(new Animator.AnimatorListener() {
                     @Override

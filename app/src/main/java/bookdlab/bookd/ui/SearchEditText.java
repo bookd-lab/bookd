@@ -6,7 +6,6 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -70,12 +69,6 @@ public class SearchEditText extends RelativeLayout {
         addView(cancelButton);
 
         searchEdt.setOnClickListener((v) -> listener.onOpen());
-        searchEdt.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                listener.onOpen();
-            }
-        });
-
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
