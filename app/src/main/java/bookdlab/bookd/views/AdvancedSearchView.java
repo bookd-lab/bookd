@@ -1,9 +1,7 @@
 package bookdlab.bookd.views;
 
 import android.content.Context;
-import android.icu.math.BigDecimal;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -24,6 +22,10 @@ import butterknife.ButterKnife;
 
 public class AdvancedSearchView extends RelativeLayout {
 
+    public enum SortByField {
+        RATING, PRICE, DISTANCE
+    }
+
     private static final String TAG = "AdvancedSearchView";
 
     OnSearchListener listener;
@@ -40,6 +42,8 @@ public class AdvancedSearchView extends RelativeLayout {
     TextView ratingIndicator;
     @BindView(R.id.byRating)
     RadioButton byRating;
+
+    SortByField sortByField = SortByField.RATING;
 
     public AdvancedSearchView(Context context) {
         super(context);
@@ -109,8 +113,9 @@ public class AdvancedSearchView extends RelativeLayout {
 
         searchButton.setOnClickListener((v) -> {
             if (null != listener) {
-                //TODO: Aggregate search data
                 listener.onSearch();
+
+
             }
         });
     }

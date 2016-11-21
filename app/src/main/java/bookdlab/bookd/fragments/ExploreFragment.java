@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 public class ExploreFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private static final Double DEFAULT_RADIUS = 30.0;
     private List<Business> businessList;
     private BusinessAdapter businessAdapter;
 
@@ -83,13 +84,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        lastLocationFetched = new Location("");
-        lastLocationFetched.setLatitude(37.4530);
-        lastLocationFetched.setLongitude(122.1817);
-        lastAddress = new Address(Locale.US);
-        lastAddress.setLocality("Menlo Park");
-
         initGoogleLocationApi();
     }
 
@@ -144,8 +138,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     private void performSearch() {
         hideSearchUI();
-
-
+        //TODO:
     }
 
     @Override
@@ -188,13 +181,11 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
         if (lastLocationFetched != null) {
             fetchDataByLocation();
-            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 3.0, new NearbyBusinessCallback() {
-                @Override
-                public void onNearbyBusinessesFound(ArrayList<Business> businesses) {
-                    Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
-                    for (Business business : businesses) {
-                        Log.d(TAG, "onNearbyBusinessesFound: " + business);
-                    }
+
+            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), DEFAULT_RADIUS, businesses -> {
+                Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
+                for (Business business : businesses) {
+                    Log.d(TAG, "onNearbyBusinessesFound: " + business);
                 }
             });
         } else {
@@ -221,7 +212,15 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                 }
             }
 
-            queryBusinesses(lastAddress.getLocality());
+            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), DEFAULT_RADIUS, businesses -> {
+                Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
+                for (Business business : businesses) {
+                    Log.d(TAG, "onNearbyBusinessesFound: " + business);
+                }
+
+
+            });
+
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred in onConnected: ", e);
             e.printStackTrace();
@@ -244,8 +243,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                         Business business = child.getValue(Business.class);
                         businessList.add(business);
                     }
-
-                    
 
                     businessAdapter.notifyDataSetChanged();
 
