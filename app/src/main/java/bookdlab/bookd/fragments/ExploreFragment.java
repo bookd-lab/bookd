@@ -85,6 +85,13 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        lastLocationFetched = new Location("");
+        lastLocationFetched.setLatitude(37.4530);
+        lastLocationFetched.setLongitude(122.1817);
+        lastAddress = new Address(Locale.US);
+        lastAddress.setLocality("Menlo Park");
+
         initGoogleLocationApi();
     }
 
@@ -125,7 +132,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
             }
         });
 
-        advancedSearchContent.setListener(() -> performSearch());
+        advancedSearchContent.setListener(this::performSearch);
         UIUtils.hideSoftInput(getActivity());
 
         return view;
