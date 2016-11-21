@@ -10,9 +10,13 @@ import android.view.View;
 
 public class AnimUtils {
 
-    static final int DEFAULT_ANIM_DURATION = 500;
+    private static final int DEFAULT_ANIM_DURATION = 500;
 
     public static void fadeIn(View view) {
+        if (view.getAlpha() == 1) {
+            return;
+        }
+
         view.setAlpha(0);
         view.setVisibility(View.VISIBLE);
 

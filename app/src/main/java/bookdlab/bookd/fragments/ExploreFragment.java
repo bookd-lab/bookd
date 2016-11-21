@@ -76,12 +76,11 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
-    private Random rand;
+    private Address lastAddress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rand = new Random();
         initGoogleLocationApi();
     }
 
@@ -169,6 +168,11 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
             return;
         }
 
+        if (null != lastLocationFetched) {
+            fetchDataByLocation();
+            return;
+        }
+
         lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (lastLocationFetched != null) {
@@ -187,12 +191,17 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private void fetchDataByLocation() {
         Geocoder geo = new Geocoder(this.getActivity().getApplicationContext(), Locale.getDefault());
         try {
-            //TODO: This is a network call, has to be taken out of here
-            List<Address> addresses = geo.getFromLocation(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 1);
-            for (Address address : addresses) {
-                Log.d(TAG, "onConnected: address is: " + address.getLocality());
-                queryBusinesses(address.getLocality());
+
+            if (lastAddress == null) {
+                //TODO: This is a network call, has to be taken out of here
+                List<Address> addresses = geo.getFromLocation(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 1);
+                lastAddress = addresses.get(0);
+                if (addresses.isEmpty()) {
+                    return;
+                }
             }
+
+            queryBusinesses(lastAddress.getLocality());
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred in onConnected: ", e);
             e.printStackTrace();
