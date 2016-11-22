@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -107,6 +109,21 @@ public class QueryHelper {
                 }
             });
         }
+    }
 
+    public static void removeEventWithId(String eventId, OnSuccessListener<Void> listener){
+        Queries queries = new Queries();
+        queries.getBookedBusinessesForEvent(eventId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.getRef().setValue(null);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        FirebaseDatabase.getInstance().getReference().child("events").child(eventId).removeValue().addOnSuccessListener(listener);
     }
 }
