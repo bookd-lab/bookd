@@ -2,7 +2,6 @@ package bookdlab.bookd.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,12 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.activities.EventActivity;
 import bookdlab.bookd.activities.EventCreateActivity;
 import bookdlab.bookd.models.Event;
+import bookdlab.bookd.ui.UIUtils;
 import bookdlab.bookd.views.DefaultViewHolder;
 import bookdlab.bookd.views.EventItemViewHolder;
 
@@ -66,8 +67,9 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             EventItemViewHolder h = (EventItemViewHolder) rh;
             Event event = eventList.get(position - 1);
             h.eventTitle.setText(event.getName());
-            h.datesInfo.setText(event.getDates());
-            h.backgroundOverlay.setBackgroundColor(Color.parseColor(event.getColor()));
+            h.datesInfo.setText(event.getStartDate() + " to " + event.getEndDate());
+            h.backgroundOverlay.setBackgroundColor(UIUtils.getMaterialColor(BookdApplication.getContext()));
+            //h.backgroundOverlay.setBackgroundColor(Color.parseColor(event.getColor()));
 
             h.rootView.setOnClickListener((v) -> {
                     Intent intent = new Intent(activity, EventActivity.class);

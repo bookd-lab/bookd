@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <item name="red_A100" type="color">#ff7997</item>
+        <item name="pink_A100" type="color">#ff80ab</item>
+        <item name="purple_A100" type="color">#ea80fc</item>
+        <item name="deep_purple_A100" type="color">#b388ff</item>
+        <item name="indigo_A100" type="color">#8c9eff</item>
+        <item name="blue_A100" type="color">#a6baff</item>
+        <item name="light_blue_A100" type="color">#80d8ff</item>
+        <item name="cyan_A100" type="color">#84ffff</item>
+        <item name="teal_A100" type="color">#a7ffeb</item>
+        <item name="green_A100" type="color">#a2f78d</item>
+        <item name="light_green_A100" type="color">#ccff90</item>
+        <item name="lime_A100" type="color">#f4ff81</item>
+        <item name="yellow_A100" type="color">#ffff8d</item>
+        <item name="orange_A100" type="color">#ffd180</item>
+        <item name="deep_orange_A100" type="color">#ff9e80</item>
+
+    <integer-array name="androidColors">
+        <item>@color/red_A100</item>
+        <item>@color/pink_A100</item>
+        <item>@color/purple_A100</item>
+        <item>@color/purple_A100</item>
+        <item>@color/deep_purple_A100</item>
+        <item>@color/indigo_A100</item>
+        <item>@color/blue_A100</item>
+        <item>@color/light_blue_A100</item>
+        <item>@color/cyan_A100</item>
+        <item>@color/teal_A100</item>
+        <item>@color/green_A100</item>
+        <item>@color/light_green_A100</item>
+        <item>@color/lime_A100</item>
+        <item>@color/yellow_A100</item>
+        <item>@color/orange_A100</item>
+        <item>@color/deep_orange_A100</item>
+    </integer-array>
+
+</resources>

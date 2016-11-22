@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="@string/my_wedding"
-            android:textColor="@color/transparent_white_80"
+            android:textColor="@color/secondaryText"
             android:textSize="15sp" />
 
         <TextView
