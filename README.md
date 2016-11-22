@@ -10,6 +10,11 @@ Now imagine doing the exact same process to find videographers, decorators, cake
 
 In comes *Bookd*, matching those in the one time gig industry looking to get hired for their work with event planners looking to find the right person to get the job done.
 
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='https://github.com/bookd-lab/bookd/blob/master/bookd_walkthrough_nov21.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
 
 ## User Stories
 
@@ -46,13 +51,6 @@ The following **optional** features are implemented:
 	* [ ] Accept and decline work
 	* [ ] Provide quotes to event planners
 	* [ ] Pay to be the sponsored gig-provider of the day
-
-
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-<img src='./PreScreen.png' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
 
 
 ## Notes
