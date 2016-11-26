@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class AdvancedSearchView extends RelativeLayout {
 
     public enum SortByField {
-        RATING, PRICE
+        rating, price
     }
 
     private static final String TAG = "AdvancedSearchView";
@@ -134,9 +134,9 @@ public class AdvancedSearchView extends RelativeLayout {
 
     public SortByField getSortByField() {
         if (byRating.isChecked()) {
-            return SortByField.RATING;
+            return SortByField.rating;
         }
 
-        return SortByField.PRICE;
+        return SortByField.price;
     }
 }

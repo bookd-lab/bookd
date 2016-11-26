@@ -29,6 +29,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
@@ -39,6 +42,7 @@ import java.util.Locale;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
+import bookdlab.bookd.api.BookdApiClientFactory;
 import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
@@ -145,7 +149,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     private void performSearch() {
         hideSearchUI();
-        queryBusinesses(lastAddress.getLocality());
+        queryBusinesses(lastAddress.getLocality(), advancedSearchContent.getSortByField());
     }
 
     @Override
@@ -219,77 +223,98 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                 }
             }
 
-            queryBusinesses(lastAddress.getLocality());
+            queryBusinesses(lastAddress.getLocality(), AdvancedSearchView.SortByField.rating);
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred in onConnected: ", e);
             e.printStackTrace();
         }
     }
 
-    private void queryBusinesses(String locality) {
+    private void queryBusinesses(String locality, AdvancedSearchView.SortByField sortBy) {
         recyclerView.setVisibility(View.GONE);
         loadingIndicatorView.setVisibility(View.VISIBLE);
         loadingIndicatorView.show();
 
-        Queries queries = new Queries();
-        queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
+        String querySortBy = sortBy.name();
+
+        BookdApiClientFactory.me().getBusinesses(querySortBy).enqueue(new Callback<List<Business>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                if (!children.iterator().hasNext()) {
-                    Log.d(TAG, "No businesses in this locality");
-                } else {
-                    Log.d(TAG, "Businesses found in locality");
-                    businessList.clear();
+            public void success(Result<List<Business>> result) {
+                businessList.clear();
+                businessList.addAll(result.data);
+                businessAdapter.notifyDataSetChanged();
 
-                    for (DataSnapshot child : children) {
-                        Business business = child.getValue(Business.class);
-                        businessList.add(business);
-                    }
-
-                    List<Business> newList = new ArrayList<>();
-                    for (Business b : businessList) {
-                        if (advancedSearchContent.getRating() <= b.getRating() && advancedSearchContent.getPrice() >= b.getPrice()) {
-                            newList.add(b);
-                        }
-                    }
-
-                    businessList.clear();
-                    businessList.addAll(newList);
-
-                    Collections.sort(businessList, (o1, o2) -> {
-                        if (advancedSearchContent.getSortByField() == AdvancedSearchView.SortByField.PRICE) {
-                            return o2.getPrice() - o1.getPrice();
-                        }
-
-                        return o2.getRating() - o1.getRating() > 0 ? 1 : -1;
-                    });
-
-
-                    businessAdapter.notifyDataSetChanged();
-
-                    loadingIndicatorView.hide();
-                    recyclerView.setVisibility(View.VISIBLE);
-                }
+                loadingIndicatorView.hide();
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG, databaseError.getMessage());
+            public void failure(TwitterException exception) {
+                Log.e(TAG, exception.getMessage(), exception);
+
+                loadingIndicatorView.hide();
             }
         });
+
+//        Queries queries = new Queries();
+//        queries.getBusinessInArea(locality).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//                if (!children.iterator().hasNext()) {
+//                    Log.d(TAG, "No businesses in this locality");
+//                } else {
+//                    Log.d(TAG, "Businesses found in locality");
+//                    businessList.clear();
+//
+//                    for (DataSnapshot child : children) {
+//                        Business business = child.getValue(Business.class);
+//                        businessList.add(business);
+//                    }
+//
+//                    List<Business> newList = new ArrayList<>();
+//                    for (Business b : businessList) {
+//                        if (advancedSearchContent.getRating() <= b.getRating() && advancedSearchContent.getPrice() >= b.getPrice()) {
+//                            newList.add(b);
+//                        }
+//                    }
+//
+//                    businessList.clear();
+//                    businessList.addAll(newList);
+//
+//                    Collections.sort(businessList, (o1, o2) -> {
+//                        if (advancedSearchContent.getSortByField() == AdvancedSearchView.SortByField.price) {
+//                            return o2.getPrice() - o1.getPrice();
+//                        }
+//
+//                        return o2.getRating() - o1.getRating() > 0 ? 1 : -1;
+//                    });
+//
+//
+//                    businessAdapter.notifyDataSetChanged();
+//
+//                    loadingIndicatorView.hide();
+//                    recyclerView.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e(TAG, databaseError.getMessage());
+//            }
+//        });
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "Connection to Google API suspended. Querying in Menlo Park");
-        queryBusinesses("Menlo Park");
+        queryBusinesses("Menlo Park", AdvancedSearchView.SortByField.rating);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "Connection to Google API failed. Querying in Menlo Park");
-        queryBusinesses("Menlo Park");
+        queryBusinesses("Menlo Park", AdvancedSearchView.SortByField.rating);
     }
 
 
