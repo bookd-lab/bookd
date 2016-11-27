@@ -15,6 +15,11 @@ import retrofit2.http.Query;
 public interface BookdApiClient {
 
     @GET("/business")
-    Call<List<Business>> getBusinesses(@Query("sort") String sortBy);
-
+    Call<List<Business>> getBusinesses(
+            @Query("price") int priceMax,
+            @Query("rating") double ratingMin,
+            @Query("page") int page,
+            @Query("limit") int limit,
+            @Query("sort") String sortBy
+    );
 }

@@ -3,6 +3,7 @@ package bookdlab.bookd.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -30,6 +31,8 @@ public class AdvancedSearchView extends RelativeLayout {
 
     OnSearchListener listener;
 
+    @BindView(R.id.resetButton)
+    Button resetButton;
     @BindView(R.id.searchButton)
     Button searchButton;
     @BindView(R.id.priceSeekBar)
@@ -113,6 +116,12 @@ public class AdvancedSearchView extends RelativeLayout {
             if (null != listener) {
                 listener.onSearch();
             }
+        });
+
+        resetButton.setOnClickListener(v -> {
+            priceSeekBar.setProgress(100); //max include
+            ratingSeekBar.setProgress(0); //min set
+            byRating.setChecked(true);
         });
     }
 
