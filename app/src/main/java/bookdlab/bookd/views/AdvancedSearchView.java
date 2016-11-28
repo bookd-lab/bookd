@@ -3,6 +3,7 @@ package bookdlab.bookd.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -23,13 +24,15 @@ import butterknife.ButterKnife;
 public class AdvancedSearchView extends RelativeLayout {
 
     public enum SortByField {
-        RATING, PRICE
+        rating, price
     }
 
     private static final String TAG = "AdvancedSearchView";
 
     OnSearchListener listener;
 
+    @BindView(R.id.resetButton)
+    Button resetButton;
     @BindView(R.id.searchButton)
     Button searchButton;
     @BindView(R.id.priceSeekBar)
@@ -114,6 +117,12 @@ public class AdvancedSearchView extends RelativeLayout {
                 listener.onSearch();
             }
         });
+
+        resetButton.setOnClickListener(v -> {
+            priceSeekBar.setProgress(100); //max include
+            ratingSeekBar.setProgress(0); //min set
+            byRating.setChecked(true);
+        });
     }
 
     public void setListener(OnSearchListener listener) {
@@ -134,9 +143,9 @@ public class AdvancedSearchView extends RelativeLayout {
 
     public SortByField getSortByField() {
         if (byRating.isChecked()) {
-            return SortByField.RATING;
+            return SortByField.rating;
         }
 
-        return SortByField.PRICE;
+        return SortByField.price;
     }
 }

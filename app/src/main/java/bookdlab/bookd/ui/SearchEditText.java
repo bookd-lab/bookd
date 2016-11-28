@@ -90,6 +90,10 @@ public class SearchEditText extends RelativeLayout {
         }));
     }
 
+    public String getQuery() {
+        return searchEdt.getText().toString().trim();
+    }
+
     public void setListener(InteractionListener listener) {
         this.listener = listener;
     }
