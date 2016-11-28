@@ -39,10 +39,7 @@ public class EventsFragment extends Fragment {
     private List<Event> eventList;
 
     User currentUser;
-
     private static final String TAG = "EventsFragment";
-    //TODO: inject this properly
-    private EventsClient eventsClient = new EventsClient();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +88,7 @@ public class EventsFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                    if (!children.iterator().hasNext()) {
-                        recyclerView.setVisibility(View.GONE);
-                    } else {
+                    if (children.iterator().hasNext()) {
                         eventList.clear();
                         recyclerView.setVisibility(View.VISIBLE);
                         for (DataSnapshot child : children) {

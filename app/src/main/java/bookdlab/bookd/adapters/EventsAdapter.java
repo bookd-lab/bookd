@@ -68,7 +68,7 @@ public class EventsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Event event = eventList.get(position - 1);
             h.eventTitle.setText(event.getName());
             h.datesInfo.setText(event.getStartDate() + " to " + event.getEndDate());
-            h.backgroundOverlay.setBackgroundColor(UIUtils.getMaterialColor(BookdApplication.getContext()));
+            h.backgroundOverlay.setBackgroundColor(UIUtils.getMaterialColor(activity));
             //h.backgroundOverlay.setBackgroundColor(Color.parseColor(event.getColor()));
 
             h.rootView.setOnClickListener((v) -> {

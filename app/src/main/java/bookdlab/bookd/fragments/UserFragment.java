@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
+import com.raizlabs.android.dbflow.StringUtils;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
@@ -29,24 +30,37 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by rubab.uddin on 11/19/2016.
  */
 
-public class UserFragment extends Fragment{
+public class UserFragment extends Fragment {
 
-    @BindView(R.id.tvUsername) TextView tvUsername;
-    @BindView(R.id.tvMemberSince) TextView tvMemberSince;
-    @BindView(R.id.tvEmail) TextView tvEmail;
-    @BindView(R.id.ivUserProfileImage) CircleImageView ivUserProfileImage;
+    @BindView(R.id.tvUsername)
+    TextView tvUsername;
+    @BindView(R.id.tvMemberSince)
+    TextView tvMemberSince;
+    @BindView(R.id.tvEmail)
+    TextView tvEmail;
+    @BindView(R.id.ivUserProfileImage)
+    CircleImageView ivUserProfileImage;
 
-    @BindView(R.id.vsAbout) ViewSwitcher vsAbout;
-    @BindView(R.id.tvAbout) TextView tvAbout;
-    @BindView(R.id.etAbout) EditText etAbout;
+    @BindView(R.id.vsAbout)
+    ViewSwitcher vsAbout;
+    @BindView(R.id.tvAbout)
+    TextView tvAbout;
+    @BindView(R.id.etAbout)
+    EditText etAbout;
 
-    @BindView(R.id.vsLocation) ViewSwitcher vsLocation;
-    @BindView(R.id.tvLocation) TextView tvLocation;
-    @BindView(R.id.etLocation) EditText etLocation;
+    @BindView(R.id.vsLocation)
+    ViewSwitcher vsLocation;
+    @BindView(R.id.tvLocation)
+    TextView tvLocation;
+    @BindView(R.id.etLocation)
+    EditText etLocation;
 
-    @BindView(R.id.vsPhoneNumber) ViewSwitcher vsPhoneNumber;
-    @BindView(R.id.tvPhoneNumber) TextView tvPhoneNumber;
-    @BindView(R.id.etPhoneNumber) EditText etPhoneNumber;
+    @BindView(R.id.vsPhoneNumber)
+    ViewSwitcher vsPhoneNumber;
+    @BindView(R.id.tvPhoneNumber)
+    TextView tvPhoneNumber;
+    @BindView(R.id.etPhoneNumber)
+    EditText etPhoneNumber;
 
     User user = BookdApplication.getCurrentUser(); //get the actual logged in user
     Context mContext;
@@ -74,13 +88,24 @@ public class UserFragment extends Fragment{
 
         ButterKnife.bind(this, view);
 
-        tvUsername.setText(user.getUsername());
-        tvMemberSince.setText("Member since " + user.getMemberSince());
+        String memberSince = "Member since " + user.getMemberSince();
+
+        if (StringUtils.isNotNullOrEmpty(user.getUsername())) {
+            tvUsername.setText(user.getUsername());
+        } else {
+            tvUsername.setText(R.string.unknown);
+        }
+
+        tvMemberSince.setText(memberSince);
         tvEmail.setText(user.getEmail());
-        Glide.with(this).load(user.getProfileImageURL()).into(ivUserProfileImage);
         tvAbout.setText(user.getAbout());
         tvLocation.setText(user.getAddress());
         tvPhoneNumber.setText(user.getPhoneNumber());
+
+        Glide.with(this)
+                .load(user.getProfileImageURL())
+                .placeholder(R.drawable.ic_account_circle_black_48px)
+                .into(ivUserProfileImage);
 
         return view;
     }
@@ -92,10 +117,11 @@ public class UserFragment extends Fragment{
     }
 
 
-
-    public void GenericViewSwitcher(ViewSwitcher vs, EditText et, TextView tv){
+    public void GenericViewSwitcher(ViewSwitcher vs, EditText et, TextView tv) {
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+
         vs.showNext();
+
         et.setText(tv.getText().toString());
         et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,11 +140,11 @@ public class UserFragment extends Fragment{
             public void afterTextChanged(Editable s) {
                 String newField = et.getText().toString();
 
-                if(et.getId() == R.id.etAbout)
+                if (et.getId() == R.id.etAbout)
                     user.setAbout(newField);
-                else if(et.getId() == R.id.etLocation)
+                else if (et.getId() == R.id.etLocation)
                     user.setAddress(newField);
-                else if(et.getId() == R.id.etPhoneNumber)
+                else if (et.getId() == R.id.etPhoneNumber)
                     user.setPhoneNumber(newField);
 
                 tv.setText(newField);

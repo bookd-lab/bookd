@@ -80,5 +80,6 @@
     <string name="book">Book</string>
     <string name="stripe_publishable_key">pk_live_aNtxbVn5nOGX8FAHkR9uQppV</string>
     <string name="stripe_version">2</string>
+    <string name="unknown">Unknown</string>
 
 </resources>

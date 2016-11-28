@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mAuthStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                Log.d(TAG, "setupAuthStateListener: "+mUsersDatabaseReference.child(user.getUid()).getKey());
+                Log.d(TAG, "setupAuthStateListener: " + mUsersDatabaseReference.child(user.getUid()).getKey());
                 QueryHelper.isUserPresentInDatabase(user.getEmail(), new UserCheckCallback() {
                     @Override
                     public void userIsPresent(User signedInUser) {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         signedInUser.setId(userRef.getKey());
                         signedInUser.setUsername(user.getDisplayName());
 
-                        if(user.getProviderData().size() > 0){
+                        if (user.getProviderData().size() > 0) {
                             signedInUser.setEmail(user.getProviderData().get(0).getEmail());
                         } else {
                             signedInUser.setEmail(user.getEmail());
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         signedInUser.setMemberSince(date);
                         signedInUser.setLastSeenTime(date);
 
-                        if(user.getPhotoUrl() != null){
+                        if (user.getPhotoUrl() != null) {
                             signedInUser.setProfileImageURL(user.getPhotoUrl().toString());
                         }
 
