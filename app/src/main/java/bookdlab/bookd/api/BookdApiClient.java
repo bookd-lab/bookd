@@ -16,6 +16,7 @@ public interface BookdApiClient {
 
     @GET("/business")
     Call<List<Business>> getBusinesses(
+            @Query("q") String searchKey,
             @Query("price") int priceMax,
             @Query("rating") double ratingMin,
             @Query("page") int page,

@@ -41,6 +41,7 @@ import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.api.BookdApiClientFactory;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
+import bookdlab.bookd.helpers.EndlessRecyclerViewScrollListener;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import bookdlab.bookd.ui.UIUtils;
@@ -56,6 +57,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final Double DEFAULT_RADIUS = 30.0;
+    private static final Integer PAGE_SIZE = 20;
     private List<Business> businessList;
     private BusinessAdapter businessAdapter;
 
@@ -79,7 +81,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
-    private Address lastAddress;
+    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,8 +90,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         lastLocationFetched = new Location("");
         lastLocationFetched.setLatitude(37.4530);
         lastLocationFetched.setLongitude(122.1817);
-        lastAddress = new Address(Locale.US);
-        lastAddress.setLocality("Menlo Park");
 
         initGoogleLocationApi();
     }
@@ -134,6 +134,15 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         advancedSearchContent.setListener(this::performSearch);
         UIUtils.hideSoftInput(getActivity());
 
+        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryBusinesses(page + 1);
+            }
+        };
+
+        recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
+
         return view;
     }
 
@@ -144,7 +153,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     private void performSearch() {
         hideSearchUI();
-        queryBusinesses(advancedSearchContent.getSortByField());
+        queryBusinesses(1);
     }
 
     @Override
@@ -179,21 +188,14 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         }
 
         if (null != lastLocationFetched) {
-            fetchDataByLocation();
+            queryBusinesses(1);
             return;
         }
 
         lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (lastLocationFetched != null) {
-            fetchDataByLocation();
-
-            QueryHelper.getBusinessesInArea(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), DEFAULT_RADIUS, businesses -> {
-                Log.d(TAG, "onNearbyBusinessesFound: business size: " + businesses.size());
-                for (Business business : businesses) {
-                    Log.d(TAG, "onNearbyBusinessesFound: " + business);
-                }
-            });
+            queryBusinesses(1);
         } else {
             Log.i(TAG, "Requesting for location update!");
             LocationRequest locationRequest = new LocationRequest();
@@ -205,65 +207,49 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
-    private void fetchDataByLocation() {
-        Geocoder geo = new Geocoder(this.getActivity().getApplicationContext(), Locale.getDefault());
-        try {
-
-            if (lastAddress == null) {
-                //TODO: This is a network call, has to be taken out of here
-                List<Address> addresses = geo.getFromLocation(lastLocationFetched.getLatitude(), lastLocationFetched.getLongitude(), 1);
-                lastAddress = addresses.get(0);
-                if (addresses.isEmpty()) {
-                    return;
-                }
-            }
-
-            queryBusinesses(AdvancedSearchView.SortByField.rating);
-        } catch (IOException e) {
-            Log.e(TAG, "Exception occurred in onConnected: ", e);
-            e.printStackTrace();
+    private void queryBusinesses(int page) {
+        if (page == 1) {
+            businessList.clear();
+            businessAdapter.notifyDataSetChanged();
+            endlessRecyclerViewScrollListener.resetState();
+            recyclerView.setVisibility(View.GONE);
+            loadingIndicatorView.setVisibility(View.VISIBLE);
+            loadingIndicatorView.show();
         }
-    }
-
-    private void queryBusinesses(AdvancedSearchView.SortByField sortBy) {
-        recyclerView.setVisibility(View.GONE);
-        loadingIndicatorView.setVisibility(View.VISIBLE);
-        loadingIndicatorView.show();
 
         int priceMax = advancedSearchContent.getPrice();
         double ratingMin = advancedSearchContent.getRating();
-        String querySortBy = sortBy.name();
-
-        BookdApiClientFactory.me().getBusinesses(priceMax, ratingMin, 1, 20, querySortBy)
+        String querySortBy = advancedSearchContent.getSortByField().name();
+        
+        BookdApiClientFactory.me().getBusinesses(searchEdt.getQuery(), priceMax, ratingMin, page, 20, querySortBy)
                 .enqueue(new Callback<List<Business>>() {
-            @Override
-            public void success(Result<List<Business>> result) {
-                businessList.clear();
-                businessList.addAll(result.data);
-                businessAdapter.notifyDataSetChanged();
+                    @Override
+                    public void success(Result<List<Business>> result) {
+                        businessList.addAll(result.data);
+                        businessAdapter.notifyDataSetChanged();
 
-                loadingIndicatorView.hide();
-                recyclerView.setVisibility(View.VISIBLE);
-            }
+                        loadingIndicatorView.hide();
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
 
-            @Override
-            public void failure(TwitterException exception) {
-                Log.e(TAG, exception.getMessage(), exception);
-                loadingIndicatorView.hide();
-            }
-        });
+                    @Override
+                    public void failure(TwitterException exception) {
+                        Log.e(TAG, exception.getMessage(), exception);
+                        loadingIndicatorView.hide();
+                    }
+                });
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "Connection to Google API suspended. Querying in Menlo Park");
-        queryBusinesses(AdvancedSearchView.SortByField.rating);
+        queryBusinesses(1);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "Connection to Google API failed. Querying in Menlo Park");
-        queryBusinesses(AdvancedSearchView.SortByField.rating);
+        queryBusinesses(1);
     }
 
 
@@ -271,6 +257,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     public void onLocationChanged(Location location) {
         Log.d(TAG, "Location has been changed");
         lastLocationFetched = location;
-        fetchDataByLocation();
+        queryBusinesses(1);
     }
 }
