@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
-import com.raizlabs.android.dbflow.StringUtils;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
@@ -29,7 +28,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by rubab.uddin on 11/19/2016.
  */
-
 public class UserFragment extends Fragment {
 
     @BindView(R.id.tvUsername)
@@ -90,7 +88,7 @@ public class UserFragment extends Fragment {
 
         String memberSince = "Member since " + user.getMemberSince();
 
-        if (StringUtils.isNotNullOrEmpty(user.getUsername())) {
+        if (null != user.getUsername()) {
             tvUsername.setText(user.getUsername());
         } else {
             tvUsername.setText(R.string.unknown);

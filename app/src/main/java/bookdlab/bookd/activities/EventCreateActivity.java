@@ -45,7 +45,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         adapterViewPager = new CreateEventWizardAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(adapterViewPager);
-        viewPager.setPageTransformer(true, new CubeOutTransformer());
+        viewPager.setPageTransformer(true,  new CubeOutTransformer());
 
         if (null != getIntent().getParcelableExtra(EVENT_EXTRA)) {
             event = Parcels.unwrap(getIntent().getParcelableExtra(EVENT_EXTRA));

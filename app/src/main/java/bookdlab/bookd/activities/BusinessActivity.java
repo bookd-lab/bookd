@@ -34,6 +34,7 @@ import bookdlab.bookd.fragments.EventListFragment;
 import bookdlab.bookd.fragments.ReviewsFragment;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Review;
+import bookdlab.bookd.utils.Constants;
 import bookdlab.bookd.views.ReviewItemViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,7 +114,7 @@ public class BusinessActivity extends AppCompatActivity
 
     private void initData() {
         String address = businessData.getLatitude() + "," + businessData.getLongitude();
-        String mapUrl = "https://maps.google.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x400&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + BookdApplication.MAP_API_KEY;
+        String mapUrl = "https://maps.google.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x400&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + Constants.MAP_API_KEY;
 
         Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
         Glide.with(this).load(businessData.getLogoURL()).into(businessCircleIV);
@@ -138,7 +139,7 @@ public class BusinessActivity extends AppCompatActivity
                 onBackPressed();
                 break;
             }
-            case R.id.menu_add:{
+            case R.id.menu_add: {
                 //TODO: Display fragment with list of in-progress events, on selection add Business to Event
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.add(EventListFragment.newInstance(), null);

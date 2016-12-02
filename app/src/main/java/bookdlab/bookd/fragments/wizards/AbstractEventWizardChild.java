@@ -1,14 +1,17 @@
 package bookdlab.bookd.fragments.wizards;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.interfaces.WizardNavigator;
+import bookdlab.bookd.ui.EventUtils;
 import butterknife.BindView;
 
 /**
@@ -24,6 +27,8 @@ public abstract class AbstractEventWizardChild extends Fragment {
     Button nextButton;
     @BindView(R.id.backButton)
     Button backButton;
+    @BindView(R.id.backgroundImage)
+    ImageView backgroundImage;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -31,6 +36,12 @@ public abstract class AbstractEventWizardChild extends Fragment {
 
         nextButton.setOnClickListener((v) -> onNext());
         backButton.setOnClickListener((v) -> onPrev());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupBackgroundImage();
     }
 
     @Override
@@ -50,6 +61,34 @@ public abstract class AbstractEventWizardChild extends Fragment {
         super.onDetach();
 
         wizardNavigator = null;
+    }
+
+    protected void setupBackgroundImage() {
+        final int eventBackgroundResouce = EventUtils.getEventBackgroundResouce(wizardNavigator.getEvent().getType());
+        final float originalAlpha = backgroundImage.getAlpha();
+
+        backgroundImage.animate().alpha(0).setDuration(300).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                backgroundImage.setImageResource(eventBackgroundResouce);
+                backgroundImage.animate().alpha(originalAlpha).setDuration(300).start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
     }
 
     public void onNext() {

@@ -2,45 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/wizard_background">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/christmas"
+        android:tint="@color/transparent_black_40"
+        android:contentDescription="@string/background" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvInstruction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
-            android:text="@string/create_event_step_3"
-            android:textSize="@dimen/question_font"
-            tools:text="@string/create_event_step_3" />
-
         <EditText
             android:id="@+id/tagsEdt"
+            style="@style/WizardEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/secondaryText"
-            android:layout_below="@id/tvInstruction"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:inputType="textPersonName"
             android:hint="@string/create_event_step_3_hint"
-            android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
             android:textSize="@dimen/answer_font"
-            tools:hint="@string/create_event_step_3_hint"
-            android:imeOptions="actionDone" />
+            tools:hint="@string/create_event_step_3_hint" />
+
+        <TextView
+            android:id="@+id/tvInstruction"
+            style="@style/WizardHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tagsEdt"
+            android:layout_marginBottom="20dp"
+            android:padding="16dp"
+            android:text="@string/create_event_step_3" />
 
         <com.greenfrvr.hashtagview.HashtagView
             android:id="@+id/htvTags"
-            android:padding="@dimen/spacing_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tagsEdt"/>
-
-
-        <include layout="@layout/wizard_navigation" />
+            android:minHeight="120dp"
+            android:layout_below="@id/tagsEdt"
+            android:layout_marginTop="10dp"
+            app:dynamicMode="true"
+            android:padding="@dimen/spacing_normal" />
 
     </RelativeLayout>
+
+    <include layout="@layout/wizard_navigation" />
+
 </RelativeLayout>

@@ -25,12 +25,28 @@
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="WizardButton" parent="Base.TextAppearance.AppCompat.Button">
+    <style name="WizardButton" parent="Base.Widget.AppCompat.Button">
+        <item name="android:textColor">@color/transparent_white_80</item>
         <item name="android:background">@drawable/wizard_button_bg</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="SearchButton" parent="Base.TextAppearance.AppCompat.Button">
         <item name="android:background">@drawable/search_button_bg</item>
+    </style>
+
+    <style name="WizardHeader" parent="Base.TextAppearance.AppCompat.Large">
+        <item name="android:textSize">24sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/transparent_white_80</item>
+    </style>
+
+    <style name="WizardEditText" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:textSize">17sp</item>
+        <item name="android:background">@drawable/wizard_edit_text_background</item>
+        <item name="android:textColor">@color/transparent_white_80</item>
+        <item name="android:textColorHint">@color/transparent_white_30</item>
+        <item name="android:padding">16sp</item>
     </style>
 
 </resources>

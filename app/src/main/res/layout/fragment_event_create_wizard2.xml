@@ -2,60 +2,112 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/wizard_background">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/christmas"
+        android:tint="@color/transparent_black_40"
+        android:contentDescription="@string/background"/>
+
+    <RelativeLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingEnd="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingStart="30dp">
+
+        <TextView
+            android:id="@+id/tvStartDateLabel"
+            style="@style/WizardHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/start_date"
+            android:textSize="20sp"
+            tools:text="Start Date: " />
+
+        <TextView
+            android:id="@+id/tvStartDate"
+            style="@style/WizardHeader"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="20sp"
+            tools:text="01-01-2016" />
+
+        <Button
+            android:id="@+id/btnStartDate"
+            style="@style/WizardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvStartDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@string/change" />
+
+        <TextView
+            android:id="@+id/tvEndDateLabel"
+            style="@style/WizardHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/btnStartDate"
+            android:text="@string/end_date"
+            android:textSize="20sp"
+            tools:text="End Date: " />
+
+        <TextView
+            android:id="@+id/tvEndDate"
+            style="@style/WizardHeader"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/btnStartDate"
+            android:textSize="20sp"
+            tools:text="01-01-2016" />
+
+        <Button
+            android:id="@+id/btnEndDate"
+            style="@style/WizardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tvEndDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@string/change" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvInstruction"
+        style="@style/WizardHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:lineSpacingMultiplier="1.2"
+        android:layout_above="@id/contentContainer"
+        android:layout_marginBottom="20dp"
         android:padding="16dp"
-        android:text="@string/create_event_step_2"
-        android:textSize="@dimen/question_font"
-        tools:text="@string/create_event_step_2" />
-
-    <TextView
-        android:id="@+id/tvStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvInstruction"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="40dp"
-        android:textSize="20sp"
-        tools:text="2016-01-01" />
-
-
-    <Button
-        android:id="@+id/btnStartDate"
-        style="@style/SearchButton"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/tvStartDate"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/start_date" />
-
-    <TextView
-        android:id="@+id/tvEndDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnStartDate"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="40dp"
-        android:textSize="20sp"
-        tools:text="2016-01-01" />
-
-
-    <Button
-        android:id="@+id/btnEndDate"
-        style="@style/SearchButton"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/tvEndDate"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="@string/end_date" />
+        android:text="@string/create_event_step_2" />
 
     <include layout="@layout/wizard_navigation" />
 

@@ -1,7 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/wizard_background">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        android:src="@drawable/christmas"
+        android:tint="@color/transparent_black_40" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -9,14 +19,12 @@
 
         <TextView
             android:id="@+id/tvInstruction"
+            style="@style/WizardHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:lineSpacingMultiplier="1.2"
+            android:layout_centerInParent="true"
             android:padding="16dp"
-            android:text="@string/create_event_step_4"
-            android:textSize="@dimen/question_font"
-            tools:text="@string/create_event_step_4" />
+            android:text="@string/create_event_step_4" />
 
         <include layout="@layout/wizard_navigation" />
 

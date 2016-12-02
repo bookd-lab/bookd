@@ -1,135 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/christmas"
+        android:tint="@color/transparent_black_40"
+        android:contentDescription="@string/background"/>
 
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-<!--
-    <EditText
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_marginEnd="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/transparent"
-        android:hint="@string/name_event"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingBottom="20dp"
-        android:paddingEnd="7dp"
-        android:paddingLeft="7dp"
-        android:paddingRight="7dp"
-        android:paddingStart="7dp"
-        android:paddingTop="7dp"
-        android:textSize="18sp" />
-
-
-    <TextView
-        android:id="@+id/eventStartsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/event_starts" />
-
-    <ImageButton
-        android:id="@+id/pickStartDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/eventStartsLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/transparent"
-        android:contentDescription="@string/pick_date"
-        android:src="@drawable/date_range" />
-
-    <TextView
-        android:id="@+id/startDateTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/eventStartsLabel"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/pickStartDateButton"
-        android:layout_toStartOf="@id/pickStartDateButton"
-        tools:text="09/09/2016" />
-
-
-    <TextView
-        android:id="@+id/eventEndDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/eventStartsLabel"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/event_ends" />
-
-    <ImageButton
-        android:id="@+id/pickEndDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/eventEndDateLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/transparent"
-        android:contentDescription="@string/pick_date"
-        android:src="@drawable/date_range" />
-
-    <TextView
-        android:id="@+id/endDateTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/eventEndDateLabel"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@id/pickEndDateButton"
-        android:layout_toStartOf="@id/pickEndDateButton"
-        tools:text="09/09/2016" />
-
-    <EditText
-        android:id="@+id/details"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/transparent"
-        android:gravity="top|start"
-        android:hint="@string/comments"
-        android:inputType="text"
-        android:maxLines="1"
-        android:padding="7dp"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/details"
-        android:background="@color/colorPrimary" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_below="@id/toolbar"
-        android:background="@drawable/shade_bg" />!-->
 
 </RelativeLayout>

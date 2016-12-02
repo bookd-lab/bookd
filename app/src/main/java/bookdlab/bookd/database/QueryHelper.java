@@ -2,8 +2,6 @@ package bookdlab.bookd.database;
 
 import android.util.Log;
 
-import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,40 +43,6 @@ public class QueryHelper {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public static void getBusinessesInArea(Double lat, Double lng, Double radius, NearbyBusinessCallback callback){
-        Queries queries = new Queries();
-        ArrayList<String> businessIds = new ArrayList<>();
-
-        queries.getNearbyBusiness(lat, lng, radius).addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                Log.d(TAG, "onKeyEntered: "+key);
-                businessIds.add(key);
-            }
-
-            @Override
-            public void onKeyExited(String key) {
-
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                Log.d(TAG, "onGeoQueryReady: all queries complete");
-                getBusinessNearByFromId(businessIds, callback);
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
 
             }
         });

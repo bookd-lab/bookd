@@ -2,35 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/wizard_background">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/christmas"
+        android:tint="@color/transparent_black_40"
+        android:contentDescription="@string/background"/>
 
     <RelativeLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvInstruction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
-            android:text="@string/create_event_step_1"
-            android:textSize="@dimen/question_font"
-            tools:text="@string/create_event_step_1" />
-
         <EditText
             android:id="@+id/eventName"
+            style="@style/WizardEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvInstruction"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
             android:hint="@string/create_event_step_1_hint"
+            android:inputType="textPersonName"
             android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
             android:textSize="@dimen/answer_font"
             tools:hint="@string/create_event_step_1_hint" />
 
-        <include layout="@layout/wizard_navigation" />
+        <TextView
+            android:id="@+id/tvInstruction"
+            style="@style/WizardHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/eventName"
+            android:layout_marginBottom="60dp"
+            android:padding="16dp"
+            android:text="@string/create_event_step_1"
+            tools:text="@string/create_event_step_1" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/eventName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:alpha="0.8"
+            android:src="@drawable/events_icon"
+            android:tint="@color/transparent_white_50" />
+
 
     </RelativeLayout>
+
+    <include layout="@layout/wizard_navigation" />
+
 </RelativeLayout>

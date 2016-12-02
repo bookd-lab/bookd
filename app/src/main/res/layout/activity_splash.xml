@@ -2,24 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/circle_gradient_bg">
+    android:background="@color/black">
 
-    <TextView
-        android:id="@+id/main"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        android:src="@drawable/celebration" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/app_name"
-        android:textColor="@color/transparent_black_90"
-        android:textSize="23sp" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="3dp"
-        android:text="@string/coming_soon"
-        android:textColor="@color/transparent_black_80" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/mainLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="42sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mainLabel"
+                android:layout_centerHorizontal="true"
+                android:padding="3dp"
+                android:text="@string/connecting_label"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </RelativeLayout>

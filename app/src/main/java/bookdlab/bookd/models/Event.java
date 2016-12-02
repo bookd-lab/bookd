@@ -12,6 +12,10 @@ import java.util.List;
 @Parcel
 public class Event {
 
+    public enum Type {
+        DEFAULT, WEDDING
+    }
+
     String id;              // Unique ID for every event.
     String creator;         // Which user created this. Useful for showing the events from a user
     String name;            // Event name
@@ -20,8 +24,7 @@ public class Event {
     String backgroundURL;   // Optional: If we want to show a background URL
     String dates;           // ? Do we need this?
     String color = "#4286f4";
-
-
+    Type type = Type.DEFAULT;
 
     //String[] tags; - removed, not Firebase friendly
     List<String> tags;
@@ -102,4 +105,11 @@ public class Event {
         this.tags = tags;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 }

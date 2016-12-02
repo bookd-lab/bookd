@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.raizlabs.android.dbflow.StringUtils;
 
 import org.parceler.Parcels;
 
@@ -38,9 +37,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
 
     @Override
     public BusinessItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(activity).inflate(R.layout.list_item_business, parent, false);
-
         return new BusinessItemViewHolder(view);
     }
 
@@ -66,7 +63,7 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         h.priceLevel.setText(business.formPriceLabel());
         h.rating.setCount((int) business.getRating());
 
-        if (StringUtils.isNotNullOrEmpty(business.getPhone())) {
+        if (null != business.getPhone()) {
             CharSequence phone = UIUtils.embedImage(activity, business.getPhone(), R.drawable.phone_green, 0.5);
             h.phone.setText(phone);
             h.phone.setVisibility(View.VISIBLE);

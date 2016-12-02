@@ -42,6 +42,7 @@
 
     <color name="price">#ffdb66</color>
     <color name="red">#ff0000</color>
+    <color name="wizard_background">#d27272</color>
     <color name="exit">#b44f4f</color>
 
 </resources>

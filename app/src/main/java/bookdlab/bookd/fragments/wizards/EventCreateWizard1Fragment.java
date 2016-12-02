@@ -2,10 +2,11 @@ package bookdlab.bookd.fragments.wizards;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import bookdlab.bookd.R;
@@ -16,8 +17,8 @@ import butterknife.ButterKnife;
 /**
  * Created by rubab.uddin on 11/13/2016.
  */
-
 public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
+    private static final String TAG = EventCreateWizard1Fragment.class.getSimpleName();
 
     @BindView(R.id.eventName)
     EditText eventNameEdt;
@@ -44,11 +45,43 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
         ButterKnife.bind(this, view);
         super.onViewCreated(view, savedInstanceState);
 
-        eventNameEdt.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
         event = wizardNavigator.getEvent();
         eventNameEdt.setText(event.getName());
         backButton.setVisibility(View.GONE);
+
+        eventNameEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Event.Type eventType = findType(s.toString());
+                if (eventType == event.getType()) {
+                    return;
+                }
+
+                event.setType(eventType);
+                setupBackgroundImage();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
+    private Event.Type findType(String s) {
+        for (Event.Type type : Event.Type.values()) {
+            if (s.toLowerCase().contains(type.name().toLowerCase())) {
+                return type;
+            }
+        }
+
+        return Event.Type.DEFAULT;
     }
 
     @Override

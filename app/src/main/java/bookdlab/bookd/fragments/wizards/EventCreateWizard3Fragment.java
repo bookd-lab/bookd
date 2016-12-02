@@ -2,12 +2,19 @@ package bookdlab.bookd.fragments.wizards;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.SuperscriptSpan;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.greenfrvr.hashtagview.HashtagView;
 
@@ -50,31 +57,24 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
+
         super.onViewCreated(view, savedInstanceState);
         event = wizardNavigator.getEvent();
 
-        tags = event.getTags();
-        if(tags != null) {
-            htvTags.setData(tags);
-        } else {
-            tags = new ArrayList<String>();
-        }
-        tagsEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        tags = null == event.getTags() ? new ArrayList<>() : event.getTags();
+        htvTags.setData(tags);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(tagsEdt.getText().toString().contains(" "))
+        tagsEdt.setOnEditorActionListener((v, actionId, event1) -> {
+            switch (actionId) {
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_ENTER:
                     processTag();
+                    return true;
+                default:
+                    break;
             }
+
+            return false;
         });
     }
 
@@ -84,10 +84,15 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
         super.onNext();
     }
 
-    public void processTag(){
-        String newTag = tagsEdt.getText().toString().replace(" ", "");
+    public void processTag() {
+        String newTag = tagsEdt.getText().toString().trim();
+        if (newTag.isEmpty()) {
+            return;
+        }
+
         tags.add(newTag);
         htvTags.setData(tags);
+
         tagsEdt.setText("");
     }
 }

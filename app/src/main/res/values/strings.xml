@@ -36,9 +36,9 @@
 
     <string name="name_your_event">Name your event</string>
     <string name="swipe_instruction">SWIPE LEFT</string>
-    <string name="create_event_step_1">What\'s your event?</string>
-    <string name="create_event_step_1_hint">birthday jam, anniversary, etc.</string>
-    <string name="create_event_step_2">When is it?</string>
+    <string name="create_event_step_1">What event are you having soon?</string>
+    <string name="create_event_step_1_hint">birthday for Jim, my wedding, etc…</string>
+    <string name="create_event_step_2">When is your event happening?</string>
     <string name="create_event_step_2_hint">Set a date and time</string>
     <string name="create_event_step_3">Who do you need to book?</string>
     <string name="create_event_step_3_hint">DJs? Photographers? Caterers?</string>
@@ -72,8 +72,9 @@
     <string name="bookings">Bookings</string>
     <string name="tags">Tags</string>
     <string name="reset">Reset</string>
-    <string name="start_date">Set Start Date</string>
-    <string name="end_date">Set End Date</string>
+    <string name="change">Change</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
 
     <string name="no_bookings_yet">No Bookings Added</string>
     <string name="highest_pricing">$$$$$</string>
@@ -81,5 +82,12 @@
     <string name="stripe_publishable_key">pk_live_aNtxbVn5nOGX8FAHkR9uQppV</string>
     <string name="stripe_version">2</string>
     <string name="unknown">Unknown</string>
+    <string name="authentication_failed">Authentication failed. Please, try again.</string>
+    <string name="check_network_conn">Check network connection and try again.</string>
+    <string name="try_again">Try again</string>
+    <string name="close">Close</string>
+    <string name="connecting_label">connecting…</string>
+    <string name="background">Background</string>
+    <string name="cake">Cake</string>
 
 </resources>

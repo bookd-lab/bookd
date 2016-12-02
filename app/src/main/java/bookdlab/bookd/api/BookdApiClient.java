@@ -23,4 +23,11 @@ public interface BookdApiClient {
             @Query("limit") int limit,
             @Query("sort") String sortBy
     );
+
+    @GET("/event")
+    Call<List<Business>> getEvents(
+            @Query("creator") String creator,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
 }
