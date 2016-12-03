@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseUser;
 
 import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
@@ -60,15 +61,14 @@ public class UserFragment extends Fragment {
     @BindView(R.id.etPhoneNumber)
     EditText etPhoneNumber;
 
-    User user = BookdApplication.getCurrentUser(); //get the actual logged in user
+    User user;
     Context mContext;
-    InputMethodManager imm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this.getContext();
-        imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
+        user = BookdApplication.getCurrentUser();
     }
 
     public static UserFragment newInstance() {
@@ -86,8 +86,7 @@ public class UserFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        String memberSince = "Member since " + user.getMemberSince();
-
+        String memberSince = "Member since " + user.getEmail();
         if (null != user.getUsername()) {
             tvUsername.setText(user.getUsername());
         } else {
@@ -114,20 +113,15 @@ public class UserFragment extends Fragment {
 
     }
 
-
     public void GenericViewSwitcher(ViewSwitcher vs, EditText et, TextView tv) {
-        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-
         vs.showNext();
 
         et.setText(tv.getText().toString());
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                imm.showSoftInput(et, 0);
                 et.setFocusable(true);
                 et.setSelection(et.getText().length());
-
             }
 
             @Override
@@ -138,18 +132,17 @@ public class UserFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 String newField = et.getText().toString();
 
-                if (et.getId() == R.id.etAbout)
+                if (et.getId() == R.id.etAbout) {
                     user.setAbout(newField);
-                else if (et.getId() == R.id.etLocation)
+                } else if (et.getId() == R.id.etLocation) {
                     user.setAddress(newField);
-                else if (et.getId() == R.id.etPhoneNumber)
+                } else if (et.getId() == R.id.etPhoneNumber) {
                     user.setPhoneNumber(newField);
+                }
 
-                tv.setText(newField);
                 BookdApplication.setCurrentUser(user);
             }
         });
-
     }
 
     @OnClick(R.id.containerAbout)

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -29,7 +31,7 @@ import butterknife.ButterKnife;
  * Created by rubab.uddin on 11/21/2016.
  */
 
-public class EventListFragment extends Fragment{
+public class EventListFragment extends Fragment {
     @BindView(R.id.eventsListRV)
     RecyclerView eventsListRV;
 
@@ -68,21 +70,21 @@ public class EventListFragment extends Fragment{
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
-            mCurrentUser = BookdApplication.getCurrentUser();
-            getEvents();
-        }
+    public void onResume() {
+        super.onResume();
+        getEvents();
     }
 
-    public void getEvents(){
+    public void getEvents() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
         Queries queries = new Queries();
-        queries.getEventsOfUser(mCurrentUser.getId()).addValueEventListener(new ValueEventListener() {
+        queries.getEventsOfUser(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 eventList.clear();
-                for(DataSnapshot child : dataSnapshot.getChildren()){
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Event event = child.getValue(Event.class);
                     eventList.add(event);
                 }

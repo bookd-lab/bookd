@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,9 +40,12 @@ public abstract class AbstractEventWizardChild extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setupBackgroundImage();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (null == wizardNavigator) return; //not attached yet...
+        setupBackgroundImage(false);
+        Log.d(this.getClass().getSimpleName(), "Setting background...");
     }
 
     @Override
@@ -63,10 +67,14 @@ public abstract class AbstractEventWizardChild extends Fragment {
         wizardNavigator = null;
     }
 
-    protected void setupBackgroundImage() {
-        final int eventBackgroundResouce = EventUtils.getEventBackgroundResouce(wizardNavigator.getEvent().getType());
-        final float originalAlpha = backgroundImage.getAlpha();
+    protected void setupBackgroundImage(boolean animate) {
+        final int eventBackgroundResource = EventUtils.getEventBackgroundResouce(wizardNavigator.getEvent().getType());
+        if (!animate) {
+            backgroundImage.setImageResource(eventBackgroundResource);
+            return;
+        }
 
+        final float originalAlpha = backgroundImage.getAlpha();
         backgroundImage.animate().alpha(0).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -75,7 +83,7 @@ public abstract class AbstractEventWizardChild extends Fragment {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                backgroundImage.setImageResource(eventBackgroundResouce);
+                backgroundImage.setImageResource(eventBackgroundResource);
                 backgroundImage.animate().alpha(originalAlpha).setDuration(300).start();
             }
 

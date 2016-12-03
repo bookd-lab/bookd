@@ -38,6 +38,10 @@ public class Queries {
         return reference.orderByChild("id").equalTo(userId).limitToFirst(1);
     }
 
+    public DatabaseReference getUserReference() {
+        return database.getReference().child("users");
+    }
+
     public Query getUserFromEmail(String email) {
         DatabaseReference reference = database.getReference().child("users");
         return reference.orderByChild("email").equalTo(email).limitToFirst(1);

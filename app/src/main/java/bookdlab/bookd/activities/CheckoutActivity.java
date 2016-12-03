@@ -105,7 +105,7 @@ public class CheckoutActivity extends AppCompatActivity implements GoogleApiClie
         // [END fragment_style_and_options]
 
         // Now initialize the Wallet Fragment
-        String accountName = BookdApplication.getCurrentUser().getUsername();
+        //String accountName = BookdApplication.getCurrentUser().getUsername();
         MaskedWalletRequest maskedWalletRequest;
         int mItemId = 1;
         boolean mUseStripe = true;
@@ -125,8 +125,8 @@ public class CheckoutActivity extends AppCompatActivity implements GoogleApiClie
         // [START params_builder]
         WalletFragmentInitParams.Builder startParamsBuilder = WalletFragmentInitParams.newBuilder()
                 .setMaskedWalletRequest(maskedWalletRequest)
-                .setMaskedWalletRequestCode(REQUEST_CODE_MASKED_WALLET)
-                .setAccountName(accountName);
+                .setMaskedWalletRequestCode(REQUEST_CODE_MASKED_WALLET);
+                //.setAccountName(accountName);
         mWalletFragment.initialize(startParamsBuilder.build());
 
         // add Wallet fragment to the UI

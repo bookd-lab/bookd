@@ -86,8 +86,10 @@
     <string name="check_network_conn">Check network connection and try again.</string>
     <string name="try_again">Try again</string>
     <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
     <string name="connecting_label">connecting…</string>
     <string name="background">Background</string>
     <string name="cake">Cake</string>
+    <string name="creating_event">Creating event…</string>
 
 </resources>

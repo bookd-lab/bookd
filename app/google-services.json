@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "933703777705-hc3rc61va4hn3aiovc9jequq15g1r5h9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bookdlab.bookd",
+            "certificate_hash": "C1B6EF694AA90A1FDE637DDA42284CFA85DD2AEB"
+          }
+        },
+        {
           "client_id": "933703777705-rungfatgpqv0qr5b71npo42f3dftg4la.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -63,7 +63,7 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
                 }
 
                 event.setType(eventType);
-                setupBackgroundImage();
+                setupBackgroundImage(true);
             }
 
             @Override

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -38,7 +40,6 @@ public class EventsFragment extends Fragment {
     private EventsAdapter eventsAdapter;
     private List<Event> eventList;
 
-    User currentUser;
     private static final String TAG = "EventsFragment";
 
     @Override
@@ -70,21 +71,18 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
-            Log.d(TAG, "setUserVisibleHint: "+isVisible());
-            currentUser = BookdApplication.getCurrentUser();
-            Log.d(TAG, "setUserVisibleHint: "+currentUser);
-            updateEventsOfUser();
-        } else {
-            Log.d(TAG, "setUserVisibleHint: invisible");
-        }
+    public void onResume() {
+        super.onResume();
+        updateEventsOfUser();
     }
 
-    private void updateEventsOfUser(){
+    private void updateEventsOfUser() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
         if (currentUser != null) {
-            new Queries().getEventsOfUser(currentUser.getId()).addValueEventListener(new ValueEventListener() {
+            String uid = currentUser.getUid();
+            new Queries().getEventsOfUser(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
