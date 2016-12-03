@@ -1,6 +1,8 @@
 package bookdlab.bookd.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,16 +15,26 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import bookdlab.bookd.BookdApplication;
+import bookdlab.bookd.Constants;
 import bookdlab.bookd.R;
 import bookdlab.bookd.api.BookdApiClient;
+import bookdlab.bookd.database.QueryHelper;
+import bookdlab.bookd.interfaces.UserCheckCallback;
 import bookdlab.bookd.models.Business;
+import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -47,6 +59,8 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     BookdApiClient bookdApiClient;
 
     private FirebaseUser currentUser;
+    private DatabaseReference mUsersDatabaseReference;
+    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +72,7 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
         ((BookdApplication) getApplication()).getAppComponent().inject(this);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
 
         shimmerFrameLayout.setDuration(1500);
         shimmerFrameLayout.startShimmerAnimation();
@@ -153,5 +168,58 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         Log.d(TAG, "onAuthStateChanged: " + String.valueOf(firebaseAuth.getCurrentUser()));
+        mUsersDatabaseReference = mDatabase.getReference().child("users");
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "setupAuthStateListener: " + mUsersDatabaseReference.child(user.getUid()).getKey());
+            QueryHelper.isUserPresentInDatabase(user.getEmail(), new UserCheckCallback() {
+                @Override
+                public void userIsPresent(User signedInUser) {
+                    Log.d(TAG, "userIsPresent: User is present on database. Saving locally");
+                    storeUserInfoLocally(signedInUser);
+                    DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
+                    String date = df.format(Calendar.getInstance().getTime());
+                    signedInUser.setLastSeenTime(date);
+
+                    BookdApplication.setCurrentUser(signedInUser);
+                }
+
+                @Override
+                public void userIsNotPresent() {
+                    Log.d(TAG, "userIsNotPresent: User is not present in database. Create entry");
+                    User signedInUser = new User();
+                    DatabaseReference userRef = mUsersDatabaseReference.push();
+                    signedInUser.setId(userRef.getKey());
+                    signedInUser.setUsername(user.getDisplayName());
+
+                    if (user.getProviderData().size() > 0) {
+                        signedInUser.setEmail(user.getProviderData().get(0).getEmail());
+                    } else {
+                        signedInUser.setEmail(user.getEmail());
+                    }
+
+                    DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
+                    String date = df.format(Calendar.getInstance().getTime());
+                    signedInUser.setMemberSince(date);
+                    signedInUser.setLastSeenTime(date);
+
+                    if (user.getPhotoUrl() != null) {
+                        signedInUser.setProfileImageURL(user.getPhotoUrl().toString());
+                    }
+
+                    userRef.setValue(signedInUser);
+                    BookdApplication.setCurrentUser(signedInUser);
+
+                    storeUserInfoLocally(signedInUser);
+                }
+            });
+        }
+    }
+
+    private void storeUserInfoLocally(User user) {
+        SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.EXTRA_USER_ID, user.getId());
+        editor.apply();
     }
 }
