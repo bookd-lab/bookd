@@ -68,6 +68,7 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
 
         htvTags.addOnTagClickListener(item -> {
             htvTags.removeItem(item);
+            tags.remove(item.toString());
         });
     }
 

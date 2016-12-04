@@ -103,13 +103,13 @@
                     android:textSize="@dimen/size_title"
                     android:textStyle="bold" />
 
-                <com.greenfrvr.hashtagview.HashtagView
-                    android:id="@+id/hashTVTags"
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:id="@+id/tagsCompletedContainer"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryText"
-                    android:textSize="@dimen/size_subheading"
-                    tools:text="DJs, Photographers, Caterers" />
+                    android:orientation="vertical"
+                    android:padding="3dp" />
 
             </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.greenfrvr.hashtagview.HashtagView;
@@ -24,6 +25,7 @@ import bookdlab.bookd.R;
 import bookdlab.bookd.interfaces.EventAware;
 import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.ui.EventUtils;
+import bookdlab.bookd.views.TagItemView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -40,10 +42,10 @@ public class EventFragment extends Fragment implements EventAware {
     RecyclerView bookingsRV;
     @BindView(R.id.noBookingsYet)
     TextView noBookingsYet;
-    @BindView(R.id.hashTVTags)
-    HashtagView hashTVTags;
     @BindView(R.id.backgroundImage)
     ImageView backgroundImage;
+    @BindView(R.id.tagsCompletedContainer)
+    LinearLayout tagsCompletedContainer;
 
     private EventProvider eventProvider;
     private DateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
@@ -107,18 +109,23 @@ public class EventFragment extends Fragment implements EventAware {
         tvDate.setText(whenLabel);
 
         List<String> eventTagsList = eventProvider.getEvent().getTags();
-        if (eventTagsList != null) {
-            hashTVTags.setData(eventTagsList);
+        tagsCompletedContainer.removeAllViews();
+        for (String tag : eventTagsList) {
+            tagsCompletedContainer.addView(new TagItemView(getActivity(), tag, isTagDoneYet(tag)));
         }
 
         int eventBackgroundResource = EventUtils.getEventBackgroundResouce(eventProvider.getEvent().getType());
         backgroundImage.setImageResource(eventBackgroundResource);
     }
 
+    boolean isTagDoneYet(String tag) {
+        //TODO: see if it is in businesses
+        return false;
+    }
+
     private void setEmptyData() {
         tvEventName.setText("");
         tvDate.setText("");
-        hashTVTags.setData(new ArrayList<>());
     }
 
     @Override
