@@ -2,24 +2,15 @@ package bookdlab.bookd.fragments.wizards;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
-import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.SuperscriptSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.greenfrvr.hashtagview.HashtagView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.models.Event;
@@ -38,7 +29,7 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
     HashtagView htvTags;
 
     private Event event;
-    private List<String> tags = new ArrayList<String>();
+    private ArrayList<String> tags = new ArrayList<>();
 
     public static EventCreateWizard3Fragment newInstance() {
         return new EventCreateWizard3Fragment();

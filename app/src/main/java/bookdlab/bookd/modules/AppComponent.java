@@ -3,6 +3,7 @@ package bookdlab.bookd.modules;
 import javax.inject.Singleton;
 
 import bookdlab.bookd.BookdApplication;
+import bookdlab.bookd.activities.BookBusinessActivity;
 import bookdlab.bookd.activities.EventCreateActivity;
 import bookdlab.bookd.activities.MainActivity;
 import bookdlab.bookd.activities.SplashActivity;
@@ -23,5 +24,8 @@ public interface AppComponent {
 
     void inject(EventCreateActivity activity);
 
+    void inject(BookBusinessActivity activity);
+
     void inject(BookdApplication application);
+
 }

@@ -2,7 +2,7 @@ package bookdlab.bookd.models;
 
 import org.parceler.Parcel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by akhmedovi on 11/12/16.
@@ -30,7 +30,7 @@ public class Event {
     Type type = Type.DEFAULT;
 
     //String[] tags; - removed, not Firebase friendly
-    List<String> tags;
+    ArrayList<String> tags;
 
 
     public Event() {
@@ -100,11 +100,11 @@ public class Event {
         this.color = color;
     }
 
-    public List<String> getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 

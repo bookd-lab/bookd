@@ -35,4 +35,8 @@ public class Constants {
             new ItemInfo("Conference Bike", "Even more features", 1, 3,
                     CURRENCY_CODE_USD, "seller data 2", R.drawable.account)*/
     };
+
+    public static final String EXTRA_EVENT_TAGS = "tags";
+    public static final String EXTRA_EVENT_NAME = "eventName";
+    public static final String EXTRA_EVENT = "event";
 }
