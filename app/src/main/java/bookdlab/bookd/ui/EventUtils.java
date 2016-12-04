@@ -14,6 +14,9 @@ public class EventUtils {
         if (type == Event.Type.WEDDING) {
             return R.drawable.celebration;
         }
+        if (type == Event.Type.BIRTHDAY) {
+            return R.drawable.birthday_bg;
+        }
 
         return R.drawable.christmas;
     }

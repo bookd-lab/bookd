@@ -13,7 +13,10 @@ import java.util.List;
 public class Event {
 
     public enum Type {
-        DEFAULT, WEDDING
+        DEFAULT,
+        WEDDING,
+        BIRTHDAY,
+        ANNIVERSARY
     }
 
     String id;              // Unique ID for every event.
