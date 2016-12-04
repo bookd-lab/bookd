@@ -1,6 +1,5 @@
 package bookdlab.bookd.fragments.wizards;
 
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;

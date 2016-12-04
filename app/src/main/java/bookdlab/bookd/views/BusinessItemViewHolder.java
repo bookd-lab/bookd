@@ -33,6 +33,8 @@ public class BusinessItemViewHolder extends RecyclerView.ViewHolder {
     public RatingBar rating;
     @BindView(R.id.ivFavorite)
     public ImageView ivFavorite;
+    @BindView(R.id.addButton)
+    public ImageView addButton;
 
     public BusinessItemViewHolder(View itemView) {
         super(itemView);

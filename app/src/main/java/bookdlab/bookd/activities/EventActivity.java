@@ -56,7 +56,7 @@ public class EventActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         bookingsList = new ArrayList<>();
-        businessAdapter = new BusinessAdapter(this, bookingsList);
+        businessAdapter = new BusinessAdapter(this, bookingsList, null, null);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         bookingsRV.setLayoutManager(layoutManager);

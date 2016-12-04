@@ -95,7 +95,9 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
                 .setCancelable(false)
                 .show();
 
-        bookdApiClient.saveEvent(event).enqueue(new Callback<Event>() {
+        //make sure we are not re-saving (update if needed)
+        Call<Event> eventCall = event.getId() == null ? bookdApiClient.saveEvent(event) : bookdApiClient.updateEvent(event);
+        eventCall.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 loadingDialog.dismiss();

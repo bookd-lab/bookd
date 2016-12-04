@@ -3,6 +3,7 @@ package bookdlab.bookd.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,15 @@ import java.util.List;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.activities.BusinessActivity;
+import bookdlab.bookd.api.BookdApiClient;
+import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.models.Business;
+import bookdlab.bookd.models.Event;
 import bookdlab.bookd.views.BusinessItemViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by akhmedovi on 10/30/16.
@@ -26,12 +33,18 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder> {
 
+    private static final String TAG = BusinessAdapter.class.getSimpleName();
+
+    private BookdApiClient bookdApiClient;
     private Activity activity;
     private List<Business> businessList;
+    private Event event;
 
-    public BusinessAdapter(Activity activity, List<Business> businessList) {
+    public BusinessAdapter(Activity activity, List<Business> businessList, Event event, BookdApiClient bookdApiClient) {
         this.businessList = businessList;
         this.activity = activity;
+        this.event = event;
+        this.bookdApiClient = bookdApiClient;
     }
 
     @Override
@@ -64,16 +77,56 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
 
         // This is not working yet.
         h.ivFavorite.setOnClickListener(v -> {
-            if(h.ivFavorite.getDrawable() == activity.getResources().getDrawable(R.drawable.ic_favorite)){
+            if (h.ivFavorite.getDrawable() == activity.getResources().getDrawable(R.drawable.ic_favorite)) {
                 h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite_red);
             } else {
                 h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite);
             }
         });
+
+        if (event.getBusinesses().contains(business.getId())) {
+            h.addButton.setImageResource(R.drawable.close_red);
+            h.addButton.setOnClickListener(v -> {
+                event.getBusinesses().remove(business.getId());
+                bookdApiClient.updateEvent(event).enqueue(getDefaultCallback());
+                notifyItemChanged(position);
+            });
+        } else {
+            h.addButton.setImageResource(R.drawable.add);
+            h.addButton.setOnClickListener(v -> {
+                event.getBusinesses().add(business.getId());
+                bookdApiClient.updateEvent(event).enqueue(getDefaultCallback());
+
+                notifyItemChanged(position);
+            });
+        }
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     @Override
     public int getItemCount() {
         return businessList.size();
+    }
+
+    private Callback<Event> getDefaultCallback() {
+        //TODO: ignore for now
+        return new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+                Log.d(TAG, "Add/Remove business to event success: " + response.isSuccessful());
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.d(TAG, t.getMessage());
+            }
+        };
     }
 }

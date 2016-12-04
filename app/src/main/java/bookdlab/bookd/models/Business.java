@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Parcel
 public class Business {
 
-    String id;                  // Unique for business
+    String _id;                  // Unique for business
     String owner;               // Only the business owner can edit a business
     String name;                // Visible name of the business
     String about;               // Description of business
@@ -31,39 +31,13 @@ public class Business {
     String phone;               // Contact info
     String distance;            // ? This should be calculated per user upon their location
     String logoURL;             // Logo for the business
-    //TODO: Add Social
-
-    public Business() {
-    }
-
-    public Business(String id, String owner, String name, String about, String address, String city, Double latitude, Double longitude, Double servingRadius, String imageURL, String businessURL, double rating, Long reviewCount, boolean instantBook, ArrayList<String> tags, int price, String phone, String distance, String logoURL) {
-        this.id = id;
-        this.owner = owner;
-        this.name = name;
-        this.about = about;
-        this.address = address;
-        this.city = city;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.servingRadius = servingRadius;
-        this.imageURL = imageURL;
-        this.businessURL = businessURL;
-        this.rating = rating;
-        this.reviewCount = reviewCount;
-        this.instantBook = instantBook;
-        this.tags = tags;
-        this.price = price;
-        this.phone = phone;
-        this.distance = distance;
-        this.logoURL = logoURL;
-    }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getOwner() {
@@ -221,7 +195,7 @@ public class Business {
     @Override
     public String toString() {
         return "Business{" +
-                "id='" + id + '\'' +
+                "id='" + _id + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
                 ", owner='" + owner + '\'' +

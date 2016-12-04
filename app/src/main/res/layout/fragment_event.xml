@@ -39,8 +39,7 @@
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:gravity="center_vertical"
-                    android:textColor="@color/primaryText"
-                    android:textSize="28sp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     tools:text="Birthday Party" />
 
@@ -99,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/spacing_normal"
                     android:text="@string/tags"
-                    android:textColor="@color/secondaryText"
                     android:textSize="@dimen/size_title"
                     android:textStyle="bold" />
 
@@ -134,7 +132,6 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/spacing_normal"
                     android:text="@string/bookings"
-                    android:textColor="@color/secondaryText"
                     android:textSize="@dimen/size_title"
                     android:textStyle="bold" />
 

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.EventsAdapter;
-import bookdlab.bookd.api.EventsClient;
 import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.models.Event;
-import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -19,28 +19,26 @@ public class Event {
         ANNIVERSARY
     }
 
-    String id;              // Unique ID for every event.
-    String creator;         // Which user created this. Useful for showing the events from a user
-    String name;            // Event name
-    Long startDate;         // Start date for the event
-    Long endDate;           // End date for the event
-    String backgroundURL;   // Optional: If we want to show a background URL
-    String dates;           // ? Do we need this?
-    String color = "#4286f4";
-    Type type = Type.DEFAULT;
+    private String _id;
+    private String creator;
+    private String name;
+    private Long startDate;
+    private Long endDate;
+    private String dates;
+    private Type type = Type.DEFAULT;
 
-    //String[] tags; - removed, not Firebase friendly
-    ArrayList<String> tags;
+    private ArrayList<String> tags = new ArrayList<>();
+    private ArrayList<String> businesses = new ArrayList<>();
 
     public Event() {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getCreator() {
@@ -75,28 +73,12 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public String getBackgroundURL() {
-        return backgroundURL;
-    }
-
-    public void setBackgroundURL(String backgroundURL) {
-        this.backgroundURL = backgroundURL;
-    }
-
     public String getDates() {
         return dates;
     }
 
     public void setDates(String dates) {
         this.dates = dates;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public ArrayList<String> getTags() {
@@ -113,5 +95,13 @@ public class Event {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public ArrayList<String> getBusinesses() {
+        return businesses;
+    }
+
+    public void setBusinesses(ArrayList<String> businesses) {
+        this.businesses = businesses;
     }
 }

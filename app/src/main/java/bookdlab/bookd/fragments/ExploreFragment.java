@@ -1,6 +1,7 @@
 package bookdlab.bookd.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,11 +35,16 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
-import bookdlab.bookd.api.BookdApiClientFactory;
+import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.helpers.EndlessRecyclerViewScrollListener;
+import bookdlab.bookd.interfaces.EventAware;
+import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import bookdlab.bookd.ui.UIUtils;
@@ -52,7 +57,7 @@ import butterknife.ButterKnife;
  * Copyright - 2016
  */
 public class ExploreFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, EventAware {
 
     private static final Double DEFAULT_RADIUS = 30.0;
     private static final Integer PAGE_SIZE = 20;
@@ -76,16 +81,22 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @BindView(R.id.byRating)
     RadioButton byRating;
 
+    @Inject
+    BookdApiClient bookdApiClient;
+
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
     private String searchQuery = "";
     public static final String EXTRA_SEARCH_QUERY = "extra_search_query";
+    private EventProvider eventProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((BookdApplication)getActivity().getApplication()).getAppComponent().inject(this);
 
         lastLocationFetched = new Location("");
         lastLocationFetched.setLatitude(37.4530);
@@ -112,7 +123,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         ButterKnife.bind(this, view);
 
         businessList = new ArrayList<>();
-        businessAdapter = new BusinessAdapter(getActivity(), businessList);
+        businessAdapter = new BusinessAdapter(getActivity(), businessList, eventProvider.getEvent(), bookdApiClient);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -232,7 +243,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         double ratingMin = advancedSearchContent.getRating();
         String querySortBy = advancedSearchContent.getSortByField().name();
 
-        BookdApiClientFactory.me().getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
+        bookdApiClient.getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
                 .enqueue(new Callback<List<Business>>() {
                     @Override
                     public void success(Result<List<Business>> result) {
@@ -281,5 +292,30 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         Log.d(TAG, "Location has been changed");
         lastLocationFetched = location;
         queryBusinesses(1);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        if (!(context instanceof EventProvider)) {
+            throw new ClassCastException("context has to implement " + EventProvider.class.getName());
+        }
+
+        super.onAttach(context);
+        this.eventProvider = (EventProvider) context;
+        this.eventProvider.addEventAware(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.eventProvider.removeEventAware(this);
+        this.eventProvider = null;
+    }
+
+    @Override
+    public void updateEventData() {
+        businessAdapter.setEvent(eventProvider.getEvent());
+        businessAdapter.notifyDataSetChanged();
     }
 }

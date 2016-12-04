@@ -31,7 +31,7 @@ public class TagItemView extends RelativeLayout {
         this.title = title;
         this.done = done;
 
-        LayoutInflater.from(context).inflate(R.layout.tag_item_view, this, true);
+        LayoutInflater.from(context).inflate(R.layout.event_tag_item_view, this, true);
         ButterKnife.bind(this);
 
         setData();
