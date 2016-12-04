@@ -1,12 +1,17 @@
 package bookdlab.bookd.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,11 +47,16 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.navView)
     NavigationView navView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout drawerLayout;
 
     @Inject
     BookdApiClient bookdApiClient;
 
     private List<Event> eventList;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +68,44 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         ((BookdApplication) getApplication()).getAppComponent().inject(this);
 
+        setSupportActionBar(toolbar);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setTitle("");
+        }
+
         viewPager.setAdapter(new HomeTabsAdapter(this, getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
+        drawerToggle = setupDrawerToggle();
+        drawerLayout.addDrawerListener(drawerToggle);
+
         setupProfileInfo();
         loadEvents();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void setupProfileInfo() {

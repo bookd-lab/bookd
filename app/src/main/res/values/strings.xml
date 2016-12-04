@@ -92,5 +92,8 @@
     <string name="cake">Cake</string>
     <string name="creating_event">Creating event…</string>
     <string name="planned_events">Planned Events</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 
 </resources>
