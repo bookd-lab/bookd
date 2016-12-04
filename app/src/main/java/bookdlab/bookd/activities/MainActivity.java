@@ -10,6 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -20,6 +25,7 @@ import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.HomeTabsAdapter;
 import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.models.Event;
+import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -42,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Event> eventList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +61,37 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(new HomeTabsAdapter(this, getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
+        setupProfileInfo();
         loadEvents();
+    }
+
+    private void setupProfileInfo() {
+        View headerView = navView.getHeaderView(0);
+
+        TextView tvUsername = (TextView) headerView.findViewById(R.id.tvUsername);
+        TextView tvEmail = (TextView) headerView.findViewById(R.id.tvEmail);
+        TextView tvMemberSince = (TextView) headerView.findViewById(R.id.tvMemberSince);
+        ImageView ivUserProfileImage = (ImageView) headerView.findViewById(R.id.ivUserProfileImage);
+
+        User user = BookdApplication.getCurrentUser();
+        String memberSince = "Member since " + user.getEmail();
+        if (null != user.getUsername()) {
+            tvUsername.setText(user.getUsername());
+        } else {
+            tvUsername.setText(R.string.unknown);
+        }
+
+        tvMemberSince.setText(memberSince);
+        tvEmail.setText(user.getEmail());
+
+        Glide.with(this)
+                .load(user.getProfileImageURL())
+                .placeholder(R.drawable.ic_account_circle_black_48px)
+                .into(ivUserProfileImage);
     }
 
     private void loadEvents() {
         bookdApiClient.getEvents(BookdApplication.getCurrentUser().getId(), null, null).enqueue(new Callback<List<Event>>() {
-
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (!response.isSuccessful()) {
