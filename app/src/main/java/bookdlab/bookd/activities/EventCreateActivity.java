@@ -29,6 +29,7 @@ import retrofit2.Response;
 public class EventCreateActivity extends AppCompatActivity implements WizardNavigator {
     private static final String TAG = "EventCreateActivity";
 
+    public static final int CREATE_EVENT_REQUEST = 1002;
     public static final String EVENT_EXTRA = "EVENT_EXTRA";
 
     @BindView(R.id.viewPager)

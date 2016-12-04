@@ -1,7 +1,6 @@
 package bookdlab.bookd.activities;
 
 import android.content.Intent;
-import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.util.Log;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -30,7 +28,7 @@ import bookdlab.bookd.R;
 import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.interfaces.UserCheckCallback;
-import bookdlab.bookd.models.Business;
+import bookdlab.bookd.models.Event;
 import bookdlab.bookd.models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +44,6 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     private String TAG = SplashActivity.class.getSimpleName();
 
     private static final int LOGIN_ACTIVITY_REQUEST = 1001;
-    private static final int CREATE_EVENT_REQUEST = 1002;
 
     @BindView(R.id.shimmerView)
     ShimmerFrameLayout shimmerFrameLayout;
@@ -87,9 +84,9 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     }
 
     private void setupEvents() {
-        bookdApiClient.getEvents(BookdApplication.getCurrentUser().getId(), null, null).enqueue(new Callback<List<Business>>() {
+        bookdApiClient.getEvents(BookdApplication.getCurrentUser().getId(), null, null).enqueue(new Callback<List<Event>>() {
             @Override
-            public void onResponse(Call<List<Business>> call, Response<List<Business>> response) {
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (!response.isSuccessful()) {
                     Log.e(TAG, String.valueOf(response.message()));
                     showTryAgainDialog();
@@ -98,14 +95,14 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
 
                 boolean openCreateEventFlow = response.body().isEmpty();
                 if (openCreateEventFlow) {
-                    startActivityForResult(new Intent(SplashActivity.this, EventCreateActivity.class), CREATE_EVENT_REQUEST);
+                    startActivityForResult(new Intent(SplashActivity.this, EventCreateActivity.class), EventCreateActivity.CREATE_EVENT_REQUEST);
                 } else {
                     openMainDashboard();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Business>> call, Throwable t) {
+            public void onFailure(Call<List<Event>> call, Throwable t) {
                 showTryAgainDialog();
             }
         });
@@ -147,7 +144,7 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
             return;
         }
 
-        if (requestCode == CREATE_EVENT_REQUEST) {
+        if (requestCode == EventCreateActivity.CREATE_EVENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 openMainDashboard();
                 return;

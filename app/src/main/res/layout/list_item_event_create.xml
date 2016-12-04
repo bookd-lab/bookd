@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/addIcon"
         android:layout_centerHorizontal="true"
-        android:text="@string/create_your_party"
+        android:text="@string/create_event"
         android:textAllCaps="true" />
 
 </RelativeLayout>

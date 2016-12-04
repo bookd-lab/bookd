@@ -23,7 +23,7 @@
     <string name="settings">Settings</string>
     <string name="name_event">What name of the event?</string>
     <string name="save">Save</string>
-    <string name="create_your_party">Create Your Event</string>
+    <string name="create_event">Create Your Event</string>
     <string name="comments">Comments…</string>
     <string name="event_starts">When does it start?</string>
     <string name="pick_date">Pick a date</string>
@@ -91,5 +91,6 @@
     <string name="background">Background</string>
     <string name="cake">Cake</string>
     <string name="creating_event">Creating event…</string>
+    <string name="planned_events">Planned Events</string>
 
 </resources>

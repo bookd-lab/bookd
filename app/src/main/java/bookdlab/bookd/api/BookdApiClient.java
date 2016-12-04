@@ -28,7 +28,7 @@ public interface BookdApiClient {
     );
 
     @GET("/event")
-    Call<List<Business>> getEvents(
+    Call<List<Event>> getEvents(
             @Query("creator") String creator,
             @Query("page") Integer page,
             @Query("limit") Integer limit
