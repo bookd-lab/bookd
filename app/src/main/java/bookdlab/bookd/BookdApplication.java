@@ -3,6 +3,8 @@ package bookdlab.bookd;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import bookdlab.bookd.models.User;
 import bookdlab.bookd.modules.AppComponent;
 import bookdlab.bookd.modules.AppModule;
@@ -35,6 +37,11 @@ public class BookdApplication extends Application {
 
     public static void setCurrentUser(User currentUser) {
         BookdApplication.currentUser = currentUser;
+    }
+
+    public static void logout() {
+        FirebaseAuth.getInstance().signOut();
+        currentUser = null;
     }
 
     public AppComponent getAppComponent() {

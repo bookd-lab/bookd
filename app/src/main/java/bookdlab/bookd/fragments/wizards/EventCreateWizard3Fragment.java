@@ -83,6 +83,7 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
 
         tags.add(newTag);
         htvTags.setData(tags);
+        htvTags.invalidate();
 
         tagsEdt.setText("");
     }

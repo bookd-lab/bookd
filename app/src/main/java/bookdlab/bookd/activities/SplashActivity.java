@@ -133,19 +133,17 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == LOGIN_ACTIVITY_REQUEST) {
             if (resultCode == RESULT_OK) {
-                setupEvents();
-                return;
+                setupUserProfile();
+            } else {
+                new AlertDialog.Builder(this).
+                        setMessage(R.string.authentication_failed)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.try_again, (dialog, which) -> openLoginActivity())
+                        .show();
             }
 
-            new AlertDialog.Builder(this).
-                    setMessage(R.string.authentication_failed)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.try_again, (dialog, which) -> openLoginActivity())
-                    .show();
             return;
-        }
-
-        if (requestCode == EventCreateActivity.CREATE_EVENT_REQUEST) {
+        } else if (requestCode == EventCreateActivity.CREATE_EVENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 openMainDashboard();
                 return;
@@ -183,6 +181,7 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     }
 
     private void fetchUserData(FirebaseUser user, bookdlab.bookd.interfaces.Callback callback) {
+
         QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
             @Override
             public void userIsPresent(User signedInUser) {
@@ -195,7 +194,8 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
                 Log.d(TAG, "userIsNotPresent: User is not present in database. Create entry");
                 User signedInUser = new User();
                 signedInUser.setId(user.getUid());
-                signedInUser.setEmail(user.getDisplayName());
+                signedInUser.setEmail(user.getEmail());
+                signedInUser.setUsername(user.getDisplayName());
 
                 DateFormat df = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH);
                 String date = df.format(Calendar.getInstance().getTime());

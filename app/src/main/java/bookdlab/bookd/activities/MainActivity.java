@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,9 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -33,6 +29,7 @@ import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.models.Event;
 import bookdlab.bookd.models.User;
 import bookdlab.bookd.ui.UIUtils;
+import bookdlab.bookd.views.NavHeadViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
 
         setupProfileInfo();
-        loadEvents();
+        fetchEvents();
 
         new Handler().postDelayed(() -> UIUtils.hideSoftInput(this), 200);
     }
@@ -95,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                signOut();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -112,32 +115,33 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void signOut() {
+        BookdApplication.logout();
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     private void setupProfileInfo() {
-        View headerView = navView.getHeaderView(0);
-
-        TextView tvUsername = (TextView) headerView.findViewById(R.id.tvUsername);
-        TextView tvEmail = (TextView) headerView.findViewById(R.id.tvEmail);
-        TextView tvMemberSince = (TextView) headerView.findViewById(R.id.tvMemberSince);
-        ImageView ivUserProfileImage = (ImageView) headerView.findViewById(R.id.ivUserProfileImage);
-
+        NavHeadViewHolder navHeadViewHolder = new NavHeadViewHolder(navView.getHeaderView(0));
         User user = BookdApplication.getCurrentUser();
-        String memberSince = "Member since " + user.getEmail();
+        String memberSince = "Member since " + user.getMemberSince();
         if (null != user.getUsername()) {
-            tvUsername.setText(user.getUsername());
+            navHeadViewHolder.tvUsername.setText(user.getUsername());
         } else {
-            tvUsername.setText(R.string.unknown);
+            navHeadViewHolder.tvUsername.setText(R.string.unknown);
         }
 
-        tvMemberSince.setText(memberSince);
-        tvEmail.setText(user.getEmail());
+        navHeadViewHolder.tvMemberSince.setText(memberSince);
+        navHeadViewHolder.tvEmail.setText(user.getEmail());
 
         Glide.with(this)
                 .load(user.getProfileImageURL())
                 .placeholder(R.drawable.ic_account_circle_black_48px)
-                .into(ivUserProfileImage);
+                .into(navHeadViewHolder.ivUserProfileImage);
     }
 
-    private void loadEvents() {
+    private void fetchEvents() {
         bookdApiClient.getEvents(BookdApplication.getCurrentUser().getId(), null, null).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setMessage(R.string.check_network_conn)
-                .setPositiveButton(R.string.try_again, (dialog, which) -> loadEvents())
+                .setPositiveButton(R.string.try_again, (dialog, which) -> fetchEvents())
                 .show();
     }
 
@@ -181,20 +185,20 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case CREATE_EVENT:
                     openCreateEvent();
-                    break;
+                    return true;
             }
 
-            return false;
+            //redirect to more general menu items
+            return onOptionsItemSelected(item);
         });
 
         navView.invalidate();
     }
 
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EventCreateActivity.CREATE_EVENT_REQUEST) {
             if (resultCode == RESULT_OK) {
-                loadEvents();
+                fetchEvents();
                 return;
             }
 
