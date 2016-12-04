@@ -28,6 +28,7 @@
         <activity android:name=".activities.EventCreateActivity" />
         <activity android:name=".activities.EventActivity" />
         <activity android:name=".activities.CheckoutActivity" />
+        <activity android:name=".activities.BookBusinessActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

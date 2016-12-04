@@ -103,4 +103,9 @@ public class SearchEditText extends RelativeLayout {
 
         public void onOpen();
     }
+
+    public void setEditable(boolean status){
+        searchEdt.setFocusable(status);
+        searchEdt.setCursorVisible(status);
+    }
 }

@@ -35,7 +35,7 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return ExploreFragment.newInstance();
+                return ExploreFragment.newInstance(null);
             case 1:
                 return EventsFragment.newInstance();
             case 2:

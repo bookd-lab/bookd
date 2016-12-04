@@ -2,8 +2,6 @@ package bookdlab.bookd.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +31,12 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.BusinessAdapter;
 import bookdlab.bookd.api.BookdApiClientFactory;
-import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.helpers.EndlessRecyclerViewScrollListener;
 import bookdlab.bookd.models.Business;
@@ -83,6 +79,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
+    private String searchQuery = "";
+    public static final String EXTRA_SEARCH_QUERY = "extra_search_query";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,11 +91,15 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         lastLocationFetched.setLongitude(122.1817);
 
         initGoogleLocationApi();
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            searchQuery = bundle.getString(EXTRA_SEARCH_QUERY);
+        }
     }
 
-    public static ExploreFragment newInstance() {
+    public static ExploreFragment newInstance(Bundle args) {
         ExploreFragment fragment = new ExploreFragment();
-        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -221,8 +223,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         int priceMax = advancedSearchContent.getPrice();
         double ratingMin = advancedSearchContent.getRating();
         String querySortBy = advancedSearchContent.getSortByField().name();
-        
-        BookdApiClientFactory.me().getBusinesses(searchEdt.getQuery(), priceMax, ratingMin, page, 20, querySortBy)
+
+        BookdApiClientFactory.me().getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
                 .enqueue(new Callback<List<Business>>() {
                     @Override
                     public void success(Result<List<Business>> result) {
@@ -239,6 +241,18 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                         loadingIndicatorView.hide();
                     }
                 });
+    }
+
+    private String getSearchQuery() {
+        String searchKey;
+        if(!TextUtils.isEmpty(searchQuery)){
+            searchKey = searchQuery;
+            searchEdt.setEditable(false);
+        } else {
+            searchKey = searchEdt.getQuery();
+            searchEdt.setEditable(true);
+        }
+        return searchKey;
     }
 
     @Override

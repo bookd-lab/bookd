@@ -1,5 +1,6 @@
 package bookdlab.bookd.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,8 @@ import android.util.Log;
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -107,8 +110,17 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
                 }
 
                 //finish as result to the calling activity
-                setResult(RESULT_OK);
-                finish();
+                /*setResult(RESULT_OK);
+                finish();*/
+                Bundle bundle = new Bundle();
+                ArrayList<String> tags = new ArrayList<>();
+                tags.add("Food");
+                tags.add("Bar");
+                bundle.putStringArrayList("tags", tags);
+                bundle.putString("eventName", "Test Event");
+                Intent intent = new Intent(EventCreateActivity.this, BookBusinessActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override

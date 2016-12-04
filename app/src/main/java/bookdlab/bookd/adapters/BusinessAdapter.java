@@ -16,7 +16,6 @@ import java.util.List;
 import bookdlab.bookd.R;
 import bookdlab.bookd.activities.BusinessActivity;
 import bookdlab.bookd.models.Business;
-import bookdlab.bookd.ui.UIUtils;
 import bookdlab.bookd.views.BusinessItemViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -62,6 +61,15 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         h.address.setText(business.getAddress());
         h.priceLevel.setText(business.formPriceLabel());
         h.rating.setCount((int) business.getRating());
+
+        // This is not working yet.
+        h.ivFavorite.setOnClickListener(v -> {
+            if(h.ivFavorite.getDrawable() == activity.getResources().getDrawable(R.drawable.ic_favorite)){
+                h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite_red);
+            } else {
+                h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite);
+            }
+        });
     }
 
     @Override
