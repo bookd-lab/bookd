@@ -62,15 +62,6 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         h.address.setText(business.getAddress());
         h.priceLevel.setText(business.formPriceLabel());
         h.rating.setCount((int) business.getRating());
-
-        if (null != business.getPhone()) {
-            CharSequence phone = UIUtils.embedImage(activity, business.getPhone(), R.drawable.phone_green, 0.5);
-            h.phone.setText(phone);
-            h.phone.setVisibility(View.VISIBLE);
-        } else {
-            //other views might be adjusting, so not making GONE
-            h.phone.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override

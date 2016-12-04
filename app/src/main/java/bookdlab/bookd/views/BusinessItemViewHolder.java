@@ -29,8 +29,6 @@ public class BusinessItemViewHolder extends RecyclerView.ViewHolder {
     public TextView address;
     @BindView(R.id.priceLevel)
     public TextView priceLevel;
-    @BindView(R.id.phone)
-    public TextView phone;
     @BindView(R.id.rating)
     public RatingBar rating;
 

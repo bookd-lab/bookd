@@ -30,6 +30,7 @@ import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.interfaces.UserCheckCallback;
 import bookdlab.bookd.models.Event;
 import bookdlab.bookd.models.User;
+import bookdlab.bookd.ui.UIUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -170,8 +171,10 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     }
 
     void openMainDashboard() {
-        new Handler().postDelayed(() ->
-                startActivity(new Intent(SplashActivity.this, MainActivity.class)), 1000);
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            finish();
+        }, 1000);
     }
 
     @Override

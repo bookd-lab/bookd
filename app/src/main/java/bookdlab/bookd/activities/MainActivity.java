@@ -3,6 +3,7 @@ package bookdlab.bookd.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +32,7 @@ import bookdlab.bookd.adapters.HomeTabsAdapter;
 import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.models.Event;
 import bookdlab.bookd.models.User;
+import bookdlab.bookd.ui.UIUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupProfileInfo();
         loadEvents();
+
+        new Handler().postDelayed(() -> UIUtils.hideSoftInput(this), 200);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
