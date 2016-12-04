@@ -11,6 +11,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.fragments.EventFragment;
 import bookdlab.bookd.fragments.EventsFragment;
 import bookdlab.bookd.fragments.ExploreFragment;
 import bookdlab.bookd.fragments.UserFragment;
@@ -37,7 +38,7 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
             case 0:
                 return ExploreFragment.newInstance(null);
             case 1:
-                return EventsFragment.newInstance();
+                return EventFragment.newInstance();
             case 2:
                 return UserFragment.newInstance();
         }

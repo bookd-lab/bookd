@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +28,8 @@ import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.HomeTabsAdapter;
 import bookdlab.bookd.api.BookdApiClient;
+import bookdlab.bookd.interfaces.EventAware;
+import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.models.Event;
 import bookdlab.bookd.models.User;
 import bookdlab.bookd.ui.UIUtils;
@@ -36,9 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EventProvider {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int CREATE_EVENT = 5000;
 
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Event> eventList;
     private ActionBarDrawerToggle drawerToggle;
+    private Event currentEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +77,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         viewPager.setAdapter(new HomeTabsAdapter(this, getSupportFragmentManager()));
+        //to avoid reloading
+        viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
 
-        drawerToggle = setupDrawerToggle();
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
 
         setupProfileInfo();
         fetchEvents();
-
-        new Handler().postDelayed(() -> UIUtils.hideSoftInput(this), 200);
-    }
-
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
     @Override
@@ -94,7 +94,23 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (0 <= item.getItemId() && item.getItemId() < eventList.size()) {
+            //bug fix for issue https://guides.codepath.com/android/Fragment-Navigation-Drawer#limitations
+            for (int i = 0; i < eventList.size(); i++) {
+                navView.getMenu().findItem(i).setChecked(false);
+            }
+
+            currentEvent = eventList.get(item.getItemId());
+            item.setChecked(true);
+            updateEventData();
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
         switch (item.getItemId()) {
+            case R.id.create_event:
+                openCreateEvent();
+                return true;
             case R.id.logout:
                 signOut();
                 return true;
@@ -115,30 +131,9 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void signOut() {
-        BookdApplication.logout();
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
     private void setupProfileInfo() {
         NavHeadViewHolder navHeadViewHolder = new NavHeadViewHolder(navView.getHeaderView(0));
-        User user = BookdApplication.getCurrentUser();
-        String memberSince = "Member since " + user.getMemberSince();
-        if (null != user.getUsername()) {
-            navHeadViewHolder.tvUsername.setText(user.getUsername());
-        } else {
-            navHeadViewHolder.tvUsername.setText(R.string.unknown);
-        }
-
-        navHeadViewHolder.tvMemberSince.setText(memberSince);
-        navHeadViewHolder.tvEmail.setText(user.getEmail());
-
-        Glide.with(this)
-                .load(user.getProfileImageURL())
-                .placeholder(R.drawable.ic_account_circle_black_48px)
-                .into(navHeadViewHolder.ivUserProfileImage);
+        navHeadViewHolder.setData(BookdApplication.getCurrentUser());
     }
 
     private void fetchEvents() {
@@ -175,26 +170,21 @@ public class MainActivity extends AppCompatActivity {
         navView.getMenu().clear();
         navView.inflateMenu(R.menu.drawer_view);
 
-        for (int i = 0; i < eventList.size(); i++) {
-            MenuItem menuItem = navView.getMenu().add(R.id.events_group, i, Menu.NONE, eventList.get(i).getName());
-            menuItem.setChecked(i == 0);
+        currentEvent = null;
+        if (!eventList.isEmpty()) {
+            currentEvent = eventList.get(0);
+            for (int i = 0; i < eventList.size(); i++) {
+                MenuItem menuItem = navView.getMenu().add(R.id.events_group, i, Menu.NONE, eventList.get(i).getName());
+                menuItem.setChecked(i == 0);
+            }
         }
 
-        navView.getMenu().add(R.id.events_group, CREATE_EVENT, Menu.NONE, R.string.create_event);
-        navView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case CREATE_EVENT:
-                    openCreateEvent();
-                    return true;
-            }
-
-            //redirect to more general menu items
-            return onOptionsItemSelected(item);
-        });
-
+        updateEventData();
+        navView.setNavigationItemSelectedListener(this::onOptionsItemSelected);
         navView.invalidate();
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EventCreateActivity.CREATE_EVENT_REQUEST) {
             if (resultCode == RESULT_OK) {
@@ -210,6 +200,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openCreateEvent() {
-        startActivityForResult(new Intent(this, EventCreateActivity.class), EventCreateActivity.CREATE_EVENT_REQUEST);
+        startActivityForResult(new Intent(this, EventCreateActivity.class),
+                EventCreateActivity.CREATE_EVENT_REQUEST);
+    }
+
+    private void signOut() {
+        BookdApplication.logout();
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @SuppressWarnings("all")
+    private void updateEventData() {
+        for (EventAware eventAware : this.eventAwareList) {
+            eventAware.updateEventData();
+        }
+    }
+
+    @Override
+    public Event getEvent() {
+        return currentEvent;
+    }
+
+    @Override
+    public void addEventAware(EventAware eventAware) {
+        eventAwareList.add(eventAware);
+    }
+
+    @Override
+    public void removeEventAware(EventAware eventAware) {
+        eventAwareList.remove(eventAware);
     }
 }

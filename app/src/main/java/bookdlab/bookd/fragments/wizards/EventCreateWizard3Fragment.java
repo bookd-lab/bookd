@@ -1,5 +1,6 @@
 package bookdlab.bookd.fragments.wizards;
 
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
@@ -55,17 +56,18 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
         tags = null == event.getTags() ? new ArrayList<>() : event.getTags();
         htvTags.setData(tags);
 
-        tagsEdt.setOnEditorActionListener((v, actionId, event1) -> {
-            switch (actionId) {
-                case KeyEvent.KEYCODE_DPAD_CENTER:
-                case KeyEvent.KEYCODE_ENTER:
-                    processTag();
-                    return true;
-                default:
-                    break;
+        tagsEdt.setImeActionLabel(getResources().getString(R.string.add), KeyEvent.KEYCODE_ENTER);
+        tagsEdt.setOnKeyListener((v, keyCode, event1) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+                processTag();
+                return true;
             }
 
             return false;
+        });
+
+        htvTags.addOnTagClickListener(item -> {
+            htvTags.removeItem(item);
         });
     }
 

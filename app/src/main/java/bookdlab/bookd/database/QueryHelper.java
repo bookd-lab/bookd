@@ -39,6 +39,7 @@ public class QueryHelper {
                     Log.d(TAG, "User not present in database");
                     callback.userIsNotPresent();
                 } else {
+                    Log.d(TAG, "User is present in database");
                     User signedInUser = new User();
                     for (DataSnapshot child : children) {
                         signedInUser = child.getValue(User.class);

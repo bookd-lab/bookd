@@ -86,7 +86,7 @@ public class UserFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        String memberSince = "Member since " + user.getEmail();
+        String memberSince = "Member since " + user.getMemberSince();
         if (null != user.getUsername()) {
             tvUsername.setText(user.getUsername());
         } else {

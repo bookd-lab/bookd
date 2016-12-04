@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/wizard_background">
 
     <ImageView
@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.3"
+        android:contentDescription="@string/background"
         android:scaleType="centerCrop"
         android:src="@drawable/christmas"
-        android:tint="@color/transparent_black_40"
-        android:contentDescription="@string/background" />
+        android:tint="@color/transparent_black_40" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,10 +27,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:inputType="textPersonName"
             android:hint="@string/create_event_step_3_hint"
+            android:inputType="textPersonName"
             android:textSize="@dimen/answer_font"
             tools:hint="@string/create_event_step_3_hint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tagsEdt"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tag_enter_hint"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tvInstruction"
@@ -46,11 +55,13 @@
             android:id="@+id/htvTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="120dp"
             android:layout_below="@id/tagsEdt"
             android:layout_marginTop="10dp"
+            android:minHeight="120dp"
+            android:padding="@dimen/spacing_normal"
             app:dynamicMode="true"
-            android:padding="@dimen/spacing_normal" />
+            app:tagBackground="@drawable/hashtag_bg"
+            app:tagTextColor="@color/white" />
 
     </RelativeLayout>
 

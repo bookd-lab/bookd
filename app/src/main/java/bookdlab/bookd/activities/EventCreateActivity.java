@@ -1,11 +1,11 @@
 package bookdlab.bookd.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 
@@ -14,7 +14,6 @@ import org.parceler.Parcels;
 import javax.inject.Inject;
 
 import bookdlab.bookd.BookdApplication;
-import bookdlab.bookd.Constants;
 import bookdlab.bookd.R;
 import bookdlab.bookd.adapters.CreateEventWizardAdapter;
 import bookdlab.bookd.api.BookdApiClient;
@@ -22,6 +21,9 @@ import bookdlab.bookd.interfaces.WizardNavigator;
 import bookdlab.bookd.models.Event;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class EventCreateActivity extends AppCompatActivity implements WizardNavigator {
@@ -68,7 +70,7 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         if (nextPos < adapterViewPager.getCount()) {
             viewPager.setCurrentItem(nextPos);
         } else {
-            bookBusinessesForEvent();
+            saveAndFinish();
             adapterViewPager.notifyDataSetChanged();
         }
     }
@@ -86,23 +88,14 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
         return event;
     }
 
-    private void bookBusinessesForEvent() {
-
-        /*loadingDialog = new AlertDialog.Builder(this)
+    private void saveAndFinish() {
+        loadingDialog = new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.loading))
                 .setMessage(getResources().getString(R.string.creating_event))
                 .setCancelable(false)
-                .show();*/
+                .show();
 
-        /*Bundle bundle = new Bundle();
-        bundle.putStringArrayList(Constants.EXTRA_EVENT_TAGS, event.getTags());
-        bundle.putString(Constants.EXTRA_EVENT_NAME, event.getName());*/
-
-        Intent intent = new Intent(EventCreateActivity.this, BookBusinessActivity.class);
-        intent.putExtra(Constants.EXTRA_EVENT, Parcels.wrap(Event.class, event));
-//        intent.putExtras(bundle);
-        startActivity(intent);
-
-        /*bookdApiClient.saveEvent(event).enqueue(new Callback<Event>() {
+        bookdApiClient.saveEvent(event).enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 loadingDialog.dismiss();
@@ -114,9 +107,8 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
                 }
 
                 //finish as result to the calling activity
-                *//*setResult(RESULT_OK);
-                finish();*//*
-
+                setResult(RESULT_OK);
+                finish();
             }
 
             @Override
@@ -125,13 +117,13 @@ public class EventCreateActivity extends AppCompatActivity implements WizardNavi
 
                 showErrorDialog();
             }
-        });*/
+        });
     }
 
     private void showErrorDialog() {
         new AlertDialog.Builder(EventCreateActivity.this)
                 .setMessage(R.string.check_network_conn)
-                .setPositiveButton(R.string.try_again, (dialog, which) -> bookBusinessesForEvent())
+                .setPositiveButton(R.string.try_again, (dialog, which) -> saveAndFinish())
                 .show();
     }
 }

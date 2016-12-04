@@ -62,7 +62,6 @@ public class EventActivity extends AppCompatActivity {
         bookingsRV.setLayoutManager(layoutManager);
         bookingsRV.setAdapter(businessAdapter);
 
-
         eventData = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_EVENT));
 
         new Queries().getBookedBusinessesForEvent(eventData.getId()).addValueEventListener(new ValueEventListener() {

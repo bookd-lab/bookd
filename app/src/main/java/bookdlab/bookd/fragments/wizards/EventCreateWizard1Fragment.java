@@ -71,7 +71,6 @@ public class EventCreateWizard1Fragment extends AbstractEventWizardChild {
 
             }
         });
-
     }
 
     private Event.Type findType(String s) {

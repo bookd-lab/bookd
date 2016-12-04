@@ -32,7 +32,6 @@ public class Event {
     //String[] tags; - removed, not Firebase friendly
     ArrayList<String> tags;
 
-
     public Event() {
     }
 

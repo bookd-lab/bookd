@@ -7,6 +7,7 @@ import bookdlab.bookd.activities.BookBusinessActivity;
 import bookdlab.bookd.activities.EventCreateActivity;
 import bookdlab.bookd.activities.MainActivity;
 import bookdlab.bookd.activities.SplashActivity;
+import bookdlab.bookd.fragments.EventFragment;
 import dagger.Component;
 
 /**
@@ -25,6 +26,8 @@ public interface AppComponent {
     void inject(EventCreateActivity activity);
 
     void inject(BookBusinessActivity activity);
+
+    void inject(EventFragment fragment);
 
     void inject(BookdApplication application);
 
