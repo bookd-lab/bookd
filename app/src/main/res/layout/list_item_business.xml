@@ -43,23 +43,13 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/priceLevel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/title"
-            android:layout_alignStart="@id/title"
-            android:layout_below="@id/title"
-            android:text="@string/samplePriceLevel"
-            android:textColor="@color/price"
-            android:textSize="15sp" />
-
-        <TextView
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/priceLevel"
-            android:layout_alignStart="@+id/priceLevel"
-            android:layout_below="@+id/priceLevel"
+            android:layout_alignLeft="@+id/title"
+            android:layout_alignStart="@+id/title"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="20dp"
             android:text="Downtown 185 Park Ave San Jose, CA 95113"
             android:textColor="@color/white"
             android:textSize="12sp" />
@@ -69,10 +59,22 @@
             android:layout_width="80dp"
             android:layout_height="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_margin="10dp"
+            android:layout_alignStart="@+id/title"
+            android:layout_alignLeft="@+id/title"
             app:rb_count="3"
             app:rb_fill="@drawable/fill"
             app:rb_max_count="5" />
+
+        <TextView
+            android:id="@+id/priceLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/rating"
+            android:layout_alignStart="@+id/title"
+            android:layout_alignLeft="@+id/title"
+            android:text="@string/samplePriceLevel"
+            android:textColor="@color/price"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 
