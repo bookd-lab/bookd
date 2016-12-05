@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.interfaces.SearchInteractionListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,13 +24,13 @@ import butterknife.ButterKnife;
 
 public class AdvancedSearchView extends RelativeLayout {
 
+    private static final String TAG = AdvancedSearchView.class.getSimpleName();
+
     public enum SortByField {
         rating, price
     }
 
-    private static final String TAG = "AdvancedSearchView";
-
-    OnSearchListener listener;
+    private SearchInteractionListener listener;
 
     @BindView(R.id.resetButton)
     Button resetButton;
@@ -114,7 +115,7 @@ public class AdvancedSearchView extends RelativeLayout {
 
         searchButton.setOnClickListener((v) -> {
             if (null != listener) {
-                listener.onSearch();
+                listener.onPerformSearch();
             }
         });
 
@@ -125,12 +126,8 @@ public class AdvancedSearchView extends RelativeLayout {
         });
     }
 
-    public void setListener(OnSearchListener listener) {
+    public void setListener(SearchInteractionListener listener) {
         this.listener = listener;
-    }
-
-    public interface OnSearchListener {
-        public void onSearch();
     }
 
     public double getRating() {

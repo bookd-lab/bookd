@@ -6,12 +6,14 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import bookdlab.bookd.R;
+import bookdlab.bookd.interfaces.SearchInteractionListener;
 
 /**
  * Created by akhmedovi on 11/19/16.
@@ -22,7 +24,7 @@ public class SearchEditText extends RelativeLayout {
 
     EditText searchEdt;
     ImageButton cancelButton;
-    InteractionListener listener;
+    SearchInteractionListener listener;
 
     public SearchEditText(Context context) {
         super(context);
@@ -68,7 +70,7 @@ public class SearchEditText extends RelativeLayout {
         addView(searchEdt);
         addView(cancelButton);
 
-        searchEdt.setOnClickListener((v) -> listener.onOpen());
+        searchEdt.setOnClickListener((v) -> listener.onOpenSearch());
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -86,25 +88,32 @@ public class SearchEditText extends RelativeLayout {
 
         cancelButton.setOnClickListener((v -> {
             searchEdt.setText("");
-            listener.onClose();
+            listener.onCancelSearch();
         }));
+
+        searchEdt.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+                //cuz also fires for UP twice
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    listener.onPerformSearch();
+                }
+
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public String getQuery() {
         return searchEdt.getText().toString().trim();
     }
 
-    public void setListener(InteractionListener listener) {
+    public void setListener(SearchInteractionListener listener) {
         this.listener = listener;
     }
 
-    public interface InteractionListener {
-        public void onClose();
-
-        public void onOpen();
-    }
-
-    public void setEditable(boolean status){
+    public void setEditable(boolean status) {
         searchEdt.setFocusable(status);
         searchEdt.setCursorVisible(status);
     }

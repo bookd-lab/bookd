@@ -45,6 +45,7 @@ import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.helpers.EndlessRecyclerViewScrollListener;
 import bookdlab.bookd.interfaces.EventAware;
 import bookdlab.bookd.interfaces.EventProvider;
+import bookdlab.bookd.interfaces.SearchInteractionListener;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.ui.SearchEditText;
 import bookdlab.bookd.ui.UIUtils;
@@ -57,10 +58,10 @@ import butterknife.ButterKnife;
  * Copyright - 2016
  */
 public class ExploreFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, EventAware {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, EventAware, SearchInteractionListener {
 
-    private static final Double DEFAULT_RADIUS = 30.0;
-    private static final Integer PAGE_SIZE = 20;
+    private static final String TAG = ExploreFragment.class.getSimpleName();
+
     private List<Business> businessList;
     private BusinessAdapter businessAdapter;
 
@@ -80,23 +81,25 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     RadioGroup sortByRadioGroup;
     @BindView(R.id.byRating)
     RadioButton byRating;
+    @BindView(R.id.emptyPanel)
+    View emptyPanel;
 
     @Inject
     BookdApiClient bookdApiClient;
 
     private GoogleApiClient mGoogleApiClient;
-    private static final String TAG = "ExploreFragment";
     private Location lastLocationFetched;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
     private String searchQuery = "";
     public static final String EXTRA_SEARCH_QUERY = "extra_search_query";
     private EventProvider eventProvider;
+    private GridLayoutManager layoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((BookdApplication)getActivity().getApplication()).getAppComponent().inject(this);
+        ((BookdApplication) getActivity().getApplication()).getAppComponent().inject(this);
 
         lastLocationFetched = new Location("");
         lastLocationFetched.setLatitude(37.4530);
@@ -105,7 +108,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         initGoogleLocationApi();
 
         Bundle bundle = this.getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             searchQuery = bundle.getString(EXTRA_SEARCH_QUERY);
         }
     }
@@ -117,15 +120,14 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         ButterKnife.bind(this, view);
 
         businessList = new ArrayList<>();
         businessAdapter = new BusinessAdapter(getActivity(), businessList, eventProvider.getEvent(), bookdApiClient);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(businessAdapter);
 
@@ -133,29 +135,9 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         loadingIndicatorView.show();
 
         byRating.setChecked(true);
-
-        searchEdt.setListener(new SearchEditText.InteractionListener() {
-            @Override
-            public void onClose() {
-                hideSearchUI();
-            }
-
-            @Override
-            public void onOpen() {
-                AnimUtils.fadeIn(advancedSearch);
-            }
-        });
-
-        advancedSearchContent.setListener(this::performSearch);
-        UIUtils.hideSoftInput(getActivity());
-
-        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                queryBusinesses(page + 1);
-            }
-        };
-
+        searchEdt.setListener(this);
+        advancedSearchContent.setListener(this);
+        endlessRecyclerViewScrollListener = getLoadMoreHandler();
         recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
 
         return view;
@@ -168,14 +150,14 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         new Handler().postDelayed(() -> UIUtils.hideSoftInput(getActivity()), 200);
     }
 
-    private void hideSearchUI() {
-        UIUtils.hideSoftInput(getActivity());
-        AnimUtils.fadeOut(advancedSearch);
-    }
-
-    private void performSearch() {
-        hideSearchUI();
-        queryBusinesses(1);
+    private EndlessRecyclerViewScrollListener getLoadMoreHandler() {
+        return new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG, "onLoadMore: " + page);
+                queryBusinesses(page + 1);
+            }
+        };
     }
 
     @Override
@@ -229,51 +211,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
-    private void queryBusinesses(int page) {
-        if (page == 1) {
-            businessList.clear();
-            businessAdapter.notifyDataSetChanged();
-            endlessRecyclerViewScrollListener.resetState();
-            recyclerView.setVisibility(View.GONE);
-            loadingIndicatorView.setVisibility(View.VISIBLE);
-            loadingIndicatorView.show();
-        }
-
-        int priceMax = advancedSearchContent.getPrice();
-        double ratingMin = advancedSearchContent.getRating();
-        String querySortBy = advancedSearchContent.getSortByField().name();
-
-        bookdApiClient.getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
-                .enqueue(new Callback<List<Business>>() {
-                    @Override
-                    public void success(Result<List<Business>> result) {
-                        businessList.addAll(result.data);
-                        businessAdapter.notifyDataSetChanged();
-
-                        loadingIndicatorView.hide();
-                        recyclerView.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void failure(TwitterException exception) {
-                        Log.e(TAG, exception.getMessage(), exception);
-                        loadingIndicatorView.hide();
-                    }
-                });
-    }
-
-    private String getSearchQuery() {
-        String searchKey;
-        if(!TextUtils.isEmpty(searchQuery)){
-            searchKey = searchQuery;
-            searchEdt.setEditable(false);
-        } else {
-            searchKey = searchEdt.getQuery();
-            searchEdt.setEditable(true);
-        }
-        return searchKey;
-    }
-
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "Connection to Google API suspended. Querying in Menlo Park");
@@ -317,5 +254,83 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     public void updateEventData() {
         businessAdapter.setEvent(eventProvider.getEvent());
         businessAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCancelSearch() {
+        hideSearchUI();
+    }
+
+    @Override
+    public void onOpenSearch() {
+        AnimUtils.fadeIn(advancedSearch);
+    }
+
+    @Override
+    public void onPerformSearch() {
+        Log.d(TAG, "onPerformSearch");
+        performSearch();
+    }
+
+    private void queryBusinesses(int page) {
+        Log.d(TAG, "Loading page: " + page);
+
+        if (page == 1) {
+            businessList.clear();
+            businessAdapter.notifyDataSetChanged();
+            endlessRecyclerViewScrollListener.resetState();
+            recyclerView.setVisibility(View.GONE);
+            emptyPanel.setVisibility(View.GONE);
+            loadingIndicatorView.setVisibility(View.VISIBLE);
+            loadingIndicatorView.show();
+        }
+
+        int priceMax = advancedSearchContent.getPrice();
+        double ratingMin = advancedSearchContent.getRating();
+        String querySortBy = advancedSearchContent.getSortByField().name();
+
+        bookdApiClient.getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
+                .enqueue(new Callback<List<Business>>() {
+                    @Override
+                    public void success(Result<List<Business>> result) {
+                        businessList.addAll(result.data);
+                        businessAdapter.notifyDataSetChanged();
+
+                        loadingIndicatorView.hide();
+                        recyclerView.setVisibility(View.VISIBLE);
+
+                        if (businessAdapter.getItemCount() == 0) {
+                            emptyPanel.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+                        Log.e(TAG, exception.getMessage(), exception);
+                        loadingIndicatorView.hide();
+                    }
+                });
+    }
+
+    private String getSearchQuery() {
+        String searchKey;
+        if (!TextUtils.isEmpty(searchQuery)) {
+            searchKey = searchQuery;
+            searchEdt.setEditable(false);
+        } else {
+            searchKey = searchEdt.getQuery();
+            searchEdt.setEditable(true);
+        }
+        return searchKey;
+    }
+
+    private void hideSearchUI() {
+        UIUtils.hideSoftInput(getActivity());
+        AnimUtils.fadeOut(advancedSearch);
+    }
+
+    private void performSearch() {
+        hideSearchUI();
+        queryBusinesses(1);
     }
 }

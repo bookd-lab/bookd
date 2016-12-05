@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:focusable="true"
-        app:indicatorColor="@color/colorAccent"
-        app:indicatorName="BallScaleRippleMultipleIndicator" />
+        app:indicatorColor="@color/colorPrimaryDark"
+        app:indicatorName="BallPulseIndicator" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/businessRV"
@@ -61,5 +61,29 @@
                 android:layout_height="wrap_content" />
         </android.support.v7.widget.CardView>
     </ScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/emptyPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/search"
+            android:src="@drawable/search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchIcon"
+            android:text="@string/nothing_found" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
