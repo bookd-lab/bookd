@@ -14,16 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.greenfrvr.hashtagview.HashtagView;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringJoiner;
 
 import javax.inject.Inject;
 
@@ -125,12 +121,6 @@ public class EventFragment extends Fragment implements EventAware {
         String whenLabel = sdf.format(startDate) + " - " + sdf.format(endDate);
         tvDate.setText(whenLabel);
 
-        List<String> eventTagsList = eventProvider.getEvent().getTags();
-        tagsCompletedContainer.removeAllViews();
-        for (String tag : eventTagsList) {
-            tagsCompletedContainer.addView(new TagItemView(getActivity(), tag, isTagDoneYet(tag)));
-        }
-
         int eventBackgroundResource = EventUtils.getEventBackgroundResouce(eventProvider.getEvent().getType());
         backgroundImage.setImageResource(eventBackgroundResource);
 
@@ -149,31 +139,46 @@ public class EventFragment extends Fragment implements EventAware {
             public void onResponse(Call<List<Business>> call, Response<List<Business>> response) {
                 if (!response.isSuccessful()) {
                     Log.d(TAG, response.message());
-                    setData(Collections.emptyList());
+                    setupBookings(Collections.emptyList());
                     return;
                 }
 
-                setData(response.body());
+                setupBookings(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Business>> call, Throwable t) {
                 Log.d(TAG, t.getMessage());
-                setData(Collections.emptyList());
+                setupBookings(Collections.emptyList());
             }
         });
     }
 
-    void setData(List<Business> businessList) {
+    void setupBookings(List<Business> businessList) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         BusinessAdapter adapter = new BusinessAdapter(getActivity(), businessList, eventProvider, bookdApiClient);
 
         bookingsRV.setLayoutManager(gridLayoutManager);
         bookingsRV.setAdapter(adapter);
+
+        List<String> eventTagsList = eventProvider.getEvent().getTags();
+        tagsCompletedContainer.removeAllViews();
+        for (String tag : eventTagsList) {
+            tagsCompletedContainer.addView(new TagItemView(getActivity(), tag, isTagDoneYet(tag, businessList)));
+        }
     }
 
-    boolean isTagDoneYet(String tag) {
-        //TODO: see if it is in businesses
+    boolean isTagDoneYet(String tag, List<Business> businessList) {
+        for (Business business : businessList) {
+            if (null != business.getTags()) {
+                for (String t : business.getTags()) {
+                    if (tag.toLowerCase().contains(t.toLowerCase()) || t.toLowerCase().contains(tag.toLowerCase())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 

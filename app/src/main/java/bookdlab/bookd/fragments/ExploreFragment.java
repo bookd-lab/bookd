@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -149,6 +151,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         super.onViewCreated(view, savedInstanceState);
 
         new Handler().postDelayed(() -> UIUtils.hideSoftInput(getActivity()), 200);
+
+        queryBusinesses(1);
     }
 
     private EndlessRecyclerViewScrollListener getLoadMoreHandler() {
@@ -185,43 +189,43 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        FragmentActivity ctx = getActivity();
-        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG, "Location couldn't be retrieved! Check permissions!");
-            return;
-        }
-
-        if (null != lastLocationFetched) {
-            queryBusinesses(1);
-            return;
-        }
-
-        lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (lastLocationFetched != null) {
-            queryBusinesses(1);
-        } else {
-            Log.i(TAG, "Requesting for location update!");
-            LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(60 * 60 * 1000L);
-            locationRequest.setFastestInterval(60 * 60 * 1000L);
-
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
-        }
+//        FragmentActivity ctx = getActivity();
+//        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Log.e(TAG, "Location couldn't be retrieved! Check permissions!");
+//            return;
+//        }
+//
+//        if (null != lastLocationFetched) {
+//            queryBusinesses(1);
+//            return;
+//        }
+//
+//        lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//
+//        if (lastLocationFetched != null) {
+//            queryBusinesses(1);
+//        } else {
+//            Log.i(TAG, "Requesting for location update!");
+//            LocationRequest locationRequest = new LocationRequest();
+//            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//            locationRequest.setInterval(60 * 60 * 1000L);
+//            locationRequest.setFastestInterval(60 * 60 * 1000L);
+//
+//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+//        }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "Connection to Google API suspended. Querying in Menlo Park");
-        queryBusinesses(1);
+//        queryBusinesses(1);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "Connection to Google API failed. Querying in Menlo Park");
-        queryBusinesses(1);
+//        queryBusinesses(1);
     }
 
 
@@ -229,7 +233,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     public void onLocationChanged(Location location) {
         Log.d(TAG, "Location has been changed");
         lastLocationFetched = location;
-        queryBusinesses(1);
+//        queryBusinesses(1);
     }
 
 
@@ -305,7 +309,8 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                         }
 
                         if (businessAdapter.getItemCount() <= PAGE_SIZE) {
-                            AnimUtils.fadeIn(recyclerView);
+                            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.bottom_up_fade_in);
+                            recyclerView.startAnimation(animation);
                         }
                     }
 

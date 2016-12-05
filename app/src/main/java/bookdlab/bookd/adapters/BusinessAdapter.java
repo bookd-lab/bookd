@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -99,7 +101,6 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         }
 
         Event event = eventProvider.getEvent();
-
         if (event.getBusinesses().contains(business.getId())) {
             h.addButton.setImageResource(R.drawable.close_red);
             h.addButton.setOnClickListener(v -> {

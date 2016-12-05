@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.wonderkiln.blurkit.BlurKit;
 
 import java.util.HashMap;
 
@@ -28,6 +29,8 @@ public class BookdApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        BlurKit.init(this);
 
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
         appComponent.inject(this);

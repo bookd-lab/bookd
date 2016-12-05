@@ -23,21 +23,27 @@
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            style="@style/MyCustomTabLayout"
+        <com.wonderkiln.blurkit.BlurLayout
+            android:id="@+id/blurLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/transparent_white_80"
-            app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
-            app:tabMode="fixed" />
+            android:layout_alignParentBottom="true">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                style="@style/MyCustomTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"/>
+
+        </com.wonderkiln.blurkit.BlurLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_above="@id/tabLayout"
+            android:layout_above="@id/blurLayout"
             android:background="@drawable/shade_up_bg" />
 
     </RelativeLayout>
