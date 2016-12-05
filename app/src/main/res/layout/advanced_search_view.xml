@@ -19,9 +19,9 @@
         android:layout_width="250dp"
         android:layout_height="30dp"
         android:layout_below="@id/priceLabel"
-        android:progress="100"
         android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp" />
+        android:layout_marginRight="100dp"
+        android:progress="100" />
 
     <TextView
         android:id="@+id/priceIndicator"
@@ -113,6 +113,7 @@
         android:text="@string/reset"
         android:textAllCaps="false" />
 
+    <!--For Scrolling Option Margin added-->
     <Button
         android:id="@+id/searchButton"
         style="@style/SearchButton"
@@ -121,7 +122,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/sortByRadioGroup"
-        android:layout_marginBottom="5dp"
+
+        android:layout_marginBottom="100dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:text="@string/search"

@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -50,8 +51,10 @@ public class SearchEditText extends RelativeLayout {
         searchEdt.setHint(UIUtils.embedImage(context, getResources().getString(R.string.query_hint), R.drawable.search, 0.9));
         searchEdt.setGravity(CENTER_VERTICAL);
         searchEdt.setSingleLine();
+        searchEdt.setMaxLines(1);
         searchEdt.setPadding(0, 0, 0, 0);
         searchEdt.setBackgroundResource(R.color.transparent);
+        searchEdt.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
         LayoutParams buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         buttonParams.addRule(CENTER_VERTICAL, getId());

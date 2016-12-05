@@ -23,12 +23,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.MainActivity" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".activities.BusinessActivity" />
         <activity android:name=".activities.EventCreateActivity" />
         <activity android:name=".activities.EventActivity" />
         <activity android:name=".activities.CheckoutActivity" />
-        <activity android:name=".activities.BookBusinessActivity"/>
+        <activity android:name=".activities.BookBusinessActivity" />
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

@@ -138,7 +138,8 @@
                     android:id="@+id/bookingsRV"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:paddingBottom="@dimen/spacing_normal" />
+                    android:paddingBottom="50dp"
+                    android:clipToPadding="false" />
 
                 <TextView
                     android:id="@+id/noBookingsYet"

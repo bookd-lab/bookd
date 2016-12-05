@@ -36,6 +36,8 @@
         android:layout_below="@id/searchEdt"
         android:layout_marginTop="5dp"
         android:scrollbars="vertical"
+        android:paddingBottom="50dp"
+        android:clipToPadding="false"
         android:visibility="gone" />
 
     <ScrollView
@@ -60,6 +62,7 @@
                 android:id="@+id/advancedSearchContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </android.support.v7.widget.CardView>
     </ScrollView>
 
