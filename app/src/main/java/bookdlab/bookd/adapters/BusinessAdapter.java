@@ -14,12 +14,14 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import bookdlab.bookd.BookdApplication;
 import bookdlab.bookd.R;
 import bookdlab.bookd.activities.BusinessActivity;
 import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Event;
+import bookdlab.bookd.models.Favorite.Favorite;
 import bookdlab.bookd.views.BusinessItemViewHolder;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import retrofit2.Call;
@@ -75,14 +77,21 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         h.priceLevel.setText(business.formPriceLabel());
         h.rating.setCount((int) business.getRating());
 
-        // This is not working yet.
-        h.ivFavorite.setOnClickListener(v -> {
-            if (h.ivFavorite.getDrawable() == activity.getResources().getDrawable(R.drawable.ic_favorite)) {
-                h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite_red);
-            } else {
-                h.ivFavorite.setBackgroundResource(R.drawable.ic_favorite);
-            }
-        });
+        if (BookdApplication.getFavorites().containsKey(business.getId())) {
+            h.ivFavorite.setImageResource(R.drawable.ic_favorite_red);
+            h.ivFavorite.setOnClickListener(v -> {
+                BookdApplication.getFavorites().remove(business.getId());
+                notifyItemChanged(position);
+            });
+        } else {
+            h.ivFavorite.setImageResource(R.drawable.ic_favorite);
+            h.ivFavorite.setOnClickListener(v -> {
+                Favorite fav = new Favorite(BookdApplication.getCurrentUser().getId(), business.getId());
+                BookdApplication.getFavorites().put(business.getId(), fav);
+                bookdApiClient.addFavorite(fav).enqueue(getDefaultCallback());
+                notifyItemChanged(position);
+            });
+        }
 
         if (event.getBusinesses().contains(business.getId())) {
             h.addButton.setImageResource(R.drawable.close_red);
@@ -115,16 +124,16 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
         return businessList.size();
     }
 
-    private Callback<Event> getDefaultCallback() {
+    private <T> Callback<T> getDefaultCallback() {
         //TODO: ignore for now
-        return new Callback<Event>() {
+        return new Callback<T>() {
             @Override
-            public void onResponse(Call<Event> call, Response<Event> response) {
+            public void onResponse(Call<T> call, Response<T> response) {
                 Log.d(TAG, "Add/Remove business to event success: " + response.isSuccessful());
             }
 
             @Override
-            public void onFailure(Call<Event> call, Throwable t) {
+            public void onFailure(Call<T> call, Throwable t) {
                 Log.d(TAG, t.getMessage());
             }
         };

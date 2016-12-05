@@ -18,6 +18,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,8 +31,8 @@ import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.database.QueryHelper;
 import bookdlab.bookd.interfaces.UserCheckCallback;
 import bookdlab.bookd.models.Event;
+import bookdlab.bookd.models.Favorite.Favorite;
 import bookdlab.bookd.models.User;
-import bookdlab.bookd.ui.UIUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -78,6 +80,11 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
 
         if (null == BookdApplication.getCurrentUser()) {
             fetchUserData(FirebaseAuth.getInstance().getCurrentUser(), this::setupEvents);
+            return;
+        }
+
+        if (null == BookdApplication.getFavorites()) {
+            fetchFavorites(this::setupEvents);
             return;
         }
 
@@ -181,12 +188,11 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     }
 
     private void fetchUserData(FirebaseUser user, bookdlab.bookd.interfaces.Callback callback) {
-
         QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
             @Override
             public void userIsPresent(User signedInUser) {
                 BookdApplication.setCurrentUser(signedInUser);
-                callback.done();
+                fetchFavorites(callback);
             }
 
             @Override
@@ -207,10 +213,40 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
 
                 QueryHelper.saveUser(signedInUser, null);
                 BookdApplication.setCurrentUser(signedInUser);
-                callback.done();
+                fetchFavorites(callback);
             }
         });
 
         Log.d(TAG, "setupAuthStateListener: showing splash screen");
+    }
+
+    private void fetchFavorites(bookdlab.bookd.interfaces.Callback callback) {
+        bookdApiClient.getFavorite(BookdApplication.getCurrentUser().getId()).enqueue(new Callback<List<Favorite>>() {
+            @Override
+            public void onResponse(Call<List<Favorite>> call, Response<List<Favorite>> response) {
+                if (response.isSuccessful()) {
+                    setupFavorites(response.body());
+                } else {
+                    setupFavorites(Collections.emptyList());
+                }
+
+                callback.done();
+            }
+
+            @Override
+            public void onFailure(Call<List<Favorite>> call, Throwable t) {
+                setupFavorites(Collections.emptyList());
+                callback.done();
+            }
+        });
+    }
+
+    private void setupFavorites(List<Favorite> data) {
+        HashMap<String, Favorite> favorites = new HashMap<>();
+        for (Favorite f : data) {
+            favorites.put(f.getBusiness(), f);
+        }
+
+        BookdApplication.setFavorites(favorites);
     }
 }

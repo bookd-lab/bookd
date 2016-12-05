@@ -61,6 +61,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         GoogleApiClient.OnConnectionFailedListener, LocationListener, EventAware, SearchInteractionListener {
 
     private static final String TAG = ExploreFragment.class.getSimpleName();
+    private static final int PAGE_SIZE = 20;
 
     private List<Business> businessList;
     private BusinessAdapter businessAdapter;
@@ -289,7 +290,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         double ratingMin = advancedSearchContent.getRating();
         String querySortBy = advancedSearchContent.getSortByField().name();
 
-        bookdApiClient.getBusinesses(getSearchQuery(), priceMax, ratingMin, page, 20, querySortBy)
+        bookdApiClient.getBusinesses(getSearchQuery(), priceMax, ratingMin, page, PAGE_SIZE, querySortBy)
                 .enqueue(new Callback<List<Business>>() {
                     @Override
                     public void success(Result<List<Business>> result) {
@@ -301,6 +302,10 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
                         if (businessAdapter.getItemCount() == 0) {
                             emptyPanel.setVisibility(View.VISIBLE);
+                        }
+
+                        if(businessAdapter.getItemCount() <= PAGE_SIZE) {
+                            AnimUtils.fadeIn(recyclerView);
                         }
                     }
 

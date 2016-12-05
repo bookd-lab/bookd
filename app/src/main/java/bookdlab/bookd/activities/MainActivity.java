@@ -3,8 +3,6 @@ package bookdlab.bookd.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,8 +27,6 @@ import bookdlab.bookd.api.BookdApiClient;
 import bookdlab.bookd.interfaces.EventAware;
 import bookdlab.bookd.interfaces.EventProvider;
 import bookdlab.bookd.models.Event;
-import bookdlab.bookd.models.User;
-import bookdlab.bookd.ui.UIUtils;
 import bookdlab.bookd.views.NavHeadViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
