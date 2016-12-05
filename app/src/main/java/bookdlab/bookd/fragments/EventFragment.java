@@ -166,7 +166,7 @@ public class EventFragment extends Fragment implements EventAware {
 
     void setData(List<Business> businessList) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        BusinessAdapter adapter = new BusinessAdapter(getActivity(), businessList, eventProvider.getEvent(), bookdApiClient);
+        BusinessAdapter adapter = new BusinessAdapter(getActivity(), businessList, eventProvider, bookdApiClient);
 
         bookingsRV.setLayoutManager(gridLayoutManager);
         bookingsRV.setAdapter(adapter);

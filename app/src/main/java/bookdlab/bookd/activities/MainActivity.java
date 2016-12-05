@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements EventProvider {
 
         viewPager.setAdapter(new HomeTabsAdapter(this, getSupportFragmentManager()));
         //to avoid reloading
-        viewPager.setOffscreenPageLimit(2);
+        //viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements EventProvider {
 
             currentEvent = eventList.get(item.getItemId());
             item.setChecked(true);
-            updateEventData();
+            notifyEventAware();
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements EventProvider {
             }
         }
 
-        updateEventData();
+        notifyEventAware();
         navView.setNavigationItemSelectedListener(this::onOptionsItemSelected);
         navView.invalidate();
     }
@@ -205,13 +205,6 @@ public class MainActivity extends AppCompatActivity implements EventProvider {
         startActivity(intent);
     }
 
-    @SuppressWarnings("all")
-    private void updateEventData() {
-        for (EventAware eventAware : this.eventAwareList) {
-            eventAware.updateEventData();
-        }
-    }
-
     @Override
     public Event getEvent() {
         return currentEvent;
@@ -225,5 +218,13 @@ public class MainActivity extends AppCompatActivity implements EventProvider {
     @Override
     public void removeEventAware(EventAware eventAware) {
         eventAwareList.remove(eventAware);
+    }
+
+    @SuppressWarnings("all")
+    @Override
+    public void notifyEventAware() {
+        for (EventAware eventAware : this.eventAwareList) {
+            eventAware.updateEventData();
+        }
     }
 }

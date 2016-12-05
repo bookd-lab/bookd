@@ -126,7 +126,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         ButterKnife.bind(this, view);
 
         businessList = new ArrayList<>();
-        businessAdapter = new BusinessAdapter(getActivity(), businessList, eventProvider.getEvent(), bookdApiClient);
+        businessAdapter = new BusinessAdapter(getActivity(), businessList, eventProvider, bookdApiClient);
 
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -253,7 +253,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void updateEventData() {
-        businessAdapter.setEvent(eventProvider.getEvent());
+        businessAdapter.setEventProvider(eventProvider);
         businessAdapter.notifyDataSetChanged();
     }
 
@@ -304,7 +304,7 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
                             emptyPanel.setVisibility(View.VISIBLE);
                         }
 
-                        if(businessAdapter.getItemCount() <= PAGE_SIZE) {
+                        if (businessAdapter.getItemCount() <= PAGE_SIZE) {
                             AnimUtils.fadeIn(recyclerView);
                         }
                     }

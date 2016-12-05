@@ -101,7 +101,6 @@
                     android:textSize="@dimen/size_title"
                     android:textStyle="bold" />
 
-
                 <LinearLayout
                     android:id="@+id/tagsCompletedContainer"
                     android:layout_width="match_parent"
@@ -148,6 +147,7 @@
                     android:paddingBottom="@dimen/spacing_normal"
                     android:text="@string/no_bookings_yet"
                     android:visibility="gone" />
+
             </LinearLayout>
 
             <View

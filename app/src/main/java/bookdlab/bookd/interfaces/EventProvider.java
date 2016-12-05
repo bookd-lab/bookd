@@ -16,4 +16,5 @@ public interface EventProvider {
     public Event getEvent();
     public void addEventAware(EventAware eventAware);
     public void removeEventAware(EventAware eventAware);
+    public void notifyEventAware();
 }
