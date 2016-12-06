@@ -190,7 +190,7 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     }
 
     private void fetchUserData(FirebaseUser user, bookdlab.bookd.interfaces.Callback callback) {
-        QueryHelper.isUserPresentInDatabase(user.getUid(), new UserCheckCallback() {
+        QueryHelper.isUserPresentInDatabase(user.getEmail(), new UserCheckCallback() {
             @Override
             public void userIsPresent(User signedInUser) {
                 BookdApplication.setCurrentUser(signedInUser);
