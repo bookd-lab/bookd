@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +31,7 @@ import org.parceler.Parcels;
 import bookdlab.bookd.R;
 import bookdlab.bookd.database.Queries;
 import bookdlab.bookd.fragments.ReviewsFragment;
+import bookdlab.bookd.helpers.AnimUtils;
 import bookdlab.bookd.models.Business;
 import bookdlab.bookd.models.Review;
 import bookdlab.bookd.utils.Constants;
@@ -78,9 +80,10 @@ public class BusinessActivity extends AppCompatActivity
     TextView subtitleTV;
     @BindView(R.id.featuredReviewContaner)
     View featuredReviewContaner;
+    @BindView(R.id.titleFrameContainer)
+    View titleFrameContainer;
 
     Business businessData;
-    private ReviewsFragment reviewsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +123,18 @@ public class BusinessActivity extends AppCompatActivity
 
         toolbarTitle.setText(businessData.getName());
         businessNameTV.setText(businessData.getName());
-        subtitleTV.setText(businessData.getCity());
+        subtitleTV.setText(businessData.getAddress());
         aboutTV.setText(businessData.getAbout());
+
+        toolbar.setVisibility(View.GONE);
+        titleFrameContainer.setVisibility(View.GONE);
+        businessCircleIV.setVisibility(View.GONE);
+
+        new Handler().postDelayed(() -> {
+            AnimUtils.fadeIn(toolbar);
+            AnimUtils.fadeIn(titleFrameContainer);
+            AnimUtils.fadeIn(businessCircleIV);
+        }, 300);
     }
 
     @Override
@@ -134,20 +147,12 @@ public class BusinessActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
+                supportFinishAfterTransition();
                 onBackPressed();
                 break;
             }
-            case R.id.menu_add: {
-                //TODO: add to the current event
-                return true;
-            }
             case R.id.menu_call: {
                 return openCallIntent();
-            }
-
-            case R.id.menu_book: {
-                launchPaymentActivity();
-                break;
             }
         }
 
@@ -155,26 +160,9 @@ public class BusinessActivity extends AppCompatActivity
     }
 
     private boolean openCallIntent() {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + businessData.getPhone()));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + businessData.getPhone()));
         startActivity(intent);
         return true;
-    }
-
-
-    private void launchPaymentActivity() {
-        startActivity(new Intent(this, CheckoutActivity.class));
-    }
-
-    public static void addToEventWatchList() {
-
-    }
-
-    public static void removeFromEventWatchList() {
-
     }
 
     @Override
@@ -229,7 +217,7 @@ public class BusinessActivity extends AppCompatActivity
 
     public void showMoreReviews() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        reviewsFragment = ReviewsFragment.newInstance(businessData);
+        ReviewsFragment reviewsFragment = ReviewsFragment.newInstance(businessData);
         ft.replace(R.id.fragmentPlaceholder, reviewsFragment);
         ft.commit();
 

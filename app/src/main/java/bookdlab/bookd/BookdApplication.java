@@ -3,6 +3,7 @@ package bookdlab.bookd;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.wonderkiln.blurkit.BlurKit;
 
@@ -30,6 +31,7 @@ public class BookdApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        FirebaseApp.initializeApp(this);
         BlurKit.init(this);
 
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();

@@ -1,6 +1,5 @@
 package bookdlab.bookd;
 
-import com.google.android.gms.wallet.WalletConstants;
 
 import bookdlab.bookd.models.ItemInfo;
 
@@ -11,8 +10,6 @@ import bookdlab.bookd.models.ItemInfo;
 public class Constants {
 
     public static final String EXTRA_USER_ID = "USER_ID";
-
-    public static final int WALLET_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST;
 
     public static final String MERCHANT_NAME = "Bookd";
 

@@ -26,9 +26,6 @@ import android.widget.RadioGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -59,8 +56,7 @@ import butterknife.ButterKnife;
  * Created by akhmedovi on 11/10/16.
  * Copyright - 2016
  */
-public class ExploreFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, EventAware, SearchInteractionListener {
+public class ExploreFragment extends Fragment implements EventAware, SearchInteractionListener {
 
     private static final String TAG = ExploreFragment.class.getSimpleName();
     private static final int PAGE_SIZE = 20;
@@ -90,7 +86,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @Inject
     BookdApiClient bookdApiClient;
 
-    private GoogleApiClient mGoogleApiClient;
     private Location lastLocationFetched;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
     private String searchQuery = "";
@@ -107,8 +102,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
         lastLocationFetched = new Location("");
         lastLocationFetched.setLatitude(37.4530);
         lastLocationFetched.setLongitude(122.1817);
-
-        initGoogleLocationApi();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -168,74 +161,12 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
     }
-
-    private void initGoogleLocationApi() {
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-//        FragmentActivity ctx = getActivity();
-//        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            Log.e(TAG, "Location couldn't be retrieved! Check permissions!");
-//            return;
-//        }
-//
-//        if (null != lastLocationFetched) {
-//            queryBusinesses(1);
-//            return;
-//        }
-//
-//        lastLocationFetched = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//
-//        if (lastLocationFetched != null) {
-//            queryBusinesses(1);
-//        } else {
-//            Log.i(TAG, "Requesting for location update!");
-//            LocationRequest locationRequest = new LocationRequest();
-//            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//            locationRequest.setInterval(60 * 60 * 1000L);
-//            locationRequest.setFastestInterval(60 * 60 * 1000L);
-//
-//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
-//        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Connection to Google API suspended. Querying in Menlo Park");
-//        queryBusinesses(1);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "Connection to Google API failed. Querying in Menlo Park");
-//        queryBusinesses(1);
-    }
-
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, "Location has been changed");
-        lastLocationFetched = location;
-//        queryBusinesses(1);
-    }
-
 
     @Override
     public void onAttach(Context context) {

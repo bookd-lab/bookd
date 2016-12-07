@@ -19,16 +19,16 @@ public class Event {
         ANNIVERSARY
     }
 
-    private String _id;
-    private String creator;
-    private String name;
-    private Long startDate;
-    private Long endDate;
-    private String dates;
-    private Type type = Type.DEFAULT;
+    String _id;
+    String creator;
+    String name;
+    Long startDate;
+    Long endDate;
+    String dates;
+    Type type = Type.DEFAULT;
 
-    private ArrayList<String> tags = new ArrayList<>();
-    private ArrayList<String> businesses = new ArrayList<>();
+    ArrayList<String> tags = new ArrayList<>();
+    ArrayList<String> businesses = new ArrayList<>();
 
     public Event() {
     }

@@ -2,6 +2,8 @@ package bookdlab.bookd.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,13 +73,20 @@ public class BusinessAdapter extends RecyclerView.Adapter<BusinessItemViewHolder
                 .override(200, 200)
                 .into(h.businessImage);
 
-        h.rootView.setOnClickListener((v -> {
-
+        h.rootView.setOnClickListener(v -> {
             Intent intent = new Intent(activity, BusinessActivity.class);
             intent.putExtra(BusinessActivity.EXTRA_BUSINESS, Parcels.wrap(business));
-            activity.startActivity(intent);
 
-        }));
+            Pair<View, String> p1 = Pair.create(h.rootView, "businessImage");
+//            Pair<View, String> p2 = Pair.create(h.rootView, "title");
+//            Pair<View, String> p3 = Pair.create(h.rootView, "subtitle");
+            @SuppressWarnings("all")
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(activity, p1);// p2, p3);
+
+            activity.startActivity(intent, options.toBundle());
+
+        });
 
         h.title.setText(business.getName());
         h.address.setText(business.getAddress());
