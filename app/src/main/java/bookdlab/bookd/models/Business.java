@@ -18,8 +18,7 @@ public class Business {
     String about;               // Description of business
     String address;             // Full address of business
     String city;                // Internal only; Useful for querying
-    Double latitude;            // Internal only; Useful for querying
-    Double longitude;           // Internal only; Useful for querying
+    double[] loc;
     Double servingRadius;       // How long the performers are willing to travel
     String imageURL;            // Backdrop URL
     String businessURL;         // Any public business URL
@@ -78,22 +77,6 @@ public class Business {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 
     public Double getServingRadius() {
@@ -184,6 +167,14 @@ public class Business {
         this.logoURL = logoURL;
     }
 
+    public double[] getLoc() {
+        return loc;
+    }
+
+    public void setLoc(double[] loc) {
+        this.loc = loc;
+    }
+
     public String formPriceLabel() {
         String priceLabel = "";
         for (int i = 0; i < getPrice(); i++) {
@@ -203,8 +194,6 @@ public class Business {
                 ", about='" + about + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
                 ", servingRadius=" + servingRadius +
                 ", imageURL='" + imageURL + '\'' +
                 ", businessURL='" + businessURL + '\'' +

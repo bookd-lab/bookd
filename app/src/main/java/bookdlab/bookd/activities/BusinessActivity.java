@@ -106,6 +106,7 @@ public class BusinessActivity extends AppCompatActivity
 
         initData();
         loadFeaturedReview();
+        ivMapView.setOnClickListener((v) -> this.openMapIntent());
     }
 
     @Override
@@ -114,7 +115,7 @@ public class BusinessActivity extends AppCompatActivity
     }
 
     private void initData() {
-        String address = businessData.getLatitude() + "," + businessData.getLongitude();
+        String address = businessData.getLoc()[0] + "," + businessData.getLoc()[1];
         String mapUrl = "https://maps.google.com/maps/api/staticmap?center=" + address + "&zoom=16&size=600x400&sensor=true&markers=color:red%7C\"" + address + "\"&key=" + Constants.MAP_API_KEY;
 
         Glide.with(this).load(businessData.getImageURL()).into(headerImageView);
@@ -164,6 +165,17 @@ public class BusinessActivity extends AppCompatActivity
         startActivity(intent);
         return true;
     }
+
+    private void openMapIntent() {
+        String address = businessData.getLoc()[0] + "," + businessData.getLoc()[1];
+        Uri gmmIntentUri = Uri.parse("google.streetview:cbll=" + address);
+
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+
+        startActivity(mapIntent);
+    }
+
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
