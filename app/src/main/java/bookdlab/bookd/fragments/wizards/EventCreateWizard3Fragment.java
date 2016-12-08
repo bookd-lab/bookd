@@ -6,7 +6,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.greenfrvr.hashtagview.HashtagView;
 
@@ -55,7 +57,14 @@ public class EventCreateWizard3Fragment extends AbstractEventWizardChild {
         tags = null == event.getTags() ? new ArrayList<>() : event.getTags();
         htvTags.setData(tags);
 
-        tagsEdt.setImeActionLabel(getResources().getString(R.string.add), KeyEvent.KEYCODE_ENTER);
+        tagsEdt.setOnEditorActionListener((textView, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                processTag();
+                return true;
+            }
+            return false;
+        });
+
         tagsEdt.setOnKeyListener((v, keyCode, event1) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                 processTag();
