@@ -94,6 +94,14 @@ public class SearchEditText extends RelativeLayout {
             listener.onCancelSearch();
         }));
 
+        searchEdt.setOnEditorActionListener((textView, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                listener.onPerformSearch();
+                return true;
+            }
+            return false;
+        });
+
         searchEdt.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                 //cuz also fires for UP twice
